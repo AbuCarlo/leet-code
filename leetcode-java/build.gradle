@@ -1,0 +1,15 @@
+repositories {  jcenter()  }
+
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+
+dependencies {
+
+	testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+	testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+	testCompile 'junit:junit:4.12'
+
+	testCompile group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
+	testCompile group: 'com.carrotsearch', name: 'junit-benchmarks', version: '0.7.2'
+}
