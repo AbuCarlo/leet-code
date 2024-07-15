@@ -14,11 +14,10 @@ def integer_division(dividend, divisor):
     a, b = integer_division(remainder, divisor)
     return (quotient + quotient + a, b)
 
-assert(integer_division(0, 1) == (0, 0))
-assert(integer_division(1, 1) == (1, 0))
-assert(integer_division(2, 1) == (2, 0))
-assert(integer_division(2, 2) == (1, 0))
-assert(integer_division(8, 3) == (2, 2))
-assert(integer_division(8, 5) == (1, 3))
-
-
+assert integer_division(0, 1) == (0, 0)
+assert integer_division(1, 1) == (1, 0)
+assert integer_division(2, 1) == (2, 0)
+assert integer_division(2, 2) == (1, 0)
+assert integer_division(8, 3) == (2, 2)
+assert integer_division(8, 5) == (1, 3)
+assert integer_division(1000, 33) == (30, 10)
