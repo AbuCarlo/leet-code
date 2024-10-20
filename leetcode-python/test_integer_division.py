@@ -1,3 +1,7 @@
+'''
+https://leetcode.com/problems/divide-two-integers/description/?envType=problem-list-v2&envId=math
+'''
+
 import pytest
 
 def integer_division(dividend, divisor):
@@ -9,9 +13,8 @@ def integer_division(dividend, divisor):
         return (0, dividend)
     if dividend < divisor + divisor:
         return (1, dividend - divisor)
-    # TODO Rename these variables.    
-    # The quotient must be at least 1.
     quotient, remainder = integer_division(dividend, divisor << 1)
+    assert quotient >= 1
     # The remainder must be somewhere from [0, divisor * 2]
     a, b = integer_division(remainder, divisor)
     return (quotient + quotient + a, b)
