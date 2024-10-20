@@ -1,3 +1,5 @@
+import pytest
+
 def integer_division(dividend, divisor):
     # TODO Add checks for 0, negative numbers.
     # TODO Write two functions, one that calls
@@ -14,10 +16,18 @@ def integer_division(dividend, divisor):
     a, b = integer_division(remainder, divisor)
     return (quotient + quotient + a, b)
 
-assert integer_division(0, 1) == (0, 0)
-assert integer_division(1, 1) == (1, 0)
-assert integer_division(2, 1) == (2, 0)
-assert integer_division(2, 2) == (1, 0)
-assert integer_division(8, 3) == (2, 2)
-assert integer_division(8, 5) == (1, 3)
-assert integer_division(1000, 33) == (30, 10)
+samples = [
+    (0, 1, (0, 0)),
+    (1, 1, (1, 0)),
+    (2, 1, (2, 0)),
+    (2, 2, (1, 0)),
+    (8, 3, (2, 2)),
+    (8, 5, (1, 3)),
+    (1000, 33, (30, 10)),
+    (44444444440, 2, (22222222220, 0))
+]
+
+@pytest.mark.parametrize('dividend, divisor, expected', samples)
+def test_integer_division(dividend, divisor, expected):
+    actual = integer_division(dividend, divisor)
+    assert actual == expected
