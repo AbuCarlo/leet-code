@@ -1,36 +1,59 @@
 '''
-https://leetcode.com/problems/divide-two-integers/description/?envType=problem-list-v2&envId=math
+https://leetcode.com/problems/divide-two-integers/description
+
+The problem has some additional requirements at the extremes
+of the range. These are not included here.
 '''
 
-import pytest
+import math
 
-def integer_division(dividend, divisor):
-    # TODO Add checks for 0, negative numbers.
-    # TODO Write two functions, one that calls
-    # the recursive workhorse.
+import hypothesis
+import hypothesis.strategies
+
+def internal_integer_division(dividend, divisor):
     # These two conditions stop recursion.
     if dividend < divisor:
         return (0, dividend)
-    if dividend < divisor + divisor:
+    if dividend < divisor << 1:
         return (1, dividend - divisor)
-    quotient, remainder = integer_division(dividend, divisor << 1)
+    quotient, remainder = internal_integer_division(dividend, divisor << 1)
     assert quotient >= 1
     # The remainder must be somewhere from [0, divisor * 2]
-    a, b = integer_division(remainder, divisor)
+    a, b = internal_integer_division(remainder, divisor)
     return (quotient + quotient + a, b)
 
-samples = [
-    (0, 1, (0, 0)),
-    (1, 1, (1, 0)),
-    (2, 1, (2, 0)),
-    (2, 2, (1, 0)),
-    (8, 3, (2, 2)),
-    (8, 5, (1, 3)),
-    (1000, 33, (30, 10)),
-    (44444444440, 2, (22222222220, 0))
-]
+def integer_division(dividend: int, divisor: int):
+    # The problem disallows 0.
+    assert divisor != 0
+    sign = int(math.copysign(1, dividend) * math.copysign(1, divisor))
+    dividend = abs(dividend)
+    divisor = abs(divisor)
+    # The assignment doesn't include the remainder, and the
+    # modulus operator with negatives is tricky anyway.
+    quotient, _ = internal_integer_division(dividend, divisor)
+    return sign * quotient
 
-@pytest.mark.parametrize('dividend, divisor, expected', samples)
-def test_integer_division(dividend, divisor, expected):
+
+LIMIT = (1 << 31) - 1
+
+@hypothesis.strategies.composite
+def valid_arguments(draw):
+    '''
+    These are the bounds in the problem description.
+    '''
+    valid_range = hypothesis.strategies.integers(min_value=-LIMIT, max_value=LIMIT).filter(lambda x: x != 0)
+    dividend = draw(valid_range)
+    divisor = draw(valid_range)
+    return (dividend, divisor)
+
+@hypothesis.given(valid_arguments())
+# pylint: disable=C0116
+def test_integer_division(t):
+    dividend, divisor = t
     actual = integer_division(dividend, divisor)
-    assert actual == expected
+    # Python's // uses "floor division, so...
+    quotient, remainder = divmod(dividend, divisor)
+    if quotient < 0 and remainder != 0:
+        # The quotient was rounded *down* in floor division.
+        quotient += 1
+    assert actual == quotient
