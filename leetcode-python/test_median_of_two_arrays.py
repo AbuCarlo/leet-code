@@ -14,13 +14,15 @@ def median_of_two_sorted_arrays(l: list[int], r: list[int]) -> float:
     '''
     The assignment pretty clearly implies something like binary search.
     '''
-    # There *is* a median if 1 list is empty. 
+    odd_median = (len(l) + len(r)) % 2 == 1
+    # There *is* a median if 1 list is empty.
     if not l:
         if not r:
+            # Python's statistics.median() raises a similar error.
             raise ValueError('There is no median for empty data.')
-        return statistics.median(r)
+        return r[len(r) // 2] if odd_median else sum(r[len(r) // 2:][:2]) / 2.0
     if not r:
-        return statistics.median(l)
+        return [len(l) // 2] if odd_median else sum(l[len(l) // 2:][:2]) / 2.0
 
     # This many value need to be on either side of the median.
     target = (len(l) + len(r) - 1) // 2
@@ -42,6 +44,7 @@ def median_of_two_sorted_arrays(l: list[int], r: list[int]) -> float:
     # of the merged array. If the total length is odd, the median has to
     # be the lower value at the two indices. If even, the median is the
     # average of the two lowest values still available.
+    print(f'l = {l}: {l_index}; r = {r}: {r_index}')
     if (len(l) + len(r)) % 2 == 1:
         # *All* values in l were eliminated.
         if l_index == 0:
