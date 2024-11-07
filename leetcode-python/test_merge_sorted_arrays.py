@@ -11,43 +11,45 @@ class Solution:
     '''
     LeetCode's usual framework.
     '''
-    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+    def merge(self, a: List[int], m: int, b: List[int], n: int) -> None:
         """
-        Do not return anything, modify nums1 in-place instead.
+        Do not return anything, modify a in-place instead.
         """
+        # Store excess values from the first array in the second. We'll have to
+        # do this at most n times, because there can only be n values too large
+        # to insert before b[0]
         i = 0
         j = 0
-        # Store excess values from the first array in the second. We'll have to 
-        # do this at most n times, because there can only be n values too large
-        # to insert before nums1[0]
         retrieve_at = 0
         store_at = 0
-        # Store excess values in the *second* array.
+        for i in range(m):
+            if j < n and a[i] <= b[j]:
+                continue
+            if j == n:
+                break
+            t = b[j]
+            j += 1
+            b[store_at] = a[i]
+            store_at += 1
+            a[i] = t
+        i = m
         while i < m + n:
-            # If we've stored a smaller value, fetch it. If we've used up
-            # the second array, prioritize the cache.
-            if retrieve_at < store_at and (j == n or nums2[retrieve_at] < nums2[j]):
-                if j == n:
-                    t = nums2[retrieve_at]
-                    nums2[retrieve_at] = nums1[i]
-                    nums1[i] = t
-                elif i < m:
-                    nums2[store_at] = nums1[i]
-                    store_at += 1
-                    nums1[i] = nums2[retrieve_at]
-                    retrieve_at += 1
-            elif i >= m:
-                nums1[i] = nums2[j]
+            if j == n:
+                a[i] = b[retrieve_at]
+                retrieve_at += 1
+                if retrieve_at == store_at:
+                    retrieve_at = store_at = 0
+            elif retrieve_at == store_at or b[j] < b[retrieve_at]:
+                a[i] = b[j]
                 j += 1
-            elif j == n or nums1[i] <= nums2[j]:
-                pass
             else:
-                t = nums1[i]
-                nums1[i] = nums2[j]
-                j += 1
-                nums2[store_at] = t
-                store_at += 1
+                a[i] = b[retrieve_at]
+                retrieve_at += 1
+                if retrieve_at == store_at:
+                    retrieve_at = store_at = 0
             i += 1
+            
+
 
 
 _SAMPLES = [
@@ -65,9 +67,9 @@ def test_test_cases(l, r):
     '''
     n = len(r)
     m = len(l) - n
-    
+
     expected = list(sorted(l[:m] + r))
-    
+
     solution = Solution()
     solution.merge(l, m, r, n)
     assert l == expected
