@@ -15,55 +15,15 @@ class Solution:
         """
         Do not return anything, modify a in-place instead.
         """
-        # Store excess values from the first array in the second. We'll have to
-        # do this at most n times, because there can only be n values too large
-        # to insert before b[0]
-        if not b:
-            return
-        j = 0
-        retrieve_at = 0
-        store_at = 0
-        for i in range(m + n):
-            # Something's in the buffer.
-            if retrieve_at != store_at:
-                if j < n:
-                    if b[retrieve_at] <= b[j]:
-                        if i < m:
-                            t = a[i]
-                        a[i] = b[retrieve_at]
-                        retrieve_at += 1
-                        if retrieve_at == store_at:
-                            retrieve_at = store_at = 0
-                        if i < m:
-                            b[store_at] = t
-                            store_at += 1
-                    elif i < m and a[i] <= b[j]:
-                        pass
-                    else:
-                        if i < m:
-                            t = a[i]
-                        a[i] = b[j]
-                        j += 1
-                        if i < m:
-                            b[store_at] = t
-                            store_at += 1
+        i = m - 1
+        j = n - 1
+        for k in range(m + n - 1, -1, -1):
+            if j < 0 or i >= 0 and a[i] > b[j]:
+                a[k] = a[i]
+                i -= 1
             else:
-                # Values here can be overwritten.
-                if i >= m:
-                    a[i] = b[j]
-                    j += 1
-                # The buffer must be empty.
-                elif j >= n or a[i] <= b[j]:
-                    pass
-                else:
-                    t = a[i]
-                    a[i] = b[j]
-                    b[store_at] = t
-                    store_at += 1
-                    
-                
-
-
+                a[k] = b[j]
+                j -= 1
 
 _SAMPLES = [
     ([1,2,3,0,0,0], [2, 5, 6]),
@@ -72,7 +32,8 @@ _SAMPLES = [
     ([2, 0], [1]),
     ([1,2,4,5,6,0], [3]),
     ([4,5,6,0,0,0], [1, 2, 3]),
-    ([0,0,3,0,0,0,0,0,0], [-1,1,1,1,2,3])
+    ([0,0,3,0,0,0,0,0,0], [-1,1,1,1,2,3]),
+    ([-1,0,0,0,3,0,0,0,0,0,0], [-1,-1,0,0,1,2])
 ]
 
 @pytest.mark.parametrize("l, r", _SAMPLES)
