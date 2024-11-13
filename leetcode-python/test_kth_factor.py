@@ -6,12 +6,18 @@ import pytest
 import sympy
 
 class Solution:
+    '''
+    LeetCode's standard scaffolding.
+    '''
+    # pylint: disable=C0103
     def kthFactor(self, n: int, k: int) -> int:
-        # A previous implementation found the prime factors,
-        # then the powerset of the multiset of prime factors,
-        # then the sum over multiplication of each set in the
-        # powerset, which were then sorted...you get the idea.
-        # This was all that Leetcode wanted.
+        '''
+        A previous implementation found the prime factors,
+        then the powerset of the multiset of prime factors,
+        then the sum over multiplication of each set in the
+        powerset, which were then sorted...you get the idea.
+        This was all that Leetcode wanted.
+        '''
         factors = [1]
         f = 2
         while f <= n // 2:
