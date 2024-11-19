@@ -11,7 +11,7 @@ def minimized_maximum(n: int, quantities: List[int]) -> int:
     '''
     Use binary search to find the optimal result, i.e.,
     Where q = |quantities|, O(q * log q) implementation.
-    
+
     :param n: number of buckets to put goods in
     :param quantities: quantity of each item, which can't be mixed
     '''
