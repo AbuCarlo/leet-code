@@ -5,48 +5,63 @@ https://leetcode.com/problems/max-stack/
 import collections
 import heapq
 
+# pylint: disable=C0116,C0103
 class MaxStack:
 
     def __init__(self):
         self.stack = collections.deque()
         self.heap = []
-        self.pop_counts = collections.Counter()
+        self.version = 0
 
     def push(self, x: int) -> None:
-        self.stack.append(x)
-        heapq.heappush(self.heap, -x)
+        self.version += 1
+        # negative value for min-heap; version #; popped?
+        # Later versions should get popped earlier from
+        # a min-heap.
+        l = [-x, -self.version, False]
+        self.stack.append(l)
+        heapq.heappush(self.heap, l)
 
     def pop(self) -> int:
-        result = self.stack.pop()
-        if result == -self.heap[0]:
-            heapq.heappop(self.heap)
+        while self.stack[-1][2]:
+            self.stack.pop()
+        l = self.stack.pop()
+        l[2] = True
         # print(f'Popped {result}; {len(self.stacks)} stacks')
-        return result
-        
+        return -l[0]
+
     def top(self) -> int:
+        while self.stack[-1][2]:
+            self.stack.pop()
         # print(f'top(): {len(self.stacks)} stacks; returning {self.stacks[-1][-1]}')
-        return self.stack[-1]
+        return -self.stack[-1][0]
 
     def peekMax(self) -> int:
         # print(f'peekMax(): {len(self.stacks)} stacks; returning {self.stacks[-1][0]}')
-        return self.heap[0]
+        while self.heap[0][2]:
+            heapq.heappop(self.heap)
+        return -self.heap[0][0]
 
     def popMax(self) -> int:
-        result = -heapq.heappop(self.heap)
-        if result == self.stack[-1]:
-            self.stack.pop())
-        else:
-            self.pop_counts[result] += 1
+        while self.heap[0][2]:
+            heapq.heappop(self.heap)
+        l = heapq.heappop(self.heap)
+        l[2] = True
         # If the maximum was the only element,
         # this stack will now be empty.
         # print(f'popMax() returned {result}: {len(self.stacks)} stacks')
-        return result
+        return -l[0]
 
 
-# Your MaxStack object will be instantiated and called as such:
-# obj = MaxStack()
-# obj.push(x)
-# param_2 = obj.pop()
-# param_3 = obj.top()
-# param_4 = obj.peekMax()
-# param_5 = obj.popMax()
+stack = MaxStack()
+stack.push(15)
+stack.pop()
+stack.push(1)
+stack.push(-52)
+stack.push(80)
+stack.push(-39)
+print(stack.popMax())
+stack.push(91)
+stack.pop()
+stack.pop()
+print(stack.top())
