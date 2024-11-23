@@ -14,21 +14,33 @@ def rotateTheBox(box: List[List[str]]) -> List[List[str]]:
             if c == '*':
                 obstacle = i
             elif c == '#':
-                # This stone comes to rest on the
-                # previous obstacle, and becomes a new one.
-                # The current cell is left empty.
-                obstacle -= 1
-                l[i], l[obstacle] = '.', '#'
+                # A stone in this position will not fall,
+                # and therefore become an obstacle.
+                if i == len(l) - 1:
+                    obstacle = i
+                else:
+                    # This stone comes to rest on the
+                    # previous obstacle, and becomes a new one.
+                    # The current cell is left empty.
+                    obstacle -= 1
+                    l[i], l[obstacle] = '.', '#'
             else:
                 assert l[i] == '.'
-        
-        # Now rotate the whole thing Pythonically.
-        # Tip of the hat to https://stackoverflow.com/a/8421412/476942
-        # This gives us tuples...
-        return list(zip(*reversed(box)))
+
+    # Now rotate the whole thing Pythonically.
+    # Tip of the hat to https://stackoverflow.com/a/8421412/476942
+    # This gives us tuples...
+    return list(zip(*reversed(box)))
 
 
 
-sample = [["#",".","#"]]
+# sample = [["#",".","#"]]
 
-print(rotateTheBox(sample))
+# print(rotateTheBox(sample))
+
+# sample_3 = [["#",".","*","."],
+#               ["#","#","*","."]]
+
+# print(rotateTheBox(sample_3))
+
+print(rotateTheBox([["#","#","*",".","*","."],["#","#","#","*",".","."],["#","#","#",".","#","."]]))
