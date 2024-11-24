@@ -46,7 +46,7 @@ _SAMPLES_2D = [
 @pytest.mark.parametrize("l, expected", _SAMPLES_2D)
 def test_samples(l, expected):
     traps = trap_one(l)
-    actual = sum(t.height for t in traps)
+    actual = sum(max(0, traps[i].height - h) for i, h in enumerate(l))
     assert actual == expected
 
 sample01 = [[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]]
