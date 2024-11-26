@@ -5,7 +5,6 @@ https://leetcode.com/problems/trapping-rain-water-ii
 '''
 
 from dataclasses import dataclass
-import itertools
 from typing import List
 
 import pytest
@@ -61,13 +60,19 @@ def trapRainWater(heights: List[List[int]]) -> int:
         for row in range(len(heights) - 1, -1, -1):
             h = heights[row][column]
             lower_maximum = max(lower_maximum, h)
-            down[row][column] = min(lower_maximum, from_top[row]) - h
+            down[row][column] = min(lower_maximum, from_top[row])
     both = [[0] * len(l) for l in heights]
     for row, a in enumerate(down):
         for column, h in enumerate(a):
             trap = across[row][column]
-            both[row][column] = min(h, min(heights[row][trap.left:trap.right + 1], default=0))
-    return sum(itertools.chain(*both))
+            both[row][column] = min(h, min(down[row][trap.left:trap.right + 1], default=0))
+    result = 0
+    for row, l in enumerate(heights):
+        for column, h in enumerate(l):
+            water = both[row][column] - h
+            if water > 0:
+                result += water
+    return result
 
 
 _SAMPLES_2D = [
@@ -108,4 +113,3 @@ def test_3d_samples(l, expected):
     '''
     actual = trapRainWater(l)
     assert actual == expected
-
