@@ -65,7 +65,10 @@ def trapRainWater(heights: List[List[int]]) -> int:
     for row, a in enumerate(down):
         for column, h in enumerate(a):
             trap = across[row][column]
-            both[row][column] = min(h, min(down[row][trap.left:trap.right + 1], default=0))
+            current = h
+            for i in range(trap.left, trap.right + 1):
+                current = min(current, down[row][i])
+            both[row][column] = current
     result = 0
     for row, l in enumerate(heights):
         for column, h in enumerate(l):
