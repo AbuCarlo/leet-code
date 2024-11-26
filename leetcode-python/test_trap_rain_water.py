@@ -36,7 +36,7 @@ def trap_across(l: List[int]) -> List[RainWater]:
         from_right[i] = current
     traps = []
     for left, right in zip(from_left, from_right):
-        r = RainWater(max(left[0], right[0]), left[1], right[1])
+        r = RainWater(min(left[0], right[0]), left[1], right[1])
         traps.append(r)
     return traps
 
@@ -103,7 +103,17 @@ def test_2d_samples_as_3d(l, _):
 
 _SAMPLES_3D = [
     ([[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]], 4),
-    ([[3,3,3,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 10)
+    ([[3,3,3,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 10),
+    # Knock a block out of the side to let the water run out.
+    ([[3,3,2,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 1),
+    ([[3,1,3,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 1),
+    # Test Case #17
+    ([[12,13,1,12],
+      [13,4,13,12],
+      [13,8,10,12],
+      [12,13,12,12],
+      [13,13,13,13]],
+     14)
 ]
 
 @pytest.mark.parametrize("l, expected", _SAMPLES_3D)
