@@ -70,11 +70,15 @@ def trapRainWater(heights: List[List[int]]) -> int:
                 current = min(current, down[row][i])
             both[row][column] = current
     result = 0
-    for row, l in enumerate(heights):
-        for column, h in enumerate(l):
-            water = both[row][column] - h
-            if water > 0:
-                result += water
+    for row in range(1, len(heights) - 1):
+        for column in range(1, len(heights[0]) - 1):
+            neighbor = min(across[row - 1][column].height,
+                        across[row + 1][column].height,
+                        down[row][column - 1],
+                        down[row][column + 1]
+                    )
+            if neighbor > heights[row][column]:
+                result += neighbor - heights[row][column]
     return result
 
 
@@ -105,8 +109,16 @@ def test_2d_samples_as_3d(l, _):
     assert actual == 0
 
 _SAMPLES_3D = [
-    ([[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]], 4),
-    ([[3,3,3,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 10),
+    ([[1,4,3,1,3,2],
+      [3,2,1,3,2,4],
+      [2,3,3,2,3,1]],
+     4),
+    ([[3,3,3,3,3],
+      [3,2,2,2,3],
+      [3,2,1,2,3],
+      [3,2,2,2,3],
+      [3,3,3,3,3]],
+     10),
     # Knock a block out of the side to let the water run out.
     ([[3,3,2,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 1),
     ([[3,1,3,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 1),
