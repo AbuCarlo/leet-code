@@ -30,12 +30,12 @@ class Solution:
         self.result = min(self.result, u + self.length_to_end[u])
         for w in self.roads_to[u]:
             self.length_to_end[w] = min(self.find_length_to_end(w), 1 + self.length_to_end[u])
-            self.result = min(self.result, self.find_length_from_beginning(w) + self.length_to_end[u])
+            self.result = min(self.result, self.find_length_from_beginning(w) + 1 + self.length_to_end[u])
         self.roads_to[v].add(u)
 
     def shortestDistanceAfterQueries(self, n: int, queries: List[List[int]]) -> List[int]:
         self.n = n
-        self.result = n
+        self.result = n - 1
         self.length_to_end.clear()
         self.length_from_beginning.clear()
         self.roads_to.clear()
@@ -49,7 +49,9 @@ class Solution:
         return results
 
 _SAMPLES = [
-    (5, [[2,4],[0,2],[0,4]], [3,2,1])
+    (5, [[2,4],[0,2],[0,4]], [3,2,1]),
+    # test case 400
+    (6, [[1,3],[3,5]], [4,3])
 ]
 
 @pytest.mark.parametrize("n,queries,expected", _SAMPLES)
