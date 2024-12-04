@@ -17,7 +17,7 @@ def findLengthOfShortestSubarray(arr: List[int]) -> int:
             break
     i = start - 1
     j = start + 1
-    while arr[i] > 
+    # while arr[i] > 
         
 
 
