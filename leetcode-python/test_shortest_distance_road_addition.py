@@ -30,7 +30,7 @@ class Solution:
         self.result = min(self.result, u + self.length_to_end[u])
         for w in self.roads_to[u]:
             self.length_to_end[w] = min(self.find_length_to_end(w), 1 + self.length_to_end[u])
-            self.result = min(self.result, self.find_length_from_beginning(w) + 1 + self.length_to_end[u])
+            self.result = min(self.result, self.find_length_from_beginning(w) + self.find_length_to_end(w))
         self.roads_to[v].add(u)
 
     def shortestDistanceAfterQueries(self, n: int, queries: List[List[int]]) -> List[int]:
@@ -39,6 +39,8 @@ class Solution:
         self.length_to_end.clear()
         self.length_from_beginning.clear()
         self.roads_to.clear()
+        for u in range(n - 1):
+            self.roads_to[u + 1] = set([u])
 
         results = []
 
@@ -50,8 +52,12 @@ class Solution:
 
 _SAMPLES = [
     (5, [[2,4],[0,2],[0,4]], [3,2,1]),
-    # test case 400
-    (6, [[1,3],[3,5]], [4,3])
+    # test case 400: roads join
+    (6, [[1,3],[3,5]], [4,3]),
+    # test case 634: non-overlapping
+    (7, [[4,6],[0,3]], [5,3]),
+    # test case 696: non-overlapping
+    (12, [[8,11],[0,2]], [9,8])
 ]
 
 @pytest.mark.parametrize("n,queries,expected", _SAMPLES)
