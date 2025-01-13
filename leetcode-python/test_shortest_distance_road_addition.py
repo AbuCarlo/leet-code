@@ -19,18 +19,21 @@ class Solution:
         self.distance_backward = []
         self.roads_forward = collections.defaultdict(set)
         self.roads_backward = collections.defaultdict(set)
-        self.last_u = -1
-        self.last_v = sys.maxsize
+        self.last_u = None
+        self.last_v = None
 
     def find_length_to_end(self, v) -> int:
         '''
         Recalculate the shortest distances for nodes between v and
         the end where roads have been added since the last call.
         '''
-        if v < self.last_v:
+        if v >= self.last_v:
             return self.distance_forward[v]
-        current_min = min((1 + self.find_length_to_end(w)) for w in self.roads_forward[v])
-        current_min = min(current_min, 1 + self.find_length_to_end(v + 1))
+        # TODO Iterate forward until you find a node with roads leading out of it.
+        # You might exceed the maximum recursion depth.
+        current_min = 1 + self.find_length_to_end(v + 1)
+        if self.roads_forward[v]:
+            current_min = min(current_min, min((1 + self.find_length_to_end(w)) for w in self.roads_forward[v]))
         self.distance_forward[v] = current_min
         return current_min
 
@@ -38,10 +41,11 @@ class Solution:
         '''
         See above. Recalculate shortest distances back to the beginning.
         '''
-        if u > self.last_u:
+        if u <= self.last_u:
             return self.distance_backward[u]
-        current_min = min((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[w])
-        current_min = min(current_min, 1 + self.find_length_to_beginning(u + 1))
+        current_min = 1 + self.find_length_to_beginning(u - 1)
+        if self.roads_backward[u]:
+            current_min = min(current_min, min((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[u]))
         self.distance_backward[u] = current_min
         return current_min
 
@@ -49,10 +53,10 @@ class Solution:
         '''
         Add a road from u to v, recalculating the necessary shortest distances.
         '''
-        self.distance_forward[u] = 1 + self.find_length_to_end(v)
-        self.distance_backward[v] = 1 + self.find_length_to_beginning(u)
+        self.distance_forward[u] = min(self.distance_forward[u], 1 + self.find_length_to_end(v))
+        self.distance_backward[v] = min(self.distance_backward[v], 1 + self.find_length_to_beginning(u))
 
-        self.result = self.distance_backward[u] + 1 + self.distance_forward[v]
+        self.result = min(self.result, self.distance_backward[u] + 1 + self.distance_forward[v])
 
         self.roads_backward[v].add(u)
         self.roads_forward[u].add(v)
@@ -70,8 +74,12 @@ class Solution:
         '''
         self.n = n
         self.result = n - 1
-        self.distance_forward = list(range(n))
-        self.distance_backward = reversed(list(range(n)))
+        self.last_u = 0
+        self.last_v = n - 1
+        self.distance_backward = list(range(n))
+        self.distance_forward = self.distance_backward[::-1]
+        # Reverse-copy the list.
+        # https://stackoverflow.com/questions/3705670/best-way-to-create-a-reversed-list-in-python
         self.roads_backward.clear()
         self.roads_forward.clear()
 
