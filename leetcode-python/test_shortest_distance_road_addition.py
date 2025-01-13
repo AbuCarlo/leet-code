@@ -57,7 +57,7 @@ _SAMPLES = [
     # test case 634: non-overlapping
     (7, [[4,6],[0,3]], [5,3]),
     # test case 696: non-overlapping
-    # (12, [[8,11],[0,2]], [9,8])
+    (12, [[8,11],[0,2]], [9,8])
 ]
 
 @pytest.mark.parametrize("n,queries,expected", _SAMPLES)
