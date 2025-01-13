@@ -29,9 +29,11 @@ class Solution:
         '''
         if v >= self.last_v:
             return self.distance_forward[v]
-        # TODO Iterate forward until you find a node with roads leading out of it.
-        # You might exceed the maximum recursion depth.
-        current_min = 1 + self.find_length_to_end(v + 1)
+        # Find the closest node that has outgoing paths, avoiding recursion.
+        w = v + 1
+        while w < self.n - 1 and not self.roads_forward[w]:
+            w += 1
+        current_min = w - v + self.find_length_to_end(w)
         if self.roads_forward[v]:
             current_min = min(current_min, min((1 + self.find_length_to_end(w)) for w in self.roads_forward[v]))
         self.distance_forward[v] = current_min
@@ -43,6 +45,10 @@ class Solution:
         '''
         if u <= self.last_u:
             return self.distance_backward[u]
+        w = u - 1
+        while w > 0 and not self.roads_forward[w]:
+            w -= 1
+        current_min = u - w + self.find_length_to_end(w)
         current_min = 1 + self.find_length_to_beginning(u - 1)
         if self.roads_backward[u]:
             current_min = min(current_min, min((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[u]))
