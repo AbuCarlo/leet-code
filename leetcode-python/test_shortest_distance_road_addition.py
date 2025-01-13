@@ -15,32 +15,65 @@ class Solution:
     def __init__(self) -> None:
         self.n = sys.maxsize
         self.result = sys.maxsize
-        self.length_to_end = {}
-        self.length_from_beginning = {}
-        self.roads_to = collections.defaultdict(set)
+        self.distance_forward = []
+        self.distance_backward = []
+        self.roads_forward = collections.defaultdict(set)
+        self.roads_backward = collections.defaultdict(set)
+        self.last_u = -1
+        self.last_v = sys.maxsize
 
-    def find_length_to_end(self, u):
-        return self.length_to_end.get(u, self.n - u - 1)
+    def find_length_to_end(self, v) -> int:
+        '''
+        Recalculate the shortest distances for nodes between v and
+        the end where roads have been added since the last call.
+        '''
+        if v < self.last_v:
+            return self.distance_forward[v]
+        current_min = min((1 + self.find_length_to_end(w)) for w in self.roads_forward[v])
+        current_min = min(current_min, 1 + self.find_length_to_end(v + 1))
+        self.distance_forward[v] = current_min
+        return current_min
 
-    def find_length_from_beginning(self, u):
-        return self.length_from_beginning.get(u, u)
+    def find_length_to_beginning(self, u):
+        '''
+        See above. Recalculate shortest distances back to the beginning.
+        '''
+        if u > self.last_u:
+            return self.distance_backward[u]
+        current_min = min((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[w])
+        current_min = min(current_min, 1 + self.find_length_to_beginning(u + 1))
+        self.distance_backward[u] = current_min
+        return current_min
 
     def add_road(self, u, v):
-        self.length_to_end[u] = min(self.find_length_to_end(u), 1 + self.find_length_to_end(v))
-        self.result = min(self.result, u + self.length_to_end[u])
-        for w in self.roads_to[u]:
-            self.length_to_end[w] = min(self.find_length_to_end(w), 1 + self.length_to_end[u])
-            self.result = min(self.result, self.find_length_from_beginning(w) + self.find_length_to_end(w))
-        self.roads_to[v].add(u)
+        '''
+        Add a road from u to v, recalculating the necessary shortest distances.
+        '''
+        self.distance_forward[u] = 1 + self.find_length_to_end(v)
+        self.distance_backward[v] = 1 + self.find_length_to_beginning(u)
 
+        self.result = self.distance_backward[u] + 1 + self.distance_forward[v]
+
+        self.roads_backward[v].add(u)
+        self.roads_forward[u].add(v)
+        # We've recalculated all the shortest distances from u back to the beginning,
+        # so don't do it again until a road is added somewhere between 0 and u.
+        # Mutatis mutandis for v.
+        self.last_u = u
+        self.last_v = v
+
+    # pylint: disable=C0103
     def shortestDistanceAfterQueries(self, n: int, queries: List[List[int]]) -> List[int]:
+        '''
+        For every road in queries, recalculate the shortest distance from 0 to n - 1.
+        Return a list of all recalculations.
+        '''
         self.n = n
         self.result = n - 1
-        self.length_to_end.clear()
-        self.length_from_beginning.clear()
-        self.roads_to.clear()
-        for u in range(n - 1):
-            self.roads_to[u + 1] = set([u])
+        self.distance_forward = list(range(n))
+        self.distance_backward = reversed(list(range(n)))
+        self.roads_backward.clear()
+        self.roads_forward.clear()
 
         results = []
 
