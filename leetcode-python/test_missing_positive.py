@@ -1,5 +1,7 @@
 '''
 https://leetcode.com/problems/first-missing-positive/
+
+1 <= nums.length <= 10^5
 '''
 
 from typing import List
@@ -48,29 +50,41 @@ def firstMissingPositive(a: List[int])->int:
     value.
     '''
     try:
-        pivot_index = a.index(1)
+        midpoint = a.index(1)
     except ValueError:
         return 1
 
     # Start with positive integers.
-    start = _partition(a, 0, len(a) -1, pivot_index)
+    start = _partition(a, 0, len(a) -1, midpoint)
     end = len(a) - 1
 
-    while end - 1 > start:
+    while True:
         # Keep selecting pivots. If a partition is the right size,
         # based on the pivot value, it's not missing anything.
         # Try the other one.
-        midpoint = _partition(a, start, end, (start + end) // 2)
-        if a[midpoint] - a[start] < midpoint - start:
-            print(f'Missing value between {a[start]} and {a[midpoint]}')
+        if a[midpoint] - a[start] > midpoint - start:
+            print(f'Missing value between a[{start}] = {a[start]} and a[{midpoint}] = {a[midpoint]}')
             end = midpoint - 1
-        else:
-            print(f'Missing value between {a[midpoint]} and {a[end]}')
+        elif a[end] - a[midpoint] > end - midpoint:
+            print(f'Missing value between a[{midpoint}] = {a[midpoint]} and a[{end}] = {a[end]}')
             start = midpoint + 1
-    return 0
+        else:
+            # Both partitions are the right size: no value is missing.
+            return max(a) + 1
+        if end - start == 1:
+            return a[start] + 1
+        midpoint = _partition(a, start, end, (start + end) // 2)
 
 
 _TEST_CASES = [
+    # my own test cases, to observe behavior of partitioning algorithm
+    # TODO Shuffle these.
+    ([1], 2),
+    ([1, 2], 3),
+    (list(range(2, 5)), 1),
+    (list(range(9)), 9),
+    (list(range(1, 9)), 9),
+    # test cases from description
     ([1,2,0], 3),
     ([3,4,-1,1], 2),
     ([7,8,9,11,12], 1)
