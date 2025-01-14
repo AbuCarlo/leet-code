@@ -36,7 +36,10 @@ class Solution:
             return 0
         if v >= self.last_v:
             return self.distance_forward[v]
-        self.distance_forward[v] = 1 + self.find_length_to_end(v + 1)
+        # What is the next city with outgoing roads?
+        next_cities = bisect.bisect_right(self.road_start, v)
+        for w in self.road_start[next_cities:]:
+            self.distance_forward[v] = min(self.distance_forward[v], w - v + self.find_length_to_end(w))
         if not self.roads_forward[v]:
             return self.distance_forward[v]
         self.distance_forward[v] = min(self.distance_forward[v], *(1 + self.find_length_to_end(w) for w in self.roads_forward[v]))
@@ -50,7 +53,9 @@ class Solution:
             return 0
         if u <= self.last_u:
             return self.distance_backward[u]
-        self.distance_backward[u] = 1 + self.find_length_to_beginning(u - 1)
+        previous_cities = bisect.bisect_left(self.road_start, u)
+        for w in self.road_start[:previous_cities]:
+            self.distance_backward[u] = min(self.distance_backward[u], u - w + self.find_length_to_beginning(w))
         if not self.roads_backward[u]:
             return self.distance_backward[u]
         self.distance_backward[u] = min(self.distance_backward[u], *((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[u]))
@@ -119,7 +124,9 @@ _SAMPLES = [
     # test case #751
     (17, [[3, 12], [11, 16], [0, 4], [3, 9], [9, 12], [9, 13], [10, 16], [3, 10]], [8, 8, 8, 7, 7, 7, 6, 5]),
     # test case #876
-    (47, [[2, 38], [9, 39], [41, 43]], [11, 11, 10])
+    (47, [[2, 38], [9, 39], [41, 43]], [11, 11, 10]),
+    # reduction of test case #876
+    (12, [[2, 5], [4, 6], [8, 10]], [9, 9, 8])
 ]
 
 @pytest.mark.parametrize("n,queries,expected", _SAMPLES)
