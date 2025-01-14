@@ -1,5 +1,7 @@
 '''
 https://leetcode.com/problems/shortest-distance-after-road-addition-queries-i
+
+There will be at most 500 nodes, and at most 500 roads.
 '''
 
 import collections
@@ -27,33 +29,29 @@ class Solution:
         Recalculate the shortest distances for nodes between v and
         the end where roads have been added since the last call.
         '''
+        if v == self.n - 1:
+            return 0
         if v >= self.last_v:
             return self.distance_forward[v]
-        # Find the closest node that has outgoing paths, avoiding recursion.
-        w = v + 1
-        while w < self.n - 1 and not self.roads_forward[w]:
-            w += 1
-        current_min = w - v + self.find_length_to_end(w)
-        if self.roads_forward[v]:
-            current_min = min(current_min, min((1 + self.find_length_to_end(w)) for w in self.roads_forward[v]))
-        self.distance_forward[v] = current_min
-        return current_min
+        if not self.roads_forward[v]:
+            self.distance_forward[v] = 1 + self.find_length_to_end(v + 1)
+            return self.distance_forward[v]
+        self.distance_forward[v] = min(self.distance_forward[v], *(1 + self.find_length_to_end(w) for w in self.roads_forward[v]))
+        return self.distance_forward[v]
 
     def find_length_to_beginning(self, u):
         '''
         See above. Recalculate shortest distances back to the beginning.
         '''
+        if u == 0:
+            return 0
         if u <= self.last_u:
             return self.distance_backward[u]
-        w = u - 1
-        while w > 0 and not self.roads_forward[w]:
-            w -= 1
-        current_min = u - w + self.find_length_to_end(w)
-        current_min = 1 + self.find_length_to_beginning(u - 1)
-        if self.roads_backward[u]:
-            current_min = min(current_min, min((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[u]))
-        self.distance_backward[u] = current_min
-        return current_min
+        if not self.roads_backward[u]:
+            self.distance_backward[u] = 1 + self.find_length_to_beginning(u - 1)
+            return self.distance_backward[u]
+        self.distance_backward[u] = min(self.distance_backward[u], *((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[u]))
+        return self.distance_backward[u]
 
     def add_road(self, u, v):
         '''
@@ -106,7 +104,7 @@ _SAMPLES = [
     # test case 696: non-overlapping
     (12, [[8,11],[0,2]], [9,8]),
     # test case #751
-    (17, [[3,12],[11,16],[0,4],[3,9],[9,12],[9,13],[10,16],[3,10]], [8,8,8,7,7,7,6,5])
+    (17, [[3, 12], [11, 16], [0, 4], [3, 9], [9, 12], [9, 13], [10, 16], [3, 10]], [8, 8, 8, 7, 7, 7, 6, 5])
 ]
 
 @pytest.mark.parametrize("n,queries,expected", _SAMPLES)
