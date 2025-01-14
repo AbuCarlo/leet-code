@@ -5,8 +5,9 @@ There will be at most 500 nodes, and at most 500 roads.
 '''
 
 import collections
-from typing import List
+import bisect
 import sys
+from typing import List
 
 import pytest
 
@@ -19,6 +20,8 @@ class Solution:
         self.result = sys.maxsize
         self.distance_forward = []
         self.distance_backward = []
+        self.road_start = []
+        self.road_end = []
         self.roads_forward = collections.defaultdict(set)
         self.roads_backward = collections.defaultdict(set)
         self.last_u = None
@@ -62,6 +65,12 @@ class Solution:
 
         self.result = min(self.result, self.distance_backward[u] + 1 + self.distance_forward[v])
 
+        if v not in self.road_end:
+            insertion = bisect.bisect_left(self.road_end, v)
+            self.road_end.insert(insertion, v)
+        if u not in self.road_start:
+            insertion = bisect.bisect_left(self.road_start, u)
+            self.road_start.insert(insertion, u)
         self.roads_backward[v].add(u)
         self.roads_forward[u].add(v)
         # We've recalculated all the shortest distances from u back to the beginning,
@@ -69,6 +78,7 @@ class Solution:
         # Mutatis mutandis for v.
         self.last_u = u
         self.last_v = v
+
 
     # pylint: disable=C0103
     def shortestDistanceAfterQueries(self, n: int, queries: List[List[int]]) -> List[int]:
@@ -81,11 +91,14 @@ class Solution:
         self.last_u = 0
         self.last_v = n - 1
         self.distance_backward = list(range(n))
-        self.distance_forward = self.distance_backward[::-1]
         # Reverse-copy the list.
         # https://stackoverflow.com/questions/3705670/best-way-to-create-a-reversed-list-in-python
+        self.distance_forward = self.distance_backward[::-1]
+        # It's not clear if this object will be reused by the test harness.
         self.roads_backward.clear()
         self.roads_forward.clear()
+        self.road_end.clear()
+        self.road_start.clear()
 
         results = []
 
