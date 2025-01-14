@@ -34,8 +34,8 @@ class Solution:
         '''
         if v == self.n - 1:
             return 0
-        if v >= self.last_v:
-            return self.distance_forward[v]
+        # if v >= self.last_v:
+        #     return self.distance_forward[v]
         # What is the next city with outgoing roads?
         next_cities = bisect.bisect_right(self.road_start, v)
         for w in self.road_start[next_cities:]:
@@ -51,10 +51,10 @@ class Solution:
         '''
         if u == 0:
             return 0
-        if u <= self.last_u:
-            return self.distance_backward[u]
-        previous_cities = bisect.bisect_left(self.road_start, u)
-        for w in self.road_start[:previous_cities]:
+        # if u <= self.last_u:
+        #     return self.distance_backward[u]
+        previous_cities = bisect.bisect_left(self.road_end, u)
+        for w in self.road_end[:previous_cities]:
             self.distance_backward[u] = min(self.distance_backward[u], u - w + self.find_length_to_beginning(w))
         if not self.roads_backward[u]:
             return self.distance_backward[u]
