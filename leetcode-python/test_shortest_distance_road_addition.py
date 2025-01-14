@@ -33,8 +33,8 @@ class Solution:
             return 0
         if v >= self.last_v:
             return self.distance_forward[v]
+        self.distance_forward[v] = 1 + self.find_length_to_end(v + 1)
         if not self.roads_forward[v]:
-            self.distance_forward[v] = 1 + self.find_length_to_end(v + 1)
             return self.distance_forward[v]
         self.distance_forward[v] = min(self.distance_forward[v], *(1 + self.find_length_to_end(w) for w in self.roads_forward[v]))
         return self.distance_forward[v]
@@ -47,8 +47,8 @@ class Solution:
             return 0
         if u <= self.last_u:
             return self.distance_backward[u]
+        self.distance_backward[u] = 1 + self.find_length_to_beginning(u - 1)
         if not self.roads_backward[u]:
-            self.distance_backward[u] = 1 + self.find_length_to_beginning(u - 1)
             return self.distance_backward[u]
         self.distance_backward[u] = min(self.distance_backward[u], *((1 + self.find_length_to_beginning(w)) for w in self.roads_backward[u]))
         return self.distance_backward[u]
