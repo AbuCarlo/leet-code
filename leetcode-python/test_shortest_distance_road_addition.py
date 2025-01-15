@@ -4,8 +4,6 @@ https://leetcode.com/problems/shortest-distance-after-road-addition-queries-i
 There will be at most 500 nodes, and at most 500 roads.
 '''
 
-import collections
-import bisect
 import sys
 from typing import List
 
