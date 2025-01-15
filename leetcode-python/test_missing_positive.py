@@ -13,10 +13,11 @@ import pytest
 # pylint: disable=C0103
 def firstMissingPositive(a: List[int])->int:
     '''
-    We use the partioning algorithm from Quicksort in order
-    to find a subarray between two values that's too short.
-    We continue partioning, not sorting, to home in on this
-    value.
+    If l = |a|, then we have room for l positive integers.
+    We can ignore all other values. If the positive integers
+    were sorted, then a[0] would be 1, and so on. On each iteration,
+    i is incremented, or swaps is incremented. Therefore the 
+    complexity of this implementation is O(|a|).
     '''
     i = 0
     swaps = 0
@@ -25,12 +26,16 @@ def firstMissingPositive(a: List[int])->int:
             n = a[i]
             if n < 1 or n > len(a):
                 break
+            # Is the current location already correct?
             if n == i + 1:
                 break
+            # Is the swap location already correct?
             if a[n - 1] == n:
                 break
             a[i], a[n - 1] = a[n -1], n
+            # We've swapped n into the correct location.
             swaps += 1
+            # We may have swapped another value into the correct location.
             if a[i] == i + 1:
                 swaps += 1
         i += 1
