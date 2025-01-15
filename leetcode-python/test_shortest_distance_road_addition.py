@@ -20,10 +20,11 @@ class Solution:
     def add_road(self, u, v):
         '''
         Add a road from u to v, recalculating the necessary shortest distances.
+        
+        The shortest path from u to v is now 1. Any path between t, where t is
+        between 0 and u, and w, where w is between v and n - 1, might now be
+        shorter.
         '''
-        # We've recalculated all the shortest distances from u back to the beginning,
-        # so don't do it again until a road is added somewhere between 0 and u.
-        # Mutatis mutandis for v.
         self.forward_distances[u][v] = 1
         for t in range(0, u + 1):
             for w in range(v, self.n):
