@@ -4,7 +4,7 @@ https://leetcode.com/problems/shortest-distance-after-road-addition-queries-i
 There will be at most 500 nodes, and at most 500 roads.
 '''
 
-import sys
+from collections import deque
 from typing import List
 
 import pytest
@@ -13,40 +13,46 @@ class Solution:
     '''
     LeetCode's usual structure.
     '''
-    def __init__(self) -> None:
-        self.n = sys.maxsize
-        self.forward_distances = []
-
-    def add_road(self, u, v):
-        '''
-        Add a road from u to v, recalculating the necessary shortest distances.
-        
-        The shortest path from u to v is now 1. Any path between t, where t is
-        between 0 and u, and w, where w is between v and n - 1, might now be
-        shorter.
-        '''
-        self.forward_distances[u][v] = 1
-        for t in range(0, u + 1):
-            for w in range(v, self.n):
-                possible = self.forward_distances[t][u] + 1 + self.forward_distances[v][w]
-                self.forward_distances[t][w] = min(self.forward_distances[t][w], possible)
 
     # pylint: disable=C0103
     def shortestDistanceAfterQueries(self, n: int, queries: List[List[int]]) -> List[int]:
         '''
-        For every road in queries, recalculate the shortest distance from 0 to n - 1.
-        Return a list of all recalculations.
+        For every road in queries, recalculate the shortest distance from 0 to n - 1 using
+        breadth-first search. Nodes between u and v (exclusive) can be excluded.
         '''
-        self.n = n
-        self.forward_distances = []
-        for i in range(n):
-            self.forward_distances.append([0] * i + list(range(n - i)))
+        adjacency = [{v + 1: 1} for v in range(0, n - 1)]
+
+        def bfs() -> int:
+            '''
+            https://en.wikipedia.org/wiki/Breadth-first_search#Pseudocode
+            '''
+            q = deque([0])
+            visited = set()
+            path = {}
+            while q:
+                w = q.pop()
+                if w == n - 1:
+                    continue
+                for t in adjacency[w]:
+                    if t in visited:
+                        continue
+                    visited.add(t)
+                    path[t] = w
+                    q.appendleft(t)
+
+            result = 0
+            t = n - 1
+            while t > 0:
+                result += 1
+                t = path[t]
+            return result
 
         results = []
 
         for u, v in queries:
-            self.add_road(u, v)
-            results.append(self.forward_distances[0][-1])
+            adjacency[u][v] = 1
+            result = bfs()
+            results.append(result)
 
         return results
 
@@ -67,7 +73,7 @@ _SAMPLES = [
 ]
 
 @pytest.mark.parametrize("n,queries,expected", _SAMPLES)
-def test_shortest_distance(n, queries, expected):
+def test_shortest_distance(n: tuple[int, list[list[int]], list[int]], queries: tuple[int, list[list[int]], list[int]], expected: tuple[int, list[list[int]], list[int]]):
     '''
     Apply samples from LeetCode
     '''
