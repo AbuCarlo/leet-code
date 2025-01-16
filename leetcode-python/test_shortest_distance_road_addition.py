@@ -31,8 +31,11 @@ class Solution:
             path = {}
             while q:
                 w = q.pop()
+                # All paths have a length of 1. As soon as we encounter
+                # the target in the queue, we've perforce found the
+                # shortest path to it.
                 if w == n - 1:
-                    continue
+                    break
                 for t in adjacency[w]:
                     if t in visited:
                         continue
@@ -42,6 +45,8 @@ class Solution:
 
             result = 0
             t = n - 1
+            # Trace the path from 0 simply to determine
+            # it's length.
             while t > 0:
                 result += 1
                 t = path[t]
