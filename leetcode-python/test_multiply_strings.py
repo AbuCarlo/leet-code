@@ -12,7 +12,10 @@ from typing import List
 import pytest
 
 def add_internal(l: List[int], r: List[int]) -> List[int]:
-    # '123' and '51' become [1, 5, 0], [3, 2, 1]
+    '''
+    Emulate long addition as though doing it by hand, from
+    right to left.
+    '''
     z = zip_longest(reversed(l), reversed(r), fillvalue=0)
     carry = 0
     result = []
@@ -31,6 +34,10 @@ def add_internal(l: List[int], r: List[int]) -> List[int]:
     return result
 
 def multiply_left(l: List[int], d: int) -> List[int]:
+    '''
+    Multiply each digit in an integer-as-list by a 
+    1-digit value.
+    '''
     if not l:
         return []
     greater = multiply_left(l[:-1], d)
@@ -38,6 +45,9 @@ def multiply_left(l: List[int], d: int) -> List[int]:
     return add_internal(greater + [0], blah)
 
 def multiply_internal(num1: str, num2: str) -> str:
+    '''
+    Simulate long multiplication as though doing it by hand.
+    '''
     l = [ord(d) - ord('0') for d in num1]
     r = [ord(d) - ord('0') for d in num2]
 
