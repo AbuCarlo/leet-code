@@ -38,11 +38,7 @@ def multiply_left(l: List[int], d: int) -> List[int]:
     Multiply each digit in an integer-as-list by a 
     1-digit value.
     '''
-    if not l:
-        return []
-    greater = multiply_left(l[:-1], d)
-    blah = [l[-1] * d]
-    return add_internal(greater + [0], blah)
+    return [ld * d for ld in l]
 
 def multiply_internal(num1: str, num2: str) -> str:
     '''
