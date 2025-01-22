@@ -13,9 +13,10 @@ import pytest
 # pylint: disable=C0103
 def findLengthOfShortestSubarray(arr: List[int]) -> int:
     '''
-    Find the indices of elements that would have to be moved as 
-    part of a sort. The minimum and maximum such indices 
-    are the first and last indices of the subarray to be removed.
+    Find the sorted prefix and suffix of this array. Then
+    recursively eliminate elements from the end of the prefix
+    and the beginning of the suffix until the concatenation
+    of these two would be sorted.
     '''
     if not arr:
         return 0
@@ -39,9 +40,10 @@ def findLengthOfShortestSubarray(arr: List[int]) -> int:
         if arr[i] < arr[i - 1]:
             max_right = i
             break
-    if max_right == 0:
-        return len(arr) - 1
-    
+    # This can only happen for a sorted array, for
+    # we've already checked.
+    assert max_right > 0
+
     memos = {}
 
     def trim_internal(l: int, r: int) -> int:
