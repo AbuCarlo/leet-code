@@ -6,21 +6,9 @@ such that the remaining elements in arr are non-decreasing."
 
 '''
 
-import sys
-from typing import List, Tuple
+from typing import List
 
 import pytest
-
-def find_shifted(arr: List[int]) -> Tuple[int, int]:
-    '''
-    Find the indices of elements that would have to be
-    moved as part of a non-destructive sort.
-    '''
-    annotated = [(n, i) for i, n in enumerate(arr)]
-    indices = [t[1] for t in sorted(annotated)]
-    shifted = [ix for i, ix in enumerate(indices[:-1]) if ix > indices[i + 1]]
-    return shifted
-
 
 # pylint: disable=C0103
 def findLengthOfShortestSubarray(arr: List[int]) -> int:
@@ -31,25 +19,40 @@ def findLengthOfShortestSubarray(arr: List[int]) -> int:
     '''
     if not arr:
         return 0
-    if len(arr) == 1:
+    # If the first element is > than the last,
+    # one of these elements must be removed to
+    # achieve a sorted array. The subarray to
+    # removed must therefore be either the prefix
+    # or the suffix of the array.
+    max_left = 0
+    for i in range(0, len(arr) - 1):
+        if arr[i] > arr[i + 1]:
+            max_left = i
+            break
+    # Is the array already sorted? The edge cases
+    # of a 0- or 1-length array are taken care of here.
+    if max_left == len(arr):
         return 0
-    if arr[0] > arr[-1]:
-        # The subarray to be deleted must start at 0, or end at -1.
-        max_left = 1
-        for n in arr[1:]:
-            if n < arr[0]:
-                break
-            max_left += 1
-        max_right = 1
-        for n in reversed(arr[:-1]):
-            if n > arr[-1]:
-                break
-            max_right += 1
-        return min(len(arr) - max_left, len(arr) - max_right)
-    shifted = find_shifted([-sys.maxsize] + arr + [sys.maxsize])
-    if not shifted:
-        return 0
-    return max(shifted) - min(shifted) + 1
+
+    max_right = None
+    for i in range(len(arr) - 1, -1, -1):
+        if arr[i] < arr[i - 1]:
+            max_right = i
+            break
+
+    def trim_internal(l: int, r: int) -> int:
+        print(f'Trying {l}, {r}')
+        if l < 0:
+            return len(arr) - r
+        if r == len(arr):
+            return l
+        if arr[l] <= arr[r]:
+            return r - l + 1
+        leftward = trim_internal(l - 1, r)
+        rightward = trim_internal(l, r + 1)
+        return min(leftward, rightward)
+
+    return trim_internal(max_left, max_right)
 
 
 _SAMPLES =[
