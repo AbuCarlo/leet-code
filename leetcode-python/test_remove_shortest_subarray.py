@@ -24,33 +24,44 @@ def findLengthOfShortestSubarray(arr: List[int]) -> int:
     # achieve a sorted array. The subarray to
     # removed must therefore be either the prefix
     # or the suffix of the array.
-    max_left = 0
+    max_left = len(arr) - 1
     for i in range(0, len(arr) - 1):
         if arr[i] > arr[i + 1]:
             max_left = i
             break
     # Is the array already sorted? The edge cases
     # of a 0- or 1-length array are taken care of here.
-    if max_left == len(arr):
+    if max_left == len(arr) - 1:
         return 0
 
-    max_right = None
+    max_right = 0
     for i in range(len(arr) - 1, -1, -1):
         if arr[i] < arr[i - 1]:
             max_right = i
             break
+    if max_right == 0:
+        return len(arr) - 1
+    
+    memos = {}
 
     def trim_internal(l: int, r: int) -> int:
-        print(f'Trying {l}, {r}')
+        key = (l, r)
+        if key in memos:
+            return memos[key]
         if l < 0:
-            return len(arr) - r
+            # Discard the prefix.
+            return r
         if r == len(arr):
-            return l
+            # Discard the entire suffix.
+            return len(arr) - l - 1
         if arr[l] <= arr[r]:
-            return r - l + 1
+            # How many elements between these two?
+            return r - l - 1
         leftward = trim_internal(l - 1, r)
         rightward = trim_internal(l, r + 1)
-        return min(leftward, rightward)
+        result = min(leftward, rightward)
+        memos[key] = result
+        return result
 
     return trim_internal(max_left, max_right)
 
