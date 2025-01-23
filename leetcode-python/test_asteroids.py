@@ -13,7 +13,9 @@ def asteroid_collision(asteroids: List[int]) -> List[int]:
     '''
     result = []
     for a in asteroids:
-        # Until we've dealt with a...
+        # Until we've dealt with a, keep looping. We handle the initial
+        # asteroid here because an empty result can also occur if all
+        # the asteroids have blown up.
         while a is not None:
             # Both asteroids are moving in the same direction, or further apart.
             if not result or result[-1] < 0 or a > 0:
@@ -23,11 +25,11 @@ def asteroid_collision(asteroids: List[int]) -> List[int]:
             elif a == -result[-1]:
                 result.pop()
                 a = None
-            # The current asteroid is larger.
+            # The current asteroid is larger, and destroys the previous one.
             elif a < -result[-1]:
                 # Continue iterating.
                 result.pop()
-            # The current asteroid explodes.
+            # The current asteroid explodes. We're done.
             else:
                 a = None
     return result
