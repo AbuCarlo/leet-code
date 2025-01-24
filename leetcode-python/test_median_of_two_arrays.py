@@ -92,7 +92,7 @@ def test_any_array(lr):
     actual = median_of_two_sorted_arrays(l, r)
     assert actual == expected
 
-samples = [
+_SAMPLES = [
     ([1, 3], [2], 2),
     ([0, 1], [0], 0),
     ([0, 1], [1], 1),
@@ -102,7 +102,7 @@ samples = [
     ([1, 2, 3], [1, 2, 3], 2)
 ]
 
-@pytest.mark.parametrize("l, r, expected", samples)
+@pytest.mark.parametrize("l, r, expected", _SAMPLES)
 def test_samples(l, r, expected):
     '''
     Sample and further test cases from Leetcode.
