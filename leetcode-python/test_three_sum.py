@@ -41,17 +41,18 @@ def three_sum(nums: List[int]) -> List[List[int]]:
         # -m - least = n and -m + -most = n.
         #
         most_n, least_n = -m - least, -m - most
-        l = bisect.bisect_left(nums, least_n, i + 1)
-        r = bisect.bisect_right(nums, most_n, i + 1)
-        for j in range(l, r):
-            if j == len(nums):
-                break
+        j = bisect.bisect_left(nums, least_n, i + 1)
+        # We can just iterate until.
+        # r = bisect.bisect_right(nums, most_n, i + 1)
+        while j < len(nums) and nums[j] <= most_n:
             n = nums[j]
-            ll = bisect.bisect_left(nums, -(m + n), j + 1)
-            if ll == len(nums):
+            k = bisect.bisect_left(nums, -(m + n), j + 1)
+            j += 1
+            if k == len(nums):
                 continue
-            if m + n + nums[ll] == 0:
-                triples.add((m, n, nums[ll]))
+            # Only one instance of this value is needed.
+            if m + n + nums[k] == 0:
+                triples.add((m, n, nums[k]))
 
     # Convert tuples to lists.
     return [list(t) for t in triples]
