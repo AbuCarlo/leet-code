@@ -50,7 +50,7 @@ def three_sum(nums: List[int]) -> List[List[int]]:
             ll = bisect.bisect_left(nums, -(m + n), j + 1)
             if ll == len(nums):
                 continue
-            if nums[ll] == -(m + n):
+            if m + n + nums[ll] == 0:
                 triples.add((m, n, nums[ll]))
 
     # Convert tuples to lists.
