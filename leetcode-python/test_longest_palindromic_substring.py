@@ -11,21 +11,23 @@ def longest_palindrome(s: str) -> str:
     for i, c in enumerate(s):
         index[c].append(i)
     palindromes = []
+    centers = set()
     longest = 1
     for i, c in enumerate(s):
         for j in [j for j in reversed(index[c]) if j > i]:
-
+            # Is this palindrome no longer than the longest
+            # one we've already found? If so, don't bother?
             if j - i + 1 < longest:
                 continue
-            # If i and j are the endpoints of a palindrome,
-            # let's check the center:
-            # if (j - i) // 2 in palindromes:
-            #     continue
+            # Is this a palindrome inside a larger palindrome
+            # that we've already found?
+            if (j - i) / 2 in centers:
+                continue
             k = i + 1
             l = j - 1
-            
+
             middle = 1 if (j - i) % 2 == 0 else 0
-            
+
             while l > k + middle and s[k] == s[l]:
                 k += 1
                 l -= 1
@@ -36,16 +38,13 @@ def longest_palindrome(s: str) -> str:
                 longest = max(longest, length)
                 # palindromes[k] = length
                 palindromes.append((i, j))
+                centers.add((j - i) / 2)
 
     if longest == 1:
         assert not palindromes
         return s[:1]
-    for key, value in palindromes:
-        if value - key + 1 == longest:
-            return s[key:value + 1]
-        # if value == longest:
-        #     l, r = key - longest // 2, key + longest // 2 + (longest % 2)
-        #     return s[l:r]
+    return next(s[i:j + 1] for i, j in palindromes if j - i + 1 == longest)
+
 
 _SAMPLES = [
     ("babad", "bab"),
