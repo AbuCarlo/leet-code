@@ -49,10 +49,3 @@ def test_test_cases(l, r):
     solution = Solution()
     solution.merge(l, m, r, n)
     assert l == expected
-
-
-
-
-
-
-

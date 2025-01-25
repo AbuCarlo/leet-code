@@ -45,7 +45,7 @@ _TEST_CASES = [
 ]
 
 @pytest.mark.parametrize("nums,queries,expected", _TEST_CASES)
-def test_shortest_distance(nums, queries, expected):
+def test_special_arrays(nums, queries, expected):
     '''
     Apply samples from LeetCode
     '''

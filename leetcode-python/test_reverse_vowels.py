@@ -29,7 +29,7 @@ _SAMPLES = [
 ]
 
 
-@pytest.mark.parametrize("input,expected", _SAMPLES)
+@pytest.mark.parametrize("s,expected", _SAMPLES)
 def test_reverse_vowels(s: str, expected: str):
     '''
     Apply samples from LeetCode
