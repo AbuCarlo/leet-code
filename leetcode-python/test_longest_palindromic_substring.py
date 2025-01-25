@@ -7,6 +7,9 @@ import pytest
 
 
 def longest_palindrome(s: str) -> str:
+    '''
+    A simple n^3 approach would have worked just as well.
+    '''
     index = collections.defaultdict(list)
     for i, c in enumerate(s):
         index[c].append(i)
