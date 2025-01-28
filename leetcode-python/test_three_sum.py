@@ -8,7 +8,6 @@ and nums[i] + nums[j] + nums[k] == 0.
 Notice that the solution set must not contain duplicate triplets.
 '''
 
-import bisect
 from typing import List
 
 from hypothesis import Verbosity, given, settings, strategies
@@ -36,15 +35,18 @@ def three_sum(nums: List[int]) -> List[List[int]]:
         # triples in which the smallest value is > 0, since the sum cannot equal
         # 0. There's still a chance that the input includes 3 or more instances
         # of 0.
-        if m > 0:
-            break
-        for k in range(len(nums) - 1, i + 1, -1):
-            o = nums[k]
-            n = 0 - m - o
-            j = bisect.bisect_left(nums, n, i + 1, k)
-            # If j == k, the value was not found.
-            if j < k and nums[j] == n:
-                triples.add((m, n, o))
+        j = i + 1
+        k = len(nums) - 1
+        while j < k:
+            blah = m + nums[j] + nums[k]
+            if blah == 0:
+                triples.add((m, nums[j], nums[k]))
+                j += 1
+                k -= 1
+            elif blah < 0:
+                j += 1
+            else:
+                k -= 1
 
     # Convert tuples to lists.
     return [list(t) for t in triples]
