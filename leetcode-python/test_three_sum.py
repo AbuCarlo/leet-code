@@ -21,38 +21,30 @@ def three_sum(nums: List[int]) -> List[List[int]]:
     the longer-running tests on LeetCode. 
     '''
     assert len(nums) >= 3
-    if all(n == 0 for n in nums):
-        return [[0, 0, 0]]
-    if all(n <= 0 for n in nums):
-        return []
-    if all(n >= 0 for n in nums):
-        return []
     nums.sort()
-    least = nums[0]
-    most = nums[-1]
-    # Tuples are hashable.
+    # The input must have a mix of negative and positive
+    # numbers, *or* consist of all 0s.
+    if nums[0] > 0 or nums[-1] < 0:
+        return []
+    if nums[0] == 0 and nums[-1] == 0:
+        return [[0, 0, 0]]
+
+    # Tuples are hashable; lists are not.
     triples = set()
     for i, m in enumerate(nums):
-        # The range of available numbers is [least, most]. If three distinct
-        # elements, called m, n, and o, must sum to 0, then we can determine
-        # the range of acceptable values for n thus:
-        #
-        # 0 = m + n + least and 0 = m + n + most.
-        # -m - least = n and -m + -most = n.
-        #
-        most_n, least_n = -m - least, -m - most
-        j = bisect.bisect_left(nums, least_n, i + 1)
-        # We can just iterate until.
-        # r = bisect.bisect_right(nums, most_n, i + 1)
-        while j < len(nums) and nums[j] <= most_n:
-            n = nums[j]
-            k = bisect.bisect_left(nums, -(m + n), j + 1)
-            j += 1
-            if k == len(nums):
-                continue
-            # Only one instance of this value is needed.
-            if m + n + nums[k] == 0:
-                triples.add((m, n, nums[k]))
+        # The triples in the solution are not ordered. So we need not consider
+        # triples in which the smallest value is > 0, since the sum cannot equal
+        # 0. There's still a chance that the input includes 3 or more instances
+        # of 0.
+        if m > 0:
+            break
+        for k in range(len(nums) - 1, i + 1, -1):
+            o = nums[k]
+            n = 0 - m - o
+            j = bisect.bisect_left(nums, n, i + 1, k)
+            # If j == k, the value was not found.
+            if j < k and nums[j] == n:
+                triples.add((m, n, o))
 
     # Convert tuples to lists.
     return [list(t) for t in triples]
