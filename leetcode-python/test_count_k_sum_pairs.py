@@ -26,5 +26,5 @@ def count_k_sum_pairs(nums: List[int], k: int) -> int:
             result += min(count, c[k - n])
     return result
 
-# assert count_k_sum_pairs([1,2,3,4], 5) == 2
+assert count_k_sum_pairs([1,2,3,4], 5) == 2
 assert count_k_sum_pairs([3,1,3,4,3], 6) == 1
