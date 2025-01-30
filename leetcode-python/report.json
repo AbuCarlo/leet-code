@@ -1,0 +1,1435 @@
+{
+    "uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+    "type": "disassembly",
+    "description": "Tioga Pass component harvest...",
+    "status": {
+        "err_code": 0,
+        "err_msg": "SUCCESS",
+        "user_msg": "",
+        "objects": {
+            "expected": {
+                "server": 1,
+                "dimm": 8,
+                "hdd": 1,
+                "tray": 4
+            },
+            "harvested": {
+                "server": 1,
+                "dimm": 8,
+                "hdd": 1,
+                "tray": 4
+            },
+            "scanned": {
+                "server": 1,
+                "dimm": 8,
+                "hdd": 1,
+                "tray": 4
+            }
+        }
+    },
+    "result": "success",
+    "start_time": "2024-07-24T14:03:35.442Z",
+    "end_time": "2024-07-24T14:10:03.402Z",
+    "timeslot": 0,
+    "elapsed_time": 387.95999,
+    "process": null,
+    "design": null,
+    "objects": [
+        {
+            "uuid": "4E7A6D66-AD81-4D11-9745-6D8EB0814952",
+            "type": "assembly",
+            "parent_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "rack",
+                "serial_number": "50024669",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "39c5e7c0-425c-411d-b422-da242a215b02",
+                    "object_uuid": "4E7A6D66-AD81-4D11-9745-6D8EB0814952",
+                    "reference_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "rack",
+                        "serial_number": "50024669",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:03:35.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+            "type": "assembly",
+            "parent_uuid": "4E7A6D66-AD81-4D11-9745-6D8EB0814952",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "position": 19,
+                "category": "server",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "serial_number": "WTF18240B1MA1",
+                "part_number": "B91.00X01.0013",
+                "facebook_part_number": "01-002930",
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "fa71dd55-c007-4038-826a-4e3511d11b6a",
+                    "object_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "reference_uuid": "4E7A6D66-AD81-4D11-9745-6D8EB0814952",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 19,
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:10:03.000Z"
+                },
+                {
+                    "uuid": "6908c87f-c3a5-403a-9921-dcb0ba7a875d",
+                    "object_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "reference_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+                    "coordinates": {
+                        "x": {
+                            "mu": 125.421,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 84.25,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 45.3,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": -1.5704000000000002,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "serial_number": "WTF18240B1MA1",
+                        "part_number": "B91.00X01.0013",
+                        "facebook_part_number": "01-002930",
+                        "category": "server",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "reference",
+                    "timestamp": "2024-07-24T14:03:40.000Z"
+                },
+                {
+                    "uuid": "c9e7db30-2eca-44f2-81d8-b2f52fd2fb9a",
+                    "object_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "reference_uuid": "4E7A6D66-AD81-4D11-9745-6D8EB0814952",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 19,
+                        "category": "server",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:35.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "type": "asset",
+            "parent_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "Unit Originmark": "https://molg.m0.eco/YU9SLG8MUME7ACUNPL79BXRUUKUK3TKHEKAECDFYWT3E22MKF7HQ",
+                "category": "tray",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 13,
+                "serial_number": "YU9SLG8MUME7ACUNPL79BXRUUKUK3TKHEKAECDFYWT3E22MKF7HQ",
+                "full_id": "013-SLS-A",
+                "tray_type": "DIMM",
+                "capacity": 24,
+                "vendor": "MOLG Inc.",
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "0fb44fc4-c032-40f7-8104-60c0aa10fced",
+                    "object_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "reference_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "Unit Originmark": "https://molg.m0.eco/YU9SLG8MUME7ACUNPL79BXRUUKUK3TKHEKAECDFYWT3E22MKF7HQ",
+                        "category": "tray",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:03:53.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "D4FA251B-190C-4102-BA25-1B190CC10249",
+            "type": "asset",
+            "parent_uuid": "6E96D65E-23AB-4FDD-A22C-04A2DBE276F4",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "tray",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 11,
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "Unit Originmark": "https://molg.m0.eco/CFD696S6G6YTXLH8B2VTJ8S9RQGGYUG5BE7T78SBLAEXTX8RFLXL",
+                "serial_number": "CFD696S6G6YTXLH8B2VTJ8S9RQGGYUG5BE7T78SBLAEXTX8RFLXL",
+                "full_id": "011-SLS-A",
+                "tray_type": "HDD",
+                "capacity": 6,
+                "vendor": "MOLG Inc.",
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "3af5aa7c-d8bc-42fd-8d78-6c9429c657fe",
+                    "object_uuid": "D4FA251B-190C-4102-BA25-1B190CC10249",
+                    "reference_uuid": "6E96D65E-23AB-4FDD-A22C-04A2DBE276F4",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "tray",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                        "position": 11
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:05:55.000Z"
+                },
+                {
+                    "uuid": "ad0aaa89-e734-4ae1-99b1-b267a53f58ac",
+                    "object_uuid": "D4FA251B-190C-4102-BA25-1B190CC10249",
+                    "reference_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "Unit Originmark": "https://molg.m0.eco/CFD696S6G6YTXLH8B2VTJ8S9RQGGYUG5BE7T78SBLAEXTX8RFLXL",
+                        "category": "tray",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:04:08.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "8F545941-1905-4FE2-9459-4119057FE255",
+            "type": "asset",
+            "parent_uuid": "6E96D65E-23AB-4FDD-A22C-04A2DBE276F4",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "tray",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 16,
+                "serial_number": "DEYXN3NF7PFYTQRFG8GD48TEBE8JW2J89JKBW2VJ2C3UUBG5PQA2",
+                "full_id": "016-SLS-A",
+                "tray_type": "CAGE",
+                "capacity": 1,
+                "vendor": "MOLG Inc.",
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "b29e0cd1-3bcb-4c62-aa8c-62ff37d6030f",
+                    "object_uuid": "8F545941-1905-4FE2-9459-4119057FE255",
+                    "reference_uuid": "6E96D65E-23AB-4FDD-A22C-04A2DBE276F4",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "tray",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                        "position": 16
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:07:29.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+            "type": "asset",
+            "parent_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "status": {
+                    "mv_status": 776,
+                    "err_msg": "MV_ERROR_NO_MARKINGS_FOUND",
+                    "msg": "None of the requested markings were found"
+                },
+                "category": "tray",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 12,
+                "Unit Originmark": "https://molg.m0.eco/58BU4FRQFHXJBBHBQ5N3QPLEPYM2QV994DZZPW5MVDCFG8N629NB",
+                "serial_number": "58BU4FRQFHXJBBHBQ5N3QPLEPYM2QV994DZZPW5MVDCFG8N629NB",
+                "full_id": "012-SLS-A",
+                "tray_type": "BMC",
+                "capacity": 18,
+                "vendor": "MOLG Inc.",
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "93a9669a-1c5c-4f54-b3b2-b3e98c102b55",
+                    "object_uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+                    "reference_uuid": "A3B24C8E-0782-4F17-82F8-2C2610ADB2E8",
+                    "coordinates": null,
+                    "properties": {
+                        "status": {
+                            "mv_status": 776,
+                            "err_msg": "MV_ERROR_NO_MARKINGS_FOUND",
+                            "msg": "None of the requested markings were found"
+                        },
+                        "category": "tray",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:04:05.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "4149A64F-C78E-4C45-ABCB-313FCE6357FB",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "cage",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 0,
+                "serial_number": null,
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "32256106-526f-4fca-8540-9b182c447329",
+                    "object_uuid": "4149A64F-C78E-4C45-ABCB-313FCE6357FB",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 0,
+                        "category": "cage",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:06:36.000Z"
+                },
+                {
+                    "uuid": "ef21e37f-3e43-413b-9235-53a652a412e1",
+                    "object_uuid": "4149A64F-C78E-4C45-ABCB-313FCE6357FB",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "cage",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:05:56.000Z"
+                },
+                {
+                    "uuid": "a536695b-38fd-46a5-b734-3f2fd212012c",
+                    "object_uuid": "4149A64F-C78E-4C45-ABCB-313FCE6357FB",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "cage",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:41.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "EDBF358C-00BE-41FB-AF95-5DD878D1E06C",
+            "type": "component",
+            "parent_uuid": "D4FA251B-190C-4102-BA25-1B190CC10249",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "hdd",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 776,
+                    "err_msg": "MV_ERROR_NO_MARKINGS_FOUND",
+                    "msg": "None of the requested markings were found"
+                },
+                "model_number": "ST2000NM0008",
+                "serial_number": "ZDS0EK9N",
+                "position": 1
+            },
+            "datums": [
+                {
+                    "uuid": "fcaf5f1c-b923-48da-8108-f90ab13dcbf5",
+                    "object_uuid": "EDBF358C-00BE-41FB-AF95-5DD878D1E06C",
+                    "reference_uuid": "D4FA251B-190C-4102-BA25-1B190CC10249",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 1,
+                        "category": "hdd",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:05:15.000Z"
+                },
+                {
+                    "uuid": "dfa70ef7-fe3b-4779-8977-833a30e0944b",
+                    "object_uuid": "EDBF358C-00BE-41FB-AF95-5DD878D1E06C",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "status": {
+                            "mv_status": 776,
+                            "err_msg": "MV_ERROR_NO_MARKINGS_FOUND",
+                            "msg": "None of the requested markings were found"
+                        },
+                        "model_number": "ST2000NM0008",
+                        "serial_number": "ZDS0EK9N",
+                        "category": "hdd",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "reference",
+                    "timestamp": "2024-07-24T14:04:57.000Z"
+                },
+                {
+                    "uuid": "93d3d6a0-9c76-4ab0-b536-16db0fdda36a",
+                    "object_uuid": "EDBF358C-00BE-41FB-AF95-5DD878D1E06C",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "hdd",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:41.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "4770119D-0D1F-4359-BF5C-990EAD5D221B",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                "serial_number": "80AD0118208217A45F",
+                "position": 8
+            },
+            "datums": [
+                {
+                    "uuid": "cafec5d0-ea6e-4c05-ba39-63da05b34878",
+                    "object_uuid": "4770119D-0D1F-4359-BF5C-990EAD5D221B",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 8,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:05:32.000Z"
+                },
+                {
+                    "uuid": "a38490b8-4e07-4336-9b03-6b840a1df297",
+                    "object_uuid": "4770119D-0D1F-4359-BF5C-990EAD5D221B",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 450,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": -1.5708,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                        "serial_number": "80AD0118208217A45F",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:05:28.000Z"
+                },
+                {
+                    "uuid": "ca08e03d-81e2-4fd5-8335-1e721e134954",
+                    "object_uuid": "4770119D-0D1F-4359-BF5C-990EAD5D221B",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:41.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "68E53D27-7730-4B07-907D-970184FF2F8F",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                "serial_number": "80AD0118208217A40C",
+                "position": 9
+            },
+            "datums": [
+                {
+                    "uuid": "5a5ef265-1946-423f-b460-5a36fc378435",
+                    "object_uuid": "68E53D27-7730-4B07-907D-970184FF2F8F",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 9,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:05:51.000Z"
+                },
+                {
+                    "uuid": "6b2a8a05-aef5-4e65-a48e-991ec7597f77",
+                    "object_uuid": "68E53D27-7730-4B07-907D-970184FF2F8F",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 450,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": -1.5708,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                        "serial_number": "80AD0118208217A40C",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:05:47.000Z"
+                },
+                {
+                    "uuid": "553144ef-a9cc-4cb4-947a-57ff4357116b",
+                    "object_uuid": "68E53D27-7730-4B07-907D-970184FF2F8F",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:41.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "1156F3AD-8355-40F6-8622-F010ED35E7C2",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                "serial_number": "80AD0118208217A36E",
+                "position": 10
+            },
+            "datums": [
+                {
+                    "uuid": "3a7329c0-9561-4e90-bbf4-6a66d738859e",
+                    "object_uuid": "1156F3AD-8355-40F6-8622-F010ED35E7C2",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 10,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:06:14.000Z"
+                },
+                {
+                    "uuid": "cb33b820-bba3-42dd-81c9-33590d4fd38d",
+                    "object_uuid": "1156F3AD-8355-40F6-8622-F010ED35E7C2",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 450,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": -1.5708,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                        "serial_number": "80AD0118208217A36E",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:06:10.000Z"
+                },
+                {
+                    "uuid": "6e7a58bc-bf24-42a5-bff5-407d454188a7",
+                    "object_uuid": "1156F3AD-8355-40F6-8622-F010ED35E7C2",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:41.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "C95CA73B-5AF3-4328-B314-31164534FB9F",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                "serial_number": "80AD0118208217A357",
+                "position": 11
+            },
+            "datums": [
+                {
+                    "uuid": "d39c353e-e19d-40fe-8ae0-e1b534fc6b0c",
+                    "object_uuid": "C95CA73B-5AF3-4328-B314-31164534FB9F",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 11,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:06:46.000Z"
+                },
+                {
+                    "uuid": "4886eec5-1393-4a16-bd68-368b90263876",
+                    "object_uuid": "C95CA73B-5AF3-4328-B314-31164534FB9F",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 450,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": -1.5708,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                        "serial_number": "80AD0118208217A357",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:06:42.000Z"
+                },
+                {
+                    "uuid": "bd928ceb-a696-4e7d-8fe5-e8c48a2226ea",
+                    "object_uuid": "C95CA73B-5AF3-4328-B314-31164534FB9F",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:41.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "78137E54-9672-4EA3-B2FD-330252EB8A11",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                "serial_number": "80AD0118208217A347",
+                "position": 12
+            },
+            "datums": [
+                {
+                    "uuid": "4e85f039-52f6-492d-9ad6-9620894bdca2",
+                    "object_uuid": "78137E54-9672-4EA3-B2FD-330252EB8A11",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 12,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:07:14.000Z"
+                },
+                {
+                    "uuid": "f76781e1-d130-45eb-8e0a-9d0f5d146e4e",
+                    "object_uuid": "78137E54-9672-4EA3-B2FD-330252EB8A11",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 450,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": -1.5708,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                        "serial_number": "80AD0118208217A347",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:07:11.000Z"
+                },
+                {
+                    "uuid": "5e22e8f0-a7b0-48e7-8df2-9b47b981f18a",
+                    "object_uuid": "78137E54-9672-4EA3-B2FD-330252EB8A11",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:42.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "24505FF7-90D5-4A03-9324-4E04333FC464",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                "serial_number": "80AD0118208217A349",
+                "position": 13
+            },
+            "datums": [
+                {
+                    "uuid": "ea3803cc-4c25-4c81-a7c6-f6305818e8dd",
+                    "object_uuid": "24505FF7-90D5-4A03-9324-4E04333FC464",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 13,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:08:12.000Z"
+                },
+                {
+                    "uuid": "ec6ddcb2-5543-42e2-af83-c561cbf92900",
+                    "object_uuid": "24505FF7-90D5-4A03-9324-4E04333FC464",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 450,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": -1.5708,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                        "serial_number": "80AD0118208217A349",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:08:08.000Z"
+                },
+                {
+                    "uuid": "a891c555-5d61-4a4b-b4c1-fd8940c7e3e4",
+                    "object_uuid": "24505FF7-90D5-4A03-9324-4E04333FC464",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:42.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "9CAB97D6-89C0-4CEC-A6C1-A033C782CB34",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 776,
+                    "err_msg": "MV_ERROR_NO_MARKINGS_FOUND",
+                    "msg": "None of the requested markings were found"
+                },
+                "model_number": "^.*$",
+                "serial_number": "^.*$",
+                "position": 14
+            },
+            "datums": [
+                {
+                    "uuid": "4cceaf35-c038-46a7-84dd-97f613dc8e14",
+                    "object_uuid": "9CAB97D6-89C0-4CEC-A6C1-A033C782CB34",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 14,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:08:41.000Z"
+                },
+                {
+                    "uuid": "681433fe-231e-4d6c-b950-1ee7ba131b6e",
+                    "object_uuid": "9CAB97D6-89C0-4CEC-A6C1-A033C782CB34",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "status": {
+                            "mv_status": 776,
+                            "err_msg": "MV_ERROR_NO_MARKINGS_FOUND",
+                            "msg": "None of the requested markings were found"
+                        },
+                        "model_number": "^.*$",
+                        "serial_number": "^.*$",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:08:38.000Z"
+                },
+                {
+                    "uuid": "23d98a7f-818f-41f4-b0f2-77e0f939e552",
+                    "object_uuid": "9CAB97D6-89C0-4CEC-A6C1-A033C782CB34",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:42.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "43F13930-30D4-45C5-9DC9-FDAFB4EE0384",
+            "type": "component",
+            "parent_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "dimm",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "status": {
+                    "mv_status": 0,
+                    "err_msg": "MV_SUCCESS",
+                    "msg": "Found all required markings"
+                },
+                "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                "serial_number": "80AD0118208217A3CA",
+                "position": 15
+            },
+            "datums": [
+                {
+                    "uuid": "5ef39924-0239-409a-b3e6-b8163bc1deff",
+                    "object_uuid": "43F13930-30D4-45C5-9DC9-FDAFB4EE0384",
+                    "reference_uuid": "C2A02B35-2326-4641-A02B-3523260641AC",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 15,
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:09:05.000Z"
+                },
+                {
+                    "uuid": "dd4e242a-8c89-41fc-a524-af7fcf341642",
+                    "object_uuid": "43F13930-30D4-45C5-9DC9-FDAFB4EE0384",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": {
+                        "x": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "y": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "z": {
+                            "mu": 450,
+                            "sigma": 0
+                        },
+                        "a": {
+                            "mu": -1.5708,
+                            "sigma": 0
+                        },
+                        "b": {
+                            "mu": 0,
+                            "sigma": 0
+                        },
+                        "c": {
+                            "mu": 0,
+                            "sigma": 0
+                        }
+                    },
+                    "properties": {
+                        "status": {
+                            "mv_status": 0,
+                            "err_msg": "MV_SUCCESS",
+                            "msg": "Found all required markings"
+                        },
+                        "model_number": "HMA84GR7CJR4N-VK TN AC 820",
+                        "serial_number": "80AD0118208217A3CA",
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:09:02.000Z"
+                },
+                {
+                    "uuid": "5550c4aa-b9ca-4a86-a071-b4d3e7316d29",
+                    "object_uuid": "43F13930-30D4-45C5-9DC9-FDAFB4EE0384",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "dimm",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:42.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "7A421A92-3FA9-441F-91EE-496C93A143CA",
+            "type": "component",
+            "parent_uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "bmc",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 3,
+                "serial_number": null,
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "7fcf1538-52ab-415c-b9b0-60a19ec885dd",
+                    "object_uuid": "7A421A92-3FA9-441F-91EE-496C93A143CA",
+                    "reference_uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 3,
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:07:55.000Z"
+                },
+                {
+                    "uuid": "11c044d4-d9a2-44e7-aac5-44f37c127793",
+                    "object_uuid": "7A421A92-3FA9-441F-91EE-496C93A143CA",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:07:50.000Z"
+                },
+                {
+                    "uuid": "ce50b59e-0ab7-4670-ac44-13a9af101292",
+                    "object_uuid": "7A421A92-3FA9-441F-91EE-496C93A143CA",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:42.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "8E760739-1A6C-4B38-8017-D30BACA60CDB",
+            "type": "component",
+            "parent_uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "bmc",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 4,
+                "serial_number": null,
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "eea426e4-1ecf-45cd-894d-b40a6b7df5dc",
+                    "object_uuid": "8E760739-1A6C-4B38-8017-D30BACA60CDB",
+                    "reference_uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 4,
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:08:21.000Z"
+                },
+                {
+                    "uuid": "587b5b78-af01-4395-bd76-2825e522c777",
+                    "object_uuid": "8E760739-1A6C-4B38-8017-D30BACA60CDB",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:08:17.000Z"
+                },
+                {
+                    "uuid": "5b19eba8-235a-464f-a317-5c4db27c27aa",
+                    "object_uuid": "8E760739-1A6C-4B38-8017-D30BACA60CDB",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:42.000Z"
+                }
+            ],
+            "images": []
+        },
+        {
+            "uuid": "BD2A7C94-B5E6-4D21-8F60-8683F22D0003",
+            "type": "component",
+            "parent_uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+            "status": {
+                "err_code": 0,
+                "err_msg": "SUCCESS",
+                "user_msg": "success"
+            },
+            "properties": {
+                "category": "bmc",
+                "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6",
+                "position": 5,
+                "serial_number": null,
+                "model_number": null
+            },
+            "datums": [
+                {
+                    "uuid": "95da11e8-9c1d-4508-be73-07721f90c3d6",
+                    "object_uuid": "BD2A7C94-B5E6-4D21-8F60-8683F22D0003",
+                    "reference_uuid": "37BAA573-8211-47E2-BAA5-73821157E218",
+                    "coordinates": null,
+                    "properties": {
+                        "position": 5,
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "contained_within",
+                    "timestamp": "2024-07-24T14:08:49.000Z"
+                },
+                {
+                    "uuid": "8cc36ded-6d87-4040-93eb-5addb371f460",
+                    "object_uuid": "BD2A7C94-B5E6-4D21-8F60-8683F22D0003",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "disassembled_from",
+                    "timestamp": "2024-07-24T14:08:44.000Z"
+                },
+                {
+                    "uuid": "f3885c7c-26c3-4d74-9f03-222c41b3ca95",
+                    "object_uuid": "BD2A7C94-B5E6-4D21-8F60-8683F22D0003",
+                    "reference_uuid": "12AD2FAA-0F97-4C82-A5AB-1952953066EB",
+                    "coordinates": null,
+                    "properties": {
+                        "category": "bmc",
+                        "job_uuid": "69AABB0D-A703-4273-96D8-F9CEF26354C6"
+                    },
+                    "relationship": "assembled",
+                    "timestamp": "2024-07-24T14:03:42.000Z"
+                }
+            ],
+            "images": []
+        }
+    ]
+}
