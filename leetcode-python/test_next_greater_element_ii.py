@@ -18,14 +18,16 @@ def next_greater_element(nums: List[int]) -> List[int]:
     you could search circularly to find its next greater number. 
     If it doesn't exist, return -1 for this number."
     '''
+    # A stack of still-unprocessed values with their original indices.
     stack = []
+    # The result, doubled in length to allow "circular" iteration.
     result = [-1] * (len(nums) * 2)
     # Pretend that the input array is circular.
     for j, n in enumerate(itertools.chain(nums, nums)):
         while stack and stack[-1][1] < n:
             i, m = stack.pop()
             result[i] = n
-        # This element has to wait.
+        # Store the current value and its index.
         stack.append((j, n))
 
     return result[:len(nums)]
@@ -43,4 +45,5 @@ def test_samples(nums, expected):
     Apply samples from LeetCode
     '''
     actual = next_greater_element(nums)
-    assert actual == expected           
+    assert actual == expected
+   
