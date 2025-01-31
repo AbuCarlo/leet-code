@@ -2,8 +2,10 @@
 https://leetcode.com/problems/next-greater-element-iv/
 '''
 
+import itertools
 from typing import List
 
+import hypothesis
 import pytest
 
 
@@ -47,4 +49,13 @@ def test_samples(nums, expected):
     Apply samples from LeetCode
     '''
     actual = second_greater_element(nums)
+    assert actual == expected
+
+
+@hypothesis.given(hypothesis.strategies.lists(hypothesis.strategies.integers(min_value=0, max_value=100), min_size=1, max_size=20))
+def test_any_array(nums):
+    actual = second_greater_element(nums)
+
+    tails = [sorted((n for n in nums[i + 1:] if n > nums[i]), reverse=True)[:2] for i in range(len(nums))]
+    expected = [t[1] if len(t) == 2 else -1 for t in tails]
     assert actual == expected
