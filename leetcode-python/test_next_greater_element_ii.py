@@ -23,7 +23,7 @@ def next_greater_element(nums: List[int]) -> List[int]:
     # Pretend that the input array is circular.
     for j, n in enumerate(itertools.chain(nums, nums)):
         while stack and stack[-1][1] < n:
-            i, m = stack.pop()
+            i, _ = stack.pop()
             result[i] = n
         # This element has to wait.
         stack.append((j, n))
@@ -43,4 +43,4 @@ def test_samples(nums, expected):
     Apply samples from LeetCode
     '''
     actual = next_greater_element(nums)
-    assert actual == expected           
+    assert actual == expected
