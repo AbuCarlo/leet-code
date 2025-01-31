@@ -56,6 +56,6 @@ def test_samples(nums, expected):
 def test_any_array(nums):
     actual = second_greater_element(nums)
 
-    tails = [itertools.islice((n for n in nums[i + 1:] if n > nums[i]), 0, 2) for i in range(len(nums))]
+    tails = [list(itertools.islice((n for n in itertools.islice(nums, i + 1, None) if n > nums[i]), 0, 2)) for i in range(len(nums))]
     expected = [t[1] if len(t) == 2 else -1 for t in tails]
     assert actual == expected
