@@ -23,11 +23,14 @@ def second_greater_element(nums: List[int]) -> List[int]:
     # Pretend that the input array is circular.
     for j, n in enumerate(nums):
         hold = []
+        # n is the next greater value for these.
         while second_stack and second_stack[-1][1] < n:
             i, _ = second_stack.pop()
             result[i] = n
+        # n is the first greater value for these.
         while first_stack and first_stack[-1][1] < n:
             hold.append(first_stack.pop())
+        # This is faster than extend(). No idea why.
         while hold:
             second_stack.append(hold.pop())
         first_stack.append((j, n))
