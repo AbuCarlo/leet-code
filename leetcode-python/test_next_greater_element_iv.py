@@ -24,8 +24,8 @@ def second_greater_element(nums: List[int]) -> List[int]:
     for j, n in enumerate(nums):
         hold = []
         while second_stack and second_stack[-1][1] < n:
-            j, _ = second_stack.pop()
-            result[j] = n
+            i, _ = second_stack.pop()
+            result[i] = n
         while first_stack and first_stack[-1][1] < n:
             hold.append(first_stack.pop())
         while hold:
@@ -54,6 +54,10 @@ def test_samples(nums, expected):
 
 @hypothesis.given(hypothesis.strategies.lists(hypothesis.strategies.integers(min_value=0, max_value=100), min_size=1, max_size=20))
 def test_any_array(nums):
+    '''
+    Compare the above solution to a naive O(n^2) implementation. This has been
+    tested on LeetCode, and it works, though #45 of the 51 test cases times out.
+    '''
     actual = second_greater_element(nums)
 
     tails = [list(itertools.islice((n for n in itertools.islice(nums, i + 1, None) if n > nums[i]), 0, 2)) for i in range(len(nums))]
