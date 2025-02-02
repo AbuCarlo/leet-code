@@ -7,9 +7,11 @@ If no such indices exists, return false.
 '''
 
 import itertools
+import random
 from typing import List
 
 import hypothesis
+import pytest
 
 def increasing_triplet_iterable(nums: List[int]) -> bool:
     '''
@@ -50,14 +52,15 @@ def increasing_triplet(nums: List[int]) -> bool:
     else:
         i, j = 1, None
     for k in range(2, len(nums)):
+        # We've found 3 increasing numbers.
         if j is not None and nums[k] > nums[j]:
             return True
+        # This is now the smallest number we've found.
         if nums[k] < nums[i]:
             i = k
+        # This is now the second-smallest number we've found.
         elif (j is None or nums[k] < nums[j]) and nums[k] > nums[i]:
             j = k
-        elif j is not None and nums[k] > nums[j]:
-            return True
     return False
 
 
@@ -71,3 +74,21 @@ def test_any_array(nums):
     # The naive O(n^3) implementation on shorter inputs.
     expected = any(nums[i] < nums[j] < nums[k] for i in range(0, len(nums) - 2) for j in range(i + 1, len(nums)) for k in range(j + 1, len(nums)))
     assert actual == expected
+
+
+_BENCHMARK_TEST_CASE = [random.randint(0, 50000) for _ in range(1000)]
+
+@pytest.mark.benchmark
+def test_performance(benchmark):
+    '''
+    Try to discover why Leetcode thinks I'm slow.
+    '''
+    benchmark(increasing_triplet, _BENCHMARK_TEST_CASE)
+
+
+@pytest.mark.benchmark
+def test_performance_iterable(benchmark):
+    '''
+    Try to discover why Leetcode thinks I'm slow.
+    '''
+    benchmark(increasing_triplet_iterable, _BENCHMARK_TEST_CASE)
