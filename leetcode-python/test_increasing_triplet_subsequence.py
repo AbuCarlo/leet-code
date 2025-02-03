@@ -70,22 +70,6 @@ def increasing_triplet(nums: List[int]) -> bool:
             j = k
     return False
 
-def increasing_triplet_plagiarized(nums):
-    '''
-    Stolen from LeetCode...
-    '''
-    smallest = sys.maxsize
-    middle = sys.maxsize
-
-    for n in nums:
-        if n <= smallest:
-            smallest = n
-        elif n < middle:
-            middle = n
-        else:
-            return True
-    return False
-
 
 @hypothesis.given(hypothesis.strategies.lists(hypothesis.strategies.integers(min_value=0, max_value=100), min_size=3, max_size=20))
 def test_any_array(nums):
@@ -109,13 +93,6 @@ def test_performance(benchmark):
     Try to discover why Leetcode thinks I'm slow.
     '''
     benchmark(increasing_triplet, _BENCHMARK_TEST_CASE)
-
-@pytest.mark.benchmark
-def test_performance_winner(benchmark):
-    '''
-    Try to discover why Leetcode thinks I'm slow.
-    '''
-    benchmark(increasing_triplet_plagiarized, _BENCHMARK_TEST_CASE)
 
 
 @pytest.mark.benchmark
