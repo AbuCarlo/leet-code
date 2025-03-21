@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 # https://leetcode.com/problems/longest-increasing-subsequence/description/
+# https://ruby-doc.org/3.4.1/bsearch_rdoc.html
+# https://github.com/tomykaira/rspec-parameterized
+# https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html
 
 Tuple = Struct.new(:value, :index)
 
