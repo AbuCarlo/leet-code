@@ -15,13 +15,13 @@ def longest_subsequence(a)
   sorted_indices[1..].map { |i| [i, a[i]] }.each do |i, n|
     insertion = found.bsearch_index { |e| e >= n - 1 }
     if insertion.nil?
-      prefix_lengths[n] = prefix_lengths[found.last] + 1
-      found.push(n)
-    elsif found[insertion] == n
-      prefix_lengths[n] = [(prefix_lengths[found[insertion - 1]] + 1), prefix_lengths[n]].max
+      prefix_lengths[i] = prefix_lengths[found.last] + 1
+      found.push(i)
+    elsif a[found[insertion]] == n
+      prefix_lengths[i] = [(prefix_lengths[found[insertion - 1]] + 1), prefix_lengths[n]].max
     else
-      prefix_lengths[n] = (prefix_lengths[found[insertion - 1]] || 0) + 1
-      found.insert(insertion + 1, n)
+      prefix_lengths[i] = (prefix_lengths[found[insertion - 1]] || 0) + 1
+      found.insert(insertion + 1, i)
     end
   end
   prefix_lengths.values.max
