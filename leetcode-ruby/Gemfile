@@ -1,3 +1,5 @@
+ruby "~> 3.0"
+
 group :test do
   gem "rspec-parameterized"
 end
