@@ -12,7 +12,7 @@ def longest_subsequence(a)
   sorted_indices = (0...a.count).sort { |l, r| if a[l] == a[r] then l <=> r else a[l] <=> a[r] end }
   found = [a[sorted_indices[0]]]
   prefix_lengths = { found[0] => 1 }
-  sorted_indices[1..].map { |i| [i, a[i] ]}.each do |i, n|
+  sorted_indices[1..].map { |i| [i, a[i]] }.each do |i, n|
     insertion = found.bsearch_index { |e| e >= n - 1 }
     if insertion.nil?
       prefix_lengths[n] = prefix_lengths[found.last] + 1
