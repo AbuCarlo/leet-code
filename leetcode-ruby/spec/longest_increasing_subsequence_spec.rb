@@ -27,7 +27,11 @@ def longest_increasing_subsequence(a)
       prefix_lengths[i] = prefix_lengths[found.last] + 1
       found.push(i)
     elsif n == a[found[insertion]]
+      if n == 0
+        next
+      else
 
+      end
     else
       prefix_lengths[i] = (prefix_lengths[found[insertion - 1]] || 0) + 1
       found.insert(insertion, i)
