@@ -19,21 +19,22 @@ def longest_increasing_subsequence(a)
     else
       a[l] <=> a[r]
     end }
-  found = [a[sorted_indices[0]]]
+  found = [sorted_indices[0]]
   prefix_lengths = { found[0] => 1 }
   sorted_indices[1..].map { |i| [i, a[i]] }.each do |i, n|
-    insertion = found.bsearch_index { |e| e >= i }
+    insertion = found.bsearch_index { |e| e > i }
+    # Append...
     if insertion.nil?
-      prefix_lengths[i] = prefix_lengths[found.last] + 1
-      found.push(i)
-    elsif n == a[found[insertion]]
-      if n == 0
-        next
+      if n > a[found.last]
+        prefix_lengths[i] = prefix_lengths[found.last] + 1
       else
-
+        prefix_lengths[i] = prefix_lengths[found.last]
       end
+      found.push(i)
     else
-      prefix_lengths[i] = (prefix_lengths[found[insertion - 1]] || 0) + 1
+      if a[found[insertion]] < n
+        prefix_lengths[i] = prefix_lengths[found[insertion - 1]] + 1
+      end
       found.insert(insertion, i)
     end
   end
