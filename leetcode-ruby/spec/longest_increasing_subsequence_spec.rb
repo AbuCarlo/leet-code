@@ -30,13 +30,13 @@ def longest_increasing_subsequence(a)
     if insertion.nil?
       # We are appending to a run.
       result += 1 unless inserted_values.include?(n)
-      found.push(i)
+      found.push(i) unless a[found.last] == n
     else
-      found.insert(insertion, i)
+      found.insert(insertion, i) unless a[i] == n
     end
     inserted_values.add(n)
   end
-  result
+  found.count
 end
 
 describe 'longest_increasing_subsequence' do
