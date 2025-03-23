@@ -9,36 +9,34 @@ require 'prop_check'
 require 'rspec-parameterized'
 require 'rspec'
 
-def longest_increasing_subsequence(a)
-  return 0 if a.empty?
+def longest_increasing_subsequence(numbers)
+  return 0 if numbers.empty?
 
   # Sort the array indices by the values, non-destructively,
   # i.e. if the values are equal, the higher index comes after.
-  sorted_indices = (0...a.count).sort do |l, r|
-    if a[l] == a[r]
+  sorted_indices = (0...numbers.count).sort do |l, r|
+    if numbers[l] == numbers[r]
       l <=> r
     else
-      a[l] <=> a[r]
+      numbers[l] <=> numbers[r]
     end
   end
-  # This should be a binary tree.
+  # This should be numbers binary tree.
   found = [sorted_indices[0]]
-  result = 1
-  sorted_indices[1..].map { |i| [i, a[i]] }.each do |i, n|
+  sorted_indices[1..].map { |i| [i, numbers[i]] }.each do |i, n|
     insertion = found.bsearch_index { |e| e > i }
     if insertion.nil?
-      # We are appending to a run.
-      result += 1 unless a[found.last] == n
-      found.push(i) unless a[found.last] == n
+      # We are appending to numbers run.
+      found.push(i) unless numbers[found.last] == n
     else
-      found.insert(insertion, i) unless a[i] == n
+      found.insert(insertion, i) unless numbers[i] == n
     end
   end
   found.count
 end
 
 describe 'known test cases' do
-  where(:a, :expected) do
+  where(:numbers, :expected) do
     [
       [[10, 9, 2, 5, 3, 7, 101, 18], 4],
       [[0, 1, 0, 3, 2, 3], 4],
@@ -50,7 +48,7 @@ describe 'known test cases' do
 
   with_them do
     it 'should produce expected answer' do
-      actual = longest_increasing_subsequence(a)
+      actual = longest_increasing_subsequence(numbers)
       expect(actual).to eq(expected)
     end
   end
