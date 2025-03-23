@@ -1,7 +1,8 @@
-ruby "~> 3.0"
+ruby '~> 3.0'
 
 group :test do
-  gem "rspec-parameterized"
+  gem 'prop_check'
+  gem 'rspec-parameterized'
 end
 
 group :development do
