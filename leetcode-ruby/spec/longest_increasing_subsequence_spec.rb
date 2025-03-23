@@ -25,7 +25,7 @@ def longest_increasing_subsequence(a)
   inserted_values.add(a[sorted_indices[0]])
   result = 1
   sorted_indices[1..].map { |i| [i, a[i]] }.each do |i, n|
-    insertion = found.bsearch_index { |e| e >= i }
+    insertion = found.bsearch_index { |e| e > i }
     if insertion.nil?
       # We are appending to a run.
       result += 1 unless inserted_values.include?(n)
