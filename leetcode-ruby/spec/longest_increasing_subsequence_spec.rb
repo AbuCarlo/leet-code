@@ -20,6 +20,7 @@ def longest_increasing_subsequence(a)
       a[l] <=> a[r]
     end
   end
+  # This should be a binary tree.
   found = [sorted_indices[0]]
   inserted_values = Set.new
   inserted_values.add(a[sorted_indices[0]])
