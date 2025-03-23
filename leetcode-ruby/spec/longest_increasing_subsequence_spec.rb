@@ -43,7 +43,7 @@ describe 'known test cases' do
       [[10, 9, 2, 5, 3, 7, 101, 18], 4],
       [[0, 1, 0, 3, 2, 3], 4],
       [[7, 7, 7, 7, 7, 7, 7], 1],
-      # test case 29
+      # test case 30
       [[1, 3, 6, 7, 9, 4, 10, 5, 6], 6]
     ]
   end
@@ -56,8 +56,9 @@ describe 'known test cases' do
   end
 end
 
+G = PropCheck::Generators
+
 RSpec.describe 'generated arrays' do
-  G = PropCheck::Generators
 
   it 'returns an integer for any input' do
     PropCheck.forall(G.array(G.integer)) do |numbers|
