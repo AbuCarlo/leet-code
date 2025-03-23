@@ -9,39 +9,36 @@ require 'rspec-parameterized'
 require 'rspec'
 
 def longest_increasing_subsequence(a)
-  if a.length == 0
-    return 0
-  end
-  # Sort the array indices by the values!
-  sorted_indices = (0...a.count).sort { |l, r|
+  return 0 if a.empty?
+
+  # Sort the array indices by the values, non-destructively,
+  # i.e. if the values are equal, the higher index comes after.
+  sorted_indices = (0...a.count).sort do |l, r|
     if a[l] == a[r]
       l <=> r
     else
       a[l] <=> a[r]
-    end }
-  found = [sorted_indices[0]]
-  prefix_lengths = { found[0] => 1 }
-  sorted_indices[1..].map { |i| [i, a[i]] }.each do |i, n|
-    insertion = found.bsearch_index { |e| e > i }
-    # Append...
-    if insertion.nil?
-      if n > a[found.last]
-        prefix_lengths[i] = prefix_lengths[found.last] + 1
-      else
-        prefix_lengths[i] = prefix_lengths[found.last]
-      end
-      found.push(i)
-    else
-      if a[found[insertion]] < n
-        prefix_lengths[i] = prefix_lengths[found[insertion - 1]] + 1
-      end
-      found.insert(insertion, i)
     end
   end
-  prefix_lengths.values.max
+  found = [sorted_indices[0]]
+  inserted_values = Set.new
+  inserted_values.add(a[sorted_indices[0]])
+  result = 1
+  sorted_indices[1..].map { |i| [i, a[i]] }.each do |i, n|
+    insertion = found.bsearch_index { |e| e >= i }
+    if insertion.nil?
+      # We are appending to a run.
+      result += 1 unless inserted_values.include?(n)
+      found.push(i)
+    else
+      found.insert(insertion, i)
+    end
+    inserted_values.add(n)
+  end
+  result
 end
 
-describe "longest_increasing_subsequence" do
+describe 'longest_increasing_subsequence' do
   where(:a, :expected) do
     [
       [[10, 9, 2, 5, 3, 7, 101, 18], 4],
@@ -51,7 +48,7 @@ describe "longest_increasing_subsequence" do
   end
 
   with_them do
-    it "should produce expected answer" do
+    it 'should produce expected answer' do
       actual = longest_increasing_subsequence(a)
       expect(actual).to eq(expected)
     end
