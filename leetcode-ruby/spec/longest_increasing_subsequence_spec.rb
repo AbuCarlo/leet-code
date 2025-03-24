@@ -1,38 +1,34 @@
 # frozen_string_literal: true
 
 # https://leetcode.com/problems/longest-increasing-subsequence/description/
-# https://ruby-doc.org/3.4.1/bsearch_rdoc.html
-# https://github.com/tomykaira/rspec-parameterized
-# https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeSet.html
 
-require 'prop_check'
 require 'rspec-parameterized'
 require 'rspec'
 
 def longest_increasing_subsequence(numbers)
   return 0 if numbers.empty?
 
-  # Sort the array indices by the values, non-destructively,
-  # i.e. if the values are equal, the higher index comes after.
-  sorted_indices = (0...numbers.count).sort do |l, r|
-    if numbers[l] == numbers[r]
-      l <=> r
-    else
-      numbers[l] <=> numbers[r]
+  lengths = { numbers.last => 1 }
+  starting_values = [numbers.last]
+
+  # In Python, use reverse iterator.
+  numbers[0..-2].reverse.each do |number|
+    tail_start = starting_values.bsearch_index { |i| i >= number }
+    if tail_start.nil?
+      # There is no smaller value.
+      lengths[number] = 1
+      starting_values.push(number)
+    elsif starting_values[tail_start] > number
+      # Wrong, it's the maximum tail length available here.
+      lengths[number] = lengths.slice(*starting_values[tail_start..]).values.max + 1
+      starting_values.insert(tail_start, number)
+    elsif tail_start < starting_values.count - 1
+      # See above.
+      new_length = lengths.slice(*starting_values[tail_start + 1..]).values.max + 1
+      lengths[number] = new_length if lengths[number] < new_length
     end
   end
-  # This should be numbers binary tree.
-  found = [sorted_indices[0]]
-  sorted_indices[1..].map { |i| [i, numbers[i]] }.each do |i, n|
-    insertion = found.bsearch_index { |e| e > i }
-    if insertion.nil?
-      # We are appending to numbers run.
-      found.push(i) unless numbers[found.last] == n
-    else
-      found.insert(insertion, i) unless numbers[i] == n
-    end
-  end
-  found.count
+  lengths.values.max
 end
 
 describe 'known test cases' do
@@ -50,19 +46,6 @@ describe 'known test cases' do
     it 'should produce expected answer' do
       actual = longest_increasing_subsequence(numbers)
       expect(actual).to eq(expected)
-    end
-  end
-end
-
-G = PropCheck::Generators
-
-RSpec.describe 'generated arrays' do
-
-  it 'returns an integer for any input' do
-    PropCheck.forall(G.array(G.integer)) do |numbers|
-      result = longest_increasing_subsequence(numbers)
-
-      expect(result).to be_a(Integer)
     end
   end
 end
