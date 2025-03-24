@@ -1,4 +1,5 @@
 GEM
+  remote: https://rubygems.org/
   specs:
     ast (2.4.3)
     binding_of_caller (1.0.1)
@@ -67,12 +68,13 @@ GEM
       parser (>= 3.3.0)
 
 PLATFORMS
+  arm64-darwin-24
   x64-mingw-ucrt
 
 DEPENDENCIES
   prop_check
   rspec-parameterized
-  rubocop
+  rubocop (= 1.74.0)
 
 RUBY VERSION
    ruby 3.4.1p0
