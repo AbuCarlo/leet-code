@@ -15,15 +15,17 @@ def longest_increasing_subsequence(numbers)
   numbers[0..-2].reverse.each do |number|
     tail_start = starting_values.bsearch_index { |i| i >= number }
     if tail_start.nil?
-      # There is no smaller value.
+      # There is no larger value.
       lengths[number] = 1
       starting_values.push(number)
     elsif starting_values[tail_start] > number
-      # Wrong, it's the maximum tail length available here.
+      # What is the longest run to which we could prepend this value?
       lengths[number] = lengths.slice(*starting_values[tail_start..]).values.max + 1
+      # Here's where a tree would be useful.
       starting_values.insert(tail_start, number)
     elsif tail_start < starting_values.count - 1
-      # See above.
+      # This value has already been encountered. If it's also the largest,
+      # there's nothing to do, since this value is already at the end of a run.
       new_length = lengths.slice(*starting_values[tail_start + 1..]).values.max + 1
       lengths[number] = new_length if lengths[number] < new_length
     end
