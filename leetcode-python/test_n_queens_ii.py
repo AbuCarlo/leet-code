@@ -20,9 +20,14 @@ def totalNQueens(n: int) -> int:
             return 1
         result = 0
         for column in range(n):
-            if 1 << column & columns or 1 << (row + column) & lefts or 1 << abs(row - column) & rights:
+            # Number the leftward diagonals by the sum of the coordinates.
+            # There will be 2n -1 diagonals.
+            left = row + column
+            # Number the rightward diagonals similarly, but prevent negative values.
+            right = row - column + n
+            if 1 << column & columns or 1 << left & lefts or 1 << right & rights:
                 continue
-            result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << (row + column), rights | 1 << abs(row - column))
+            result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << left, rights | 1 << right)
         return result
     return internal_queens(0, 0, 0, 0)
 
