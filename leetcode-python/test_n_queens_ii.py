@@ -19,6 +19,8 @@ def totalNQueensBitmasks(n: int) -> int:
         :param lefts: the set of leftward diagonals etc.
         :param rights: the set of rightward diagonals etc.
         '''
+        # If we've placed a queen in every row up to now, we've 
+        # found a solution.
         if row == n:
             return 1
         result = 0
@@ -41,26 +43,20 @@ def totalNQueensMemoized(n: int) -> int:
     '''
 
     memos = {}
+    hits = 0
 
     def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
-        '''
-        :param row: the row in which we're trying to place a queen
-        :param columns: the set of columns already having a queen
-        :param rows: the set of rows etc.
-        :param lefts: the set of leftward diagonals etc.
-        :param rights: the set of rightward diagonals etc.
-        '''
-        nonlocal memos
-        # The preceding iteration found a position
-        # in the last row, i.e. n - 1. So we have
-        # found another solution.
+        nonlocal hits
+
         if row == n:
             return 1
+
         key = (columns, lefts, rights)
         # The row doesn't have to form part of the key. 
         # For any value of row, all the bitsets will have
         # the same size (row).
         if key in memos:
+            hits += 1
             return memos[key]
         result = 0
         for column in range(n):
@@ -75,7 +71,8 @@ def totalNQueensMemoized(n: int) -> int:
         memos[key] = result
         return result
     
-    return internal_queens(0, 0, 0, 0)
+    result = internal_queens(0, 0, 0, 0)
+    return result
 
 _KNOWN_SOLUTIONS = [
     (1, 1),
@@ -90,11 +87,10 @@ _KNOWN_SOLUTIONS = [
     (10, 724)
 ]
 
-# TODO Separate parameterized tests from benchmarks, so we're not benchmarking
-# all the time. Simply slice the parameters for the benchmarks. It turns out
-# that memoization does not improve the performance, most likely because the 
-# dictionary grows very large. Leetcode insists that actual sets use less 
-# memory than bitmasks, which baffles me.
+# It turns out that memoization does not improve the performance, most likely because the 
+# dictionary grows very large. When n = 8, there are 1818 memos, but only 95 cache hits.
+# 
+# Leetcode insists that actual sets use less memory than bitmasks, which baffles me.
 
 @pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS)
 def test_known_solutions(n: int, solutions: int):
