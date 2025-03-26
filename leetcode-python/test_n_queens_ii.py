@@ -11,7 +11,7 @@ def totalNQueensBitmasks(n: int) -> int:
     :param row: the row in which we're trying to place a queen
     :param columns: the set of columns already having a queeen
     '''
-    def internal_queens(row, columns, lefts, rights):
+    def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
         # The preceding iteration found a position
         # in the last row, i.e. n - 1. So we have
         # found another solution.
@@ -42,7 +42,7 @@ def totalNQueensMemoized(n: int) -> int:
 
     memos = {}
 
-    def internal_queens(row, columns, lefts, rights):
+    def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
         '''
         :param row: the row in which we're trying to place a queen
         :param columns: the set of columns already having a queen
@@ -76,30 +76,39 @@ def totalNQueensMemoized(n: int) -> int:
     return internal_queens(0, 0, 0, 0)
 
 _KNOWN_SOLUTIONS = [
-    # (1, 1),
-    # (2, 0),
-    # (3, 0),
-    # (4, 2),
-    # (5, 10),
-    # (6, 4),
-    # (7, 40),
-    # (8, 92),
+    (1, 1),
+    (2, 0),
+    (3, 0),
+    (4, 2),
+    (5, 10),
+    (6, 4),
+    (7, 40),
+    (8, 92),
     (9, 352),
     (10, 724)
 ]
 
-@pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS)
-def test_known_solutions_memoization(benchmark, n: int, solutions: int):
-    '''
-    Test against known solutions. Cf. # See https://en.wikipedia.org/wiki/Eight_queens_puzzle
-    '''
-    actual = benchmark(totalNQueensMemoized, n)
-    assert actual == solutions
+# TODO Separate parameterized tests from benchmarks, so we're not benchmarking
+# all the time. Simply slice the parameters for the benchmarks. It turns out
+# that memoization does not improve the performance, most likely because the 
+# dictionary grows very large. Leetcode insists that actual sets use less 
+# memory than bitmasks, which baffles me.
 
 @pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS)
-def test_known_solutions_recursive(benchmark, n: int, solutions: int):
+def test_known_solutions(n: int, solutions: int):
     '''
     Test against known solutions. Cf. # See https://en.wikipedia.org/wiki/Eight_queens_puzzle
     '''
-    actual = benchmark(totalNQueensBitmasks, n)
+    actual = totalNQueensMemoized(n)
     assert actual == solutions
+
+    actual = totalNQueensBitmasks(n)
+    assert actual == solutions
+
+@pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS[-3:])
+def test_known_solutions_recursive(benchmark, n: int, solutions: int):
+    benchmark(totalNQueensBitmasks, n)
+
+@pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS[-3:])
+def test_known_solutions_memoized(benchmark, n: int, solutions: int):
+    benchmark(totalNQueensMemoized, n)
