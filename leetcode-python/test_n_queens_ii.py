@@ -6,15 +6,21 @@ import pytest
 
 def totalNQueensBitmasks(n: int) -> int:
     '''
-    Recursive implementation using set()
-    
-    :param row: the row in which we're trying to place a queen
-    :param columns: the set of columns already having a queeen
+    Recursive implementation using bitsets to represent 
+    already occupied positions.
+
+    :param n: the size of the board, i.e. n * n
     '''
     def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
-        # The preceding iteration found a position
-        # in the last row, i.e. n - 1. So we have
-        # found another solution.
+        '''
+        :param row: the row in which we're trying to place a queen
+        :param columns: the set of columns already having a queen
+        :param rows: the set of rows etc.
+        :param lefts: the set of leftward diagonals etc.
+        :param rights: the set of rightward diagonals etc.
+        '''
+        # If we've placed a queen in every row up to now, we've 
+        # found a solution.
         if row == n:
             return 1
         result = 0
@@ -33,28 +39,15 @@ def totalNQueensBitmasks(n: int) -> int:
 # pylint: disable=C0103
 def totalNQueensMemoized(n: int) -> int:
     '''
-    Recursive implementation using bitsets to represent 
-    already occupied positions, and memoization to prevent
-    O(n!) performance.
-
-    :param n: the size of the board, i.e. n * n
+    Variant of the above, adding memoization to prevent O(n!) performance.
     '''
 
     memos = {}
 
     def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
-        '''
-        :param row: the row in which we're trying to place a queen
-        :param columns: the set of columns already having a queen
-        :param rows: the set of rows etc.
-        :param lefts: the set of leftward diagonals etc.
-        :param rights: the set of rightward diagonals etc.
-        '''
-        # The preceding iteration found a position
-        # in the last row, i.e. n - 1. So we have
-        # found another solution.
         if row == n:
             return 1
+
         key = (columns, lefts, rights)
         # The row doesn't have to form part of the key. 
         # For any value of row, all the bitsets will have
@@ -73,7 +66,9 @@ def totalNQueensMemoized(n: int) -> int:
             result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << left, rights | 1 << right)
         memos[key] = result
         return result
+    
     return internal_queens(0, 0, 0, 0)
+
 
 _KNOWN_SOLUTIONS = [
     (1, 1),
@@ -88,11 +83,12 @@ _KNOWN_SOLUTIONS = [
     (10, 724)
 ]
 
-# TODO Separate parameterized tests from benchmarks, so we're not benchmarking
-# all the time. Simply slice the parameters for the benchmarks. It turns out
-# that memoization does not improve the performance, most likely because the 
-# dictionary grows very large. Leetcode insists that actual sets use less 
-# memory than bitmasks, which baffles me.
+# It turns out that memoization does not improve the performance, most likely because the 
+# dictionary grows very large. When n = 8, there are 1818 memos, but only 95 cache hits.
+# Without memoization, the internal function is called 2057 times. Without, it's called
+# 1999 times, making the memoization not worth the effort.
+#
+# Leetcode insists that actual sets use less memory than bitmasks, which baffles me.
 
 @pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS)
 def test_known_solutions(n: int, solutions: int):
