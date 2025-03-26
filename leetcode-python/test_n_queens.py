@@ -4,73 +4,36 @@ https://leetcode.com/problems/n-queens
 
 import pytest
 
-def totalNQueensBitmasks(n: int) -> int:
+def solveNQueens(n: int):
     '''
     Recursive implementation using bitsets to represent 
     already occupied positions.
 
     :param n: the size of the board, i.e. n * n
     '''
-    def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
-        '''
-        :param row: the row in which we're trying to place a queen
-        :param columns: the set of columns already having a queen
-        :param rows: the set of rows etc.
-        :param lefts: the set of leftward diagonals etc.
-        :param rights: the set of rightward diagonals etc.
-        '''
-        # If we've placed a queen in every row up to now, we've 
-        # found a solution.
-        if row == n:
-            return 1
-        result = 0
-        for column in range(n):
-            # Number the leftward diagonals by the sum of the coordinates.
-            # There will be 2n -1 diagonals.
-            left = row + column
-            # Number the rightward diagonals similarly, but prevent negative values.
-            right = row - column + n
-            if 1 << column & columns or 1 << left & lefts or 1 << right & rights:
-                continue
-            result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << left, rights | 1 << right)
-        return result
-    return internal_queens(0, 0, 0, 0)
-
-    '''
-    Variant of the above, adding memoization to prevent O(n!) performance.
-    '''
-
-    memos = {}
-    hits = 0
+    def print_solution(solution):
+        # We know that no positions share a row.
+        board = [None] * n
+        for (row, column) in solution:
+            s = ('.' * (column)) + 'Q' + ('.' * (n - column - 1))
+            board[row] = s
+        return board
 
     def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
-        nonlocal hits
-
-        if row == n:
-            return 1
-
-        key = (columns, lefts, rights)
-        # The row doesn't have to form part of the key. 
-        # For any value of row, all the bitsets will have
-        # the same size (row).
-        if key in memos:
-            hits += 1
-            return memos[key]
-        result = 0
         for column in range(n):
-            # Number the leftward diagonals by the sum of the coordinates.
-            # There will be 2n -1 diagonals.
-            left = row + column
-            # Number the rightward diagonals similarly, but prevent negative values.
-            right = row - column + n
+            left, right = row + column, row - column + n - 1
             if 1 << column & columns or 1 << left & lefts or 1 << right & rights:
                 continue
-            result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << left, rights | 1 << right)
-        memos[key] = result
-        return result
-    
-    result = internal_queens(0, 0, 0, 0)
-    return result
+            position = (row, column)
+            if row == n - 1:
+                yield [position]
+            subsolutions = internal_queens(row + 1, columns | 1 << column, lefts | 1 << left, rights | 1 << right)
+            for s in subsolutions:
+                yield [position] + s
+
+    solutions = internal_queens(0, 0, 0, 0)
+
+    return [print_solution(s) for s in solutions]
 
 _KNOWN_SOLUTIONS = [
     (1, 1),
@@ -85,26 +48,11 @@ _KNOWN_SOLUTIONS = [
     (10, 724)
 ]
 
-# It turns out that memoization does not improve the performance, most likely because the 
-# dictionary grows very large. When n = 8, there are 1818 memos, but only 95 cache hits.
-# 
-# Leetcode insists that actual sets use less memory than bitmasks, which baffles me.
 
 @pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS)
 def test_known_solutions(n: int, solutions: int):
     '''
     Test against known solutions. Cf. # See https://en.wikipedia.org/wiki/Eight_queens_puzzle
     '''
-    actual = totalNQueensMemoized(n)
-    assert actual == solutions
-
-    actual = totalNQueensBitmasks(n)
-    assert actual == solutions
-
-@pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS[-3:])
-def test_known_solutions_recursive(benchmark, n: int, solutions: int):
-    benchmark(totalNQueensBitmasks, n)
-
-@pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS[-3:])
-def test_known_solutions_memoized(benchmark, n: int, solutions: int):
-    benchmark(totalNQueensMemoized, n)
+    actual = list(solveNQueens(n))
+    assert len(actual) == solutions

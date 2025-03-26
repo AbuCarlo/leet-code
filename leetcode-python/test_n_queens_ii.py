@@ -43,11 +43,8 @@ def totalNQueensMemoized(n: int) -> int:
     '''
 
     memos = {}
-    hits = 0
 
     def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
-        nonlocal hits
-
         if row == n:
             return 1
 
@@ -56,7 +53,6 @@ def totalNQueensMemoized(n: int) -> int:
         # For any value of row, all the bitsets will have
         # the same size (row).
         if key in memos:
-            hits += 1
             return memos[key]
         result = 0
         for column in range(n):
@@ -71,8 +67,8 @@ def totalNQueensMemoized(n: int) -> int:
         memos[key] = result
         return result
     
-    result = internal_queens(0, 0, 0, 0)
-    return result
+    return internal_queens(0, 0, 0, 0)
+
 
 _KNOWN_SOLUTIONS = [
     (1, 1),
@@ -89,7 +85,9 @@ _KNOWN_SOLUTIONS = [
 
 # It turns out that memoization does not improve the performance, most likely because the 
 # dictionary grows very large. When n = 8, there are 1818 memos, but only 95 cache hits.
-# 
+# Without memoization, the internal function is called 2057 times. Without, it's called
+# 1999 times, making the memoization not worth the effort.
+#
 # Leetcode insists that actual sets use less memory than bitmasks, which baffles me.
 
 @pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS)
