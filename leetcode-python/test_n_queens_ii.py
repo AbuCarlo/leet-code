@@ -6,15 +6,19 @@ import pytest
 
 def totalNQueensBitmasks(n: int) -> int:
     '''
-    Recursive implementation using set()
-    
-    :param row: the row in which we're trying to place a queen
-    :param columns: the set of columns already having a queeen
+    Recursive implementation using bitsets to represent 
+    already occupied positions.
+
+    :param n: the size of the board, i.e. n * n
     '''
     def internal_queens(row: int, columns: int, lefts: int, rights: int) -> int:
-        # The preceding iteration found a position
-        # in the last row, i.e. n - 1. So we have
-        # found another solution.
+        '''
+        :param row: the row in which we're trying to place a queen
+        :param columns: the set of columns already having a queen
+        :param rows: the set of rows etc.
+        :param lefts: the set of leftward diagonals etc.
+        :param rights: the set of rightward diagonals etc.
+        '''
         if row == n:
             return 1
         result = 0
@@ -33,11 +37,7 @@ def totalNQueensBitmasks(n: int) -> int:
 # pylint: disable=C0103
 def totalNQueensMemoized(n: int) -> int:
     '''
-    Recursive implementation using bitsets to represent 
-    already occupied positions, and memoization to prevent
-    O(n!) performance.
-
-    :param n: the size of the board, i.e. n * n
+    Variant of the above, adding memoization to prevent O(n!) performance.
     '''
 
     memos = {}
@@ -50,6 +50,7 @@ def totalNQueensMemoized(n: int) -> int:
         :param lefts: the set of leftward diagonals etc.
         :param rights: the set of rightward diagonals etc.
         '''
+        nonlocal memos
         # The preceding iteration found a position
         # in the last row, i.e. n - 1. So we have
         # found another solution.
@@ -73,6 +74,7 @@ def totalNQueensMemoized(n: int) -> int:
             result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << left, rights | 1 << right)
         memos[key] = result
         return result
+    
     return internal_queens(0, 0, 0, 0)
 
 _KNOWN_SOLUTIONS = [
