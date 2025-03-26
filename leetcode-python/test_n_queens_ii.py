@@ -8,17 +8,23 @@ import pytest
 def totalNQueens(n: int) -> int:
     '''
     Recursive implementation using set()
+    
+    :param row: the row in which we're trying to place a queen
+    :param columns: the set of columns already having a queeen
     '''
     def internal_queens(row, columns, lefts, rights):
+        # The preceding iteration found a position
+        # in the last row, i.e. n - 1. So we have
+        # found another solution.
         if row == n:
             return 1
         result = 0
         for column in range(n):
-            if column in columns or row + column in lefts or row - column in rights:
+            if 1 << column & columns or 1 << (row + column) & lefts or 1 << abs(row - column) & rights:
                 continue
-            result += internal_queens(row + 1, columns | set([column]), lefts | set([row + column]), rights | set([row - column]))
+            result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << (row + column), rights | 1 << abs(row - column))
         return result
-    return internal_queens(0, set(), set(), set())
+    return internal_queens(0, 0, 0, 0)
 
 print(totalNQueens(4))
 
