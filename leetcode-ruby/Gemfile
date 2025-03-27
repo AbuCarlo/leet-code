@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+ruby '~> 3.0'
+
+group :test do
+  gem 'prop_check'
+  gem 'rspec-parameterized'
+end
+
+group :development do
+  gem 'rubocop', '1.74.0'
+end
