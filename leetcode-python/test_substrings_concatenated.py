@@ -16,30 +16,44 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
         return len(positions)
     # We may be given only two tokens, and they might be equal.
     token_length = len(tokens[0])
-    x, y = random.sample(tokens, 2)
+    x = random.choice(tokens)
     # Hat-tip to https://stackoverflow.com/a/4664889/476942
-    left_positions = [m.start() for m in re.finditer(f"(?={left})", s)]
-    right_positions = [m.start() for m in re.finditer(f"(?={right})", s)]
-    if not left_positions or not right_positions:
-        return 0
+    x_positions = [m.start() for m in re.finditer(f"(?={x})", s)]
     # Group them.
-    left_positions = itertools.groupby(left_positions, lambda i: i % token_length)
-    right_positions = itertoos.groupby(right_positions, lambda i: i % token_length)
-    result = 0
+    x_positions = itertools.groupby(x_positions, lambda i: i % token_length)
+    results = set()
     # Todo go back and forth on either end.
-    for m in range(token_length):
-        sliced = [s[i:i + token_length] for i in range(m, len(s)) if len(s) - i >= token_length]
-        for l in left_positions[m]:
-            for r in right_positions[m]:
-                # This will only happen if the tokens are equal. 
-                if r != l:
-                    continue
-                # The matches are too far apart.
-                if abs(r - l) // token_length > len(tokens) - 2:
-                    continue
-            
+    for m, group in x_positions:
+        sliced = [s[i:i + token_length] for i in range(m, len(s), token_length) if len(s) - i >= token_length]
+        counts = collections.Counter(tokens)
+        counts[x] -= 1
+        if counts[x] == 0:
+            counts.pop(x)
+        for i in group:
+            # TODO:
+            # Don't go any farther back than the highest solution so far.
+            for j in range((i - token_length) // token_length, -1, -token_length):
+                if sliced[j] not in counts:
+                    break
+                counts[sliced[j]] -= 1
+                if counts[sliced[j]] == 0:
+                    counts.pop(sliced[j])
+                if len(counts) == 0:
+                    results.add(j)
+                    break
+            if len(counts) == 0:
+                break
+            for j in range(i + token_length, token_length, len(s)):
+                if sliced[j] not in counts:
+                    break
+                counts[sliced[j]] -= 1
+                if counts[sliced[j]] == 0:
+                    counts.pop(sliced[j])
+                if len(counts) == 0:
+                    results.add(j)
+                    break 
 
-    return result
+    return len(results)
     
 
 _SAMPLES = [
