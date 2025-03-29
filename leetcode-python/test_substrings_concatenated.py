@@ -4,10 +4,10 @@ https://leetcode.com/problems/substring-with-concatenation-of-all-words
 
 import collections
 import itertools
-import pytest
 import random
 import re
 
+import pytest
 
 def find_concatenations(s: str, tokens: list[str]) -> int:
     # This is allowed by the problem definition.
@@ -25,40 +25,47 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     # Todo go back and forth on either end.
     for m, group in x_positions:
         sliced = [s[i:i + token_length] for i in range(m, len(s), token_length) if len(s) - i >= token_length]
-        counts = collections.Counter(tokens)
-        counts[x] -= 1
-        if counts[x] == 0:
-            counts.pop(x)
+
         for i in group:
+            counts = collections.Counter(tokens)
+            counts[x] -= 1
+            if counts[x] == 0:
+                counts.pop(x)
             # TODO:
             # Don't go any farther back than the highest solution so far.
-            for j in range((i - token_length) // token_length, -1, -token_length):
-                if sliced[j] not in counts:
+            lower_limit = -1 if len(results) == 0 else max(results)
+            for j in range((i - token_length), lower_limit, -token_length):
+                slyce = sliced[j // token_length]
+                if slyce not in counts:
                     break
-                counts[sliced[j]] -= 1
-                if counts[sliced[j]] == 0:
-                    counts.pop(sliced[j])
+                counts[slyce] -= 1
+                if counts[slyce] == 0:
+                    counts.pop(slyce)
                 if len(counts) == 0:
                     results.add(j)
                     break
             if len(counts) == 0:
-                break
-            for j in range(i + token_length, token_length, len(s)):
-                if sliced[j] not in counts:
+                continue
+            # The math is wrong: 
+            upper_limit = min(len(s), i + token_length + sum(counts.values()) * token_length)
+            for j in range(i + token_length, upper_limit, token_length):
+                slyce = sliced[j // token_length]
+                if slyce not in counts:
                     break
-                counts[sliced[j]] -= 1
-                if counts[sliced[j]] == 0:
-                    counts.pop(sliced[j])
+                counts[slyce] -= 1
+                if counts[slyce] == 0:
+                    counts.pop(slyce)
                 if len(counts) == 0:
-                    results.add(j)
-                    break 
+                    results.add(j - (len(tokens) - 1) * token_length)
+                    break
 
     return len(results)
-    
+
 
 _SAMPLES = [
     ('barfoothefoobarman', ["foo", "bar"], 2),
-    ("wordgoodgoodgoodbestword", ["word","good","best","word"], 3)
+    ("wordgoodgoodgoodbestword", ["word","good","best","word"], 0),
+    ("barfoofoobarthefoobarman", ["bar","foo","the"], 3)
 ]
 
 
