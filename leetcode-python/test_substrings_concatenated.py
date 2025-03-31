@@ -4,68 +4,83 @@ https://leetcode.com/problems/substring-with-concatenation-of-all-words
 
 import collections
 import itertools
+import pytest
 import random
 import re
 
-import pytest
 
 def find_concatenations(s: str, tokens: list[str]) -> int:
     # This is allowed by the problem definition.
+    # TODO: Let the rest of the code handle this edge case.
     if len(tokens) == 1:
         positions = [m.start() for m in re.finditer(f"(?={tokens[0]})", s)]
         return len(positions)
-    # We may be given only two tokens, and they might be equal.
+    # All the tokens are the same length.
     token_length = len(tokens[0])
+    # We may be given only two tokens, and they might be equal.
+    # So there's not much point in looking for the best token.
     x = random.choice(tokens)
     # Hat-tip to https://stackoverflow.com/a/4664889/476942
     x_positions = [m.start() for m in re.finditer(f"(?={x})", s)]
-    # Group them.
+    # Group them by starting position % the token length.
     x_positions = itertools.groupby(x_positions, lambda i: i % token_length)
+    # This can simply be a list, right? 
     results = set()
     # Todo go back and forth on either end.
-    for m, group in x_positions:
-        sliced = [s[i:i + token_length] for i in range(m, len(s), token_length) if len(s) - i >= token_length]
-
-        for i in group:
-            counts = collections.Counter(tokens)
-            counts[x] -= 1
-            if counts[x] == 0:
-                counts.pop(x)
+    for remainder, group in x_positions:
+        # Slicing up the input is easier than lots of finicky substring matching. Get rid of the possible
+        # initial token that's too short.
+        sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
+        counts = collections.Counter(tokens)
+        # By definition, we've matched this token, so decrement the count.
+        counts[x] -= 1
+        if counts[x] == 0:
+            counts.pop(x)
+        for i in (start // token_length for start in group):
             # TODO:
             # Don't go any farther back than the highest solution so far.
-            lower_limit = -1 if len(results) == 0 else max(results)
-            for j in range((i - token_length), lower_limit, -token_length):
-                slyce = sliced[j // token_length]
-                if slyce not in counts:
+            for j in range(i - 1, max(results, default=0) // token_length, -1):
+                if sliced[j] not in counts:
                     break
-                counts[slyce] -= 1
-                if counts[slyce] == 0:
-                    counts.pop(slyce)
+                counts[sliced[j]] -= 1
+                if counts[sliced[j]] == 0:
+                    counts.pop(sliced[j])
                 if len(counts) == 0:
-                    results.add(j)
+                    results.add(j * token_length + remainder)
                     break
             if len(counts) == 0:
-                continue
-            # The math is wrong: 
-            upper_limit = min(len(s), i + token_length + sum(counts.values()) * token_length)
-            for j in range(i + token_length, upper_limit, token_length):
-                slyce = sliced[j // token_length]
-                if slyce not in counts:
+                break
+            for j in range(i + i, 1, len(sliced)):
+                if sliced[j] not in counts:
                     break
-                counts[slyce] -= 1
-                if counts[slyce] == 0:
-                    counts.pop(slyce)
+                counts[sliced[j]] -= 1
+                if counts[sliced[j]] == 0:
+                    counts.pop(sliced[j])
                 if len(counts) == 0:
-                    results.add(j - (len(tokens) - 1) * token_length)
+                    results.add(j * token_length + remainder)
                     break
+            # TODO Add a third loop to subtract and tokens.
+            if len(counts) > 0:
+                continue
+            for j in range(max(results) // token_length + 1, i, 1):
+                counts[sliced[j]] += 1
+                if sliced[j + len(tokens) - 1] in counts:
+                    counts[sliced[j]] -= 1
+                    if counts[sliced[j]] == 0:
+                        counts.pop(sliced[j])
+                    if len(counts) == 0:
+                        results.add(j * token_length + remainder)
+                else:
+                    continue
+                    
 
     return len(results)
-
+    
 
 _SAMPLES = [
     ('barfoothefoobarman', ["foo", "bar"], 2),
     ("wordgoodgoodgoodbestword", ["word","good","best","word"], 0),
-    ("barfoofoobarthefoobarman", ["bar","foo","the"], 3)
+    ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], 3)
 ]
 
 
