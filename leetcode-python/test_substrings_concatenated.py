@@ -19,27 +19,29 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     token_length = len(tokens[0])
     # We may be given only two tokens, and they might be equal.
     # So there's not much point in looking for the best token.
-    x = random.choice(tokens)
+    anchor = random.choice(tokens)
     # Hat-tip to https://stackoverflow.com/a/4664889/476942
-    x_positions = [m.start() for m in re.finditer(f"(?={x})", s)]
+    anchor_positions = [m.start() for m in re.finditer(f"(?={anchor})", s)]
     # Group them by starting position % the token length.
-    x_positions = itertools.groupby(x_positions, lambda i: i % token_length)
+    anchor_positions = itertools.groupby(anchor_positions, lambda i: i % token_length)
     # This can simply be a list, right? 
-    results = set()
+    results = []
     # Todo go back and forth on either end.
-    for remainder, group in x_positions:
-        # Slicing up the input is easier than lots of finicky substring matching. Get rid of the possible
-        # initial token that's too short.
+    for remainder, positions in anchor_positions:
+        # Slicing up the input is easier than lots of finicky substring matching. Get rid of 
+        # terminal tokens that are too short to match anyway.
         sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
         counts = collections.Counter(tokens)
         # By definition, we've matched this token, so decrement the count.
-        counts[x] -= 1
-        if counts[x] == 0:
-            counts.pop(x)
-        for i in (start // token_length for start in group):
-            # TODO:
+        counts[anchor] -= 1
+        if counts[anchor] == 0:
+            counts.pop(anchor)
+        for anchor_position in (p // token_length for p in positions):
+            last_match =  0 if not results else results[-1]
+            if anchor_position < last_match:
+                continue
             # Don't go any farther back than the highest solution so far.
-            for j in range(i - 1, max(results, default=0) // token_length, -1):
+            for j in range(anchor_position - 1, max(results, default=0) // token_length, -1):
                 if sliced[j] not in counts:
                     break
                 counts[sliced[j]] -= 1
@@ -48,9 +50,8 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                 if len(counts) == 0:
                     results.add(j * token_length + remainder)
                     break
-            if len(counts) == 0:
-                break
-            for j in range(i + i, 1, len(sliced)):
+            # TODO How far back did we go?
+            for j in range(anchor_position + anchor_position, 1, len(sliced)):
                 if sliced[j] not in counts:
                     break
                 counts[sliced[j]] -= 1
@@ -62,7 +63,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
             # TODO Add a third loop to subtract and tokens.
             if len(counts) > 0:
                 continue
-            for j in range(max(results) // token_length + 1, i, 1):
+            for j in range(max(results) // token_length + 1, anchor_position, 1):
                 counts[sliced[j]] += 1
                 if sliced[j + len(tokens) - 1] in counts:
                     counts[sliced[j]] -= 1
