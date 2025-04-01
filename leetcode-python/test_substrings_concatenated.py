@@ -25,9 +25,10 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     # Group them by starting position % the token length.
     anchor_positions = itertools.groupby(anchor_positions, lambda i: i % token_length)
     # This can simply be a list, right? 
-    results = []
+    all_results = []
     # Todo go back and forth on either end.
     for remainder, positions in anchor_positions:
+        results = []
         # Slicing up the input is easier than lots of finicky substring matching. Get rid of 
         # terminal tokens that are too short to match anyway.
         sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
@@ -51,7 +52,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                     results.add(j * token_length + remainder)
                     break
             # TODO How far back did we go?
-            for j in range(anchor_position + anchor_position, 1, len(sliced)):
+            for j in range(anchor_position + 1, 1, len(sliced)):
                 if sliced[j] not in counts:
                     break
                 counts[sliced[j]] -= 1
@@ -73,9 +74,10 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                         results.add(j * token_length + remainder)
                 else:
                     continue
-                    
 
-    return len(results)
+        all_results += results          
+
+    return len(all_results)
     
 
 _SAMPLES = [
