@@ -74,7 +74,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                         results.add(j * token_length + remainder)
                 else:
                     continue
-
+        # TODO: Translate these.
         all_results += results          
 
     return len(all_results)
