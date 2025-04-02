@@ -83,7 +83,11 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
 _SAMPLES = [
     ('barfoothefoobarman', ["foo", "bar"], 2),
     ("wordgoodgoodgoodbestword", ["word","good","best","word"], 0),
-    ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], 3)
+    ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], 3),
+    # test case #170
+    ("aaaaaaaaaaaaaa", ["aa","aa"], 11),
+    # test case #179
+    ("bcabbcaabbccacacbabccacaababcbb", ["c","b","a","c","a","a","a","b","c"], len([6,16,17,18,19,20]))
 ]
 
 
@@ -106,9 +110,25 @@ def add_whitespace(draw):
     s = (' ' * prefix_length) + s + (' ' * suffix_length)
     return (s, tokens, expected)
 
+@strategies.composite
+def permute_tokens(draw):
+    '''
+    A match should be able to begin anywhere in the input string.
+    '''
+    _, tokens, _ = draw(strategies.sampled_from(_SAMPLES))
+    permutation = draw(strategies.permutations(tokens))
+    return (''.join(permutation), tokens)
+
 @hypothesis.given(add_whitespace())
 # pylint: disable=C0116
 def test_with_whitespace(t):
     s, tokens, expected = t
     actual = find_concatenations(s, tokens)
     assert actual == expected
+
+@hypothesis.given(permute_tokens())
+# pylint: disable=C0116
+def test_permuted_tokens(t):
+    s, tokens = t
+    actual = find_concatenations(s, tokens)
+    assert actual == 1
