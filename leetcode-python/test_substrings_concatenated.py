@@ -16,6 +16,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
         positions = [m.start() for m in re.finditer(f"(?={tokens[0]})", s)]
         return len(positions)
     # All the tokens are the same length.
+    token_set = set(tokens)
     token_length = len(tokens[0])
     # We may be given only two tokens, and they might be equal.
     # So there's not much point in looking for the best token.
@@ -24,13 +25,12 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     anchor_positions = [m.start() for m in re.finditer(f"(?={anchor})", s)]
     # Group them by starting position % the token length.
     anchor_positions = itertools.groupby(anchor_positions, lambda i: i % token_length)
-    # This can simply be a list, right? 
     all_results = []
     # Todo go back and forth on either end.
     for remainder, positions in anchor_positions:
         results = []
-        # Slicing up the input is easier than lots of finicky substring matching. Get rid of 
-        # terminal tokens that are too short to match anyway.
+        # Slicing up the input is easier than lots of finicky substring matching. Get rid
+        # of terminal tokens that are too short to match anyway.
         sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
         counts = collections.Counter(tokens)
         # By definition, we've matched this token, so decrement the count.
@@ -38,44 +38,43 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
         if counts[anchor] == 0:
             counts.pop(anchor)
         for anchor_position in (p // token_length for p in positions):
-            last_match =  0 if not results else results[-1]
+            last_match = 0 if not results else results[-1]
             if anchor_position < last_match:
                 continue
             # Don't go any farther back than the highest solution so far.
-            for j in range(anchor_position - 1, max(results, default=0) // token_length, -1):
-                if sliced[j] not in counts:
+            for i in range(anchor_position - 1, max(results, default=0) // token_length, -1):
+                if sliced[i] not in counts:
                     break
-                counts[sliced[j]] -= 1
-                if counts[sliced[j]] == 0:
-                    counts.pop(sliced[j])
+                counts[sliced[i]] -= 1
+                if counts[sliced[i]] == 0:
+                    counts.pop(sliced[i])
                 if len(counts) == 0:
-                    results.add(j * token_length + remainder)
+                    results.append(i)
                     break
             # TODO How far back did we go?
-            for j in range(anchor_position + 1, 1, len(sliced)):
+            for j in range(anchor_position + 1, len(sliced), 1):
                 if sliced[j] not in counts:
                     break
                 counts[sliced[j]] -= 1
                 if counts[sliced[j]] == 0:
                     counts.pop(sliced[j])
                 if len(counts) == 0:
-                    results.add(j * token_length + remainder)
+                    results.append(i)
                     break
-            # TODO Add a third loop to subtract and tokens.
             if len(counts) > 0:
                 continue
-            for j in range(max(results) // token_length + 1, anchor_position, 1):
-                counts[sliced[j]] += 1
-                if sliced[j + len(tokens) - 1] in counts:
-                    counts[sliced[j]] -= 1
-                    if counts[sliced[j]] == 0:
-                        counts.pop(sliced[j])
+            for k in range(results[-1] // token_length + 1, anchor_position, 1):
+                counts[sliced[k]] += 1
+                if sliced[k + len(tokens) - 1] in counts:
+                    counts[sliced[k]] -= 1
+                    if counts[sliced[k]] == 0:
+                        counts.pop(sliced[k])
                     if len(counts) == 0:
-                        results.add(j * token_length + remainder)
+                        results.append(k)
                 else:
                     continue
-        # TODO: Translate these.
-        all_results += results          
+        # Translate these again.
+        all_results += [remainder + r * token_length for r in results]
 
     return len(all_results)
     
