@@ -4,9 +4,13 @@ https://leetcode.com/problems/substring-with-concatenation-of-all-words
 
 import collections
 import itertools
-import pytest
 import random
 import re
+
+import pytest
+import hypothesis
+from hypothesis import strategies
+from hypothesis import given
 
 
 def find_concatenations(s: str, tokens: list[str]) -> int:
@@ -32,47 +36,44 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
         # Slicing up the input is easier than lots of finicky substring matching. Get rid
         # of terminal tokens that are too short to match anyway.
         sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
-        counts = collections.Counter(tokens)
-        # By definition, we've matched this token, so decrement the count.
-        counts[anchor] -= 1
-        if counts[anchor] == 0:
-            counts.pop(anchor)
-        for anchor_position in (p // token_length for p in positions):
-            last_match = 0 if not results else results[-1]
-            if anchor_position < last_match:
+
+        for middle in (p // token_length for p in positions):
+            counts = collections.Counter(tokens)
+            # By definition, we've matched this token, so decrement the count.
+            counts[anchor] -= 1
+            if counts[anchor] == 0:
+                counts.pop(anchor)
+            last_match = -1 if not results else results[-1]
+            # This will happen in the event of two equal tokens.
+            if middle < last_match:
                 continue
             # Don't go any farther back than the highest solution so far.
-            for i in range(anchor_position - 1, max(results, default=0) // token_length, -1):
-                if sliced[i] not in counts:
-                    break
-                counts[sliced[i]] -= 1
-                if counts[sliced[i]] == 0:
-                    counts.pop(sliced[i])
-                if len(counts) == 0:
-                    results.append(i)
-                    break
-            # TODO How far back did we go?
-            for j in range(anchor_position + 1, len(sliced), 1):
+            lower_limit = max(last_match, middle - len(tokens))
+            i = middle
+            for j in range(middle - 1, lower_limit, -1):
                 if sliced[j] not in counts:
                     break
+                i = j
                 counts[sliced[j]] -= 1
                 if counts[sliced[j]] == 0:
                     counts.pop(sliced[j])
+            # This will only happen if we match every token.
+            if len(counts) == 0:
+                results.append(i)
+            # Now extend the window forward.
+            upper_limit = min(len(sliced), middle + len(tokens))
+            for k in range(middle + 1, upper_limit, 1):
+                if sliced[k] not in token_set:
+                    break
+                # Move the lower edge of the window.
+                if k - i == len(tokens):
+                    counts[sliced[i]] += 1
+                    i += 1
+                counts[sliced[k]] -= 1
+                if counts[sliced[k]] == 0:
+                    counts.pop(sliced[k])
                 if len(counts) == 0:
                     results.append(i)
-                    break
-            if len(counts) > 0:
-                continue
-            for k in range(results[-1] // token_length + 1, anchor_position, 1):
-                counts[sliced[k]] += 1
-                if sliced[k + len(tokens) - 1] in counts:
-                    counts[sliced[k]] -= 1
-                    if counts[sliced[k]] == 0:
-                        counts.pop(sliced[k])
-                    if len(counts) == 0:
-                        results.append(k)
-                else:
-                    continue
         # Translate these again.
         all_results += [remainder + r * token_length for r in results]
 
@@ -91,5 +92,23 @@ def test_samples(s: str, tokens: list[str], expected: int):
     '''
     Test samples and test cases from Leetcode.
     '''
+    actual = find_concatenations(s, tokens)
+    assert actual == expected
+
+@strategies.composite
+def add_whitespace(draw):
+    '''
+    A match should be able to begin anywhere in the input string.
+    '''
+    s, tokens, expected = draw(strategies.sampled_from(_SAMPLES))
+    prefix_length = draw(strategies.integers(min_value=0, max_value=len(tokens[0])))
+    suffix_length = draw(strategies.integers(min_value=0, max_value=len(tokens[0])))
+    s = (' ' * prefix_length) + s + (' ' * suffix_length)
+    return (s, tokens, expected)
+
+@hypothesis.given(add_whitespace())
+# pylint: disable=C0116
+def test_with_whitespace(t):
+    s, tokens, expected = t
     actual = find_concatenations(s, tokens)
     assert actual == expected
