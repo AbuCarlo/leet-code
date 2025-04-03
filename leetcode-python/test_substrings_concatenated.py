@@ -39,14 +39,16 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     anchor_positions = list(find_all_overlapping(anchor))
     # Group them by starting position % the token length.
     all_results = []
-    # Todo go back and forth on either end.
+    # Read: https://docs.python.org/3/library/itertools.html#itertools.groupby
+    anchor_positions.sort(key=lambda p: p % token_length)
     for remainder, positions in itertools.groupby(anchor_positions, lambda i: i % token_length):
+        blah = list(positions)
         results = []
         # Slicing up the input is easier than lots of finicky substring matching. Get rid
         # of terminal tokens that are too short to match anyway.
         sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
 
-        for middle in (p // token_length for p in positions):
+        for middle in (p // token_length for p in blah):
             counts = collections.Counter(tokens)
             # By definition, we've matched this token, so decrement the count.
             counts[anchor] -= 1
@@ -88,6 +90,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
         # Translate these again.
         all_results += [remainder + r * token_length for r in results]
 
+    all_results.sort()
     return all_results
 
 _SAMPLES = [
@@ -95,7 +98,7 @@ _SAMPLES = [
     ("wordgoodgoodgoodbestword", ["word","good","best","word"], []),
     ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], [6, 9, 12]),
     # test case #170
-    ("aaaaaaaaaaaaaa", ["aa","aa"], list(range(12))),
+    ("aaaaaaaaaaaaaa", ["aa","aa"], list(range(11))),
     # test case #179
     ("bcabbcaabbccacacbabccacaababcbb", ["c","b","a","c","a","a","a","b","c"], [6,16,17,18,19,20])
 ]
