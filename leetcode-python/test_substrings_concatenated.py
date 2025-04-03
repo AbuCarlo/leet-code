@@ -5,20 +5,30 @@ https://leetcode.com/problems/substring-with-concatenation-of-all-words
 import collections
 import itertools
 import random
-import re
+import typing
 
 import pytest
 import hypothesis
 from hypothesis import strategies
-from hypothesis import given
 
 
 def find_concatenations(s: str, tokens: list[str]) -> int:
-    # This is allowed by the problem definition.
-    # TODO: Let the rest of the code handle this edge case.
-    if len(tokens) == 1:
-        positions = [m.start() for m in re.finditer(f"(?={tokens[0]})", s)]
-        return len(positions)
+    '''
+    :param s: a string to search
+    :param tokens: tokens, not necessarily unique
+    :returns: the starting indices of every substring that is the
+    concatenation of all the tokens
+    '''
+
+    def find_all_overlapping(token: str) -> typing.Iterator[int]:
+        start = 0
+        while True:
+            i = s.find(token, start)
+            if i == -1:
+                break
+            yield i
+            start = i + 1
+
     # All the tokens are the same length.
     token_set = set(tokens)
     token_length = len(tokens[0])
@@ -26,12 +36,11 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     # So there's not much point in looking for the best token.
     anchor = random.choice(tokens)
     # Hat-tip to https://stackoverflow.com/a/4664889/476942
-    anchor_positions = [m.start() for m in re.finditer(f"(?={anchor})", s)]
+    anchor_positions = list(find_all_overlapping(anchor))
     # Group them by starting position % the token length.
-    anchor_positions = itertools.groupby(anchor_positions, lambda i: i % token_length)
     all_results = []
     # Todo go back and forth on either end.
-    for remainder, positions in anchor_positions:
+    for remainder, positions in itertools.groupby(anchor_positions, lambda i: i % token_length):
         results = []
         # Slicing up the input is easier than lots of finicky substring matching. Get rid
         # of terminal tokens that are too short to match anyway.
@@ -60,6 +69,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
             # This will only happen if we match every token.
             if len(counts) == 0:
                 results.append(i)
+                last_match = i
             # Now extend the window forward.
             upper_limit = min(len(sliced), middle + len(tokens))
             for k in range(middle + 1, upper_limit, 1):
@@ -74,20 +84,20 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                     counts.pop(sliced[k])
                 if len(counts) == 0:
                     results.append(i)
+                    last_match = i
         # Translate these again.
         all_results += [remainder + r * token_length for r in results]
 
-    return len(all_results)
-    
+    return all_results
 
 _SAMPLES = [
-    ('barfoothefoobarman', ["foo", "bar"], 2),
-    ("wordgoodgoodgoodbestword", ["word","good","best","word"], 0),
-    ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], 3),
+    ('barfoothefoobarman', ["foo", "bar"], [0, 9]),
+    ("wordgoodgoodgoodbestword", ["word","good","best","word"], []),
+    ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], [6, 9, 12]),
     # test case #170
-    ("aaaaaaaaaaaaaa", ["aa","aa"], 11),
+    ("aaaaaaaaaaaaaa", ["aa","aa"], list(range(12))),
     # test case #179
-    ("bcabbcaabbccacacbabccacaababcbb", ["c","b","a","c","a","a","a","b","c"], len([6,16,17,18,19,20]))
+    ("bcabbcaabbccacacbabccacaababcbb", ["c","b","a","c","a","a","a","b","c"], [6,16,17,18,19,20])
 ]
 
 
