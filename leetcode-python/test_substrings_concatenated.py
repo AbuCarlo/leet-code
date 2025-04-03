@@ -35,7 +35,6 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     # We may be given only two tokens, and they might be equal.
     # So there's not much point in looking for the best token.
     anchor = random.choice(tokens)
-    # Hat-tip to https://stackoverflow.com/a/4664889/476942
     anchor_positions = list(find_all_overlapping(anchor))
     # Group them by starting position % the token length.
     all_results = []
@@ -93,6 +92,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     all_results.sort()
     return all_results
 
+
 _SAMPLES = [
     ('barfoothefoobarman', ["foo", "bar"], [0, 9]),
     ("wordgoodgoodgoodbestword", ["word","good","best","word"], []),
@@ -112,6 +112,7 @@ def test_samples(s: str, tokens: list[str], expected: int):
     actual = find_concatenations(s, tokens)
     assert actual == expected
 
+
 @strategies.composite
 def add_whitespace(draw):
     '''
@@ -123,6 +124,7 @@ def add_whitespace(draw):
     s = (' ' * prefix_length) + s + (' ' * suffix_length)
     return (s, tokens, expected)
 
+
 @strategies.composite
 def permute_tokens(draw):
     '''
@@ -132,12 +134,15 @@ def permute_tokens(draw):
     permutation = draw(strategies.permutations(tokens))
     return (''.join(permutation), tokens)
 
+
 @hypothesis.given(add_whitespace())
 # pylint: disable=C0116
 def test_with_whitespace(t):
     s, tokens, expected = t
     actual = find_concatenations(s, tokens)
     assert actual == expected
+
+# TODO: Modify to just take whitespace as argument.
 
 @hypothesis.given(permute_tokens())
 # pylint: disable=C0116
