@@ -3,87 +3,76 @@ https://leetcode.com/problems/substring-with-concatenation-of-all-words
 '''
 
 import collections
-import itertools
 import random
-import re
+import typing
 
 import pytest
 import hypothesis
 from hypothesis import strategies
-from hypothesis import given
 
 
-def find_concatenations(s: str, tokens: list[str]) -> int:
-    # This is allowed by the problem definition.
-    # TODO: Let the rest of the code handle this edge case.
-    if len(tokens) == 1:
-        positions = [m.start() for m in re.finditer(f"(?={tokens[0]})", s)]
-        return len(positions)
-    # All the tokens are the same length.
-    token_set = set(tokens)
-    token_length = len(tokens[0])
-    # We may be given only two tokens, and they might be equal.
-    # So there's not much point in looking for the best token.
+def find_concatenations(s: str, tokens: typing.List[str]) -> int:
+    '''
+    :param s: a string to search
+    :param tokens: tokens, not necessarily unique
+    :returns: the starting indices of every substring that is the
+    concatenation of all the tokens
+    '''
+
+    def find_all_overlapping(token: str) -> typing.Iterator[int]:
+        start = 0
+        while True:
+            i = s.find(token, start)
+            if i == -1:
+                break
+            yield i
+            start = i + 1
+
     anchor = random.choice(tokens)
-    # Hat-tip to https://stackoverflow.com/a/4664889/476942
-    anchor_positions = [m.start() for m in re.finditer(f"(?={anchor})", s)]
+    anchor_positions = list(find_all_overlapping(anchor))
+    # All the tokens are the same length.
+    token_counter = collections.Counter(tokens)
+    token_length = len(tokens[0])
     # Group them by starting position % the token length.
-    anchor_positions = itertools.groupby(anchor_positions, lambda i: i % token_length)
+    token_shifts = list(set(p % token_length for p in anchor_positions))
     all_results = []
-    # Todo go back and forth on either end.
-    for remainder, positions in anchor_positions:
+
+    for shift in token_shifts:
         results = []
-        # Slicing up the input is easier than lots of finicky substring matching. Get rid
-        # of terminal tokens that are too short to match anyway.
-        sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
-
-        for middle in (p // token_length for p in positions):
-            counts = collections.Counter(tokens)
-            # By definition, we've matched this token, so decrement the count.
-            counts[anchor] -= 1
-            if counts[anchor] == 0:
-                counts.pop(anchor)
-            last_match = -1 if not results else results[-1]
-            # This will happen in the event of two equal tokens.
-            if middle < last_match:
+        # Slicing up the input is easier than lots of finicky substring matching.
+        sliced = [s[i:i + token_length] for i in range(shift, len(s), token_length) if len(s) - i >= token_length]
+        counter = collections.Counter(token_counter)
+        match_size = 0
+        for i, sl in enumerate(sliced):
+            if sl not in token_counter:
+                # Start again after this token.
+                counter = collections.Counter(token_counter)
+                match_size = 0
                 continue
-            # Don't go any farther back than the highest solution so far.
-            lower_limit = max(last_match, middle - len(tokens))
-            i = middle
-            for j in range(middle - 1, lower_limit, -1):
-                if sliced[j] not in counts:
-                    break
-                i = j
-                counts[sliced[j]] -= 1
-                if counts[sliced[j]] == 0:
-                    counts.pop(sliced[j])
-            # This will only happen if we match every token.
-            if len(counts) == 0:
-                results.append(i)
-            # Now extend the window forward.
-            upper_limit = min(len(sliced), middle + len(tokens))
-            for k in range(middle + 1, upper_limit, 1):
-                if sliced[k] not in token_set:
-                    break
-                # Move the lower edge of the window.
-                if k - i == len(tokens):
-                    counts[sliced[i]] += 1
-                    i += 1
-                counts[sliced[k]] -= 1
-                if counts[sliced[k]] == 0:
-                    counts.pop(sliced[k])
-                if len(counts) == 0:
-                    results.append(i)
-        # Translate these again.
-        all_results += [remainder + r * token_length for r in results]
+            if i - len(tokens) >= 0 and match_size == len(tokens):
+                discard = sliced[i - len(tokens)]
+                counter[discard] += 1
+                match_size -= 1
+            # If a count becomes negative, we have too many of this token.
+            # The only to fix that is to go back and eliminate the first
+            # one in the current match we're working on.
+            counter[sl] -= 1
+            match_size += 1
+            if counter[sl] == 0:
+                counter.pop(sl)
+                if not counter:
+                    results.append(i - len(tokens) + 1)
+        all_results += [i * token_length + shift for i in results]
 
-    return len(all_results)
-    
+
+
+    return all_results
+
 
 _SAMPLES = [
-    ('barfoothefoobarman', ["foo", "bar"], 2),
-    ("wordgoodgoodgoodbestword", ["word","good","best","word"], 0),
-    ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], 3),
+    ('barfoothefoobarman', ["foo", "bar"], [0, 9]),
+    ("wordgoodgoodgoodbestword", ["word","good","best","word"], []),
+    ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], [6, 9, 12]),
     # test case #170
     ("aaaaaaaaaaaaaa", ["aa","aa"], 11),
     # test case #179
