@@ -23,11 +23,11 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     def find_all_overlapping(token: str) -> typing.Iterator[int]:
         start = 0
         while True:
-            i = s.find(token, start)
-            if i == -1:
+            start = s.find(token, start)
+            if start == -1:
                 break
-            yield i
-            start = i + 1
+            yield start
+            start += 1
 
     # All the tokens are the same length.
     token_set = set(tokens)
@@ -55,7 +55,7 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                 counts.pop(anchor)
             last_match = -1 if not results else results[-1]
             # This will happen in the event of two equal tokens.
-            if middle < last_match:
+            if middle <= last_match:
                 continue
             # Don't go any farther back than the highest solution so far.
             lower_limit = max(last_match, middle - len(tokens))
@@ -80,6 +80,9 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                 if k - i == len(tokens):
                     counts[sliced[i]] += 1
                     i += 1
+                # This is wrong, but it's part of the way there.
+                if sliced[k] not in counts:
+                    break
                 counts[sliced[k]] -= 1
                 if counts[sliced[k]] == 0:
                     counts.pop(sliced[k])
