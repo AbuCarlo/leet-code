@@ -79,6 +79,8 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                 # Move the lower edge of the window.
                 if k - i == len(tokens):
                     counts[sliced[i]] += 1
+                    if counts[sliced[i]] == 0:
+                        counts.pop(sliced[i])
                     i += 1
                 # This is wrong, but it's part of the way there.
                 if sliced[k] not in counts:
