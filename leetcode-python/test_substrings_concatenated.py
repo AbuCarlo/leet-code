@@ -31,6 +31,11 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
 
     # All the tokens are the same length.
     token_set = set(tokens)
+    # Several test cases time out when there's only 1 token value, 
+    # esp. a very short one.
+    if len(token_set) == 1:
+        token = tokens[0] * len(tokens)
+        return list(find_all_overlapping(token))
     token_length = len(tokens[0])
     # We may be given only two tokens, and they might be equal.
     # So there's not much point in looking for the best token.
@@ -102,10 +107,17 @@ _SAMPLES = [
     ('barfoothefoobarman', ["foo", "bar"], [0, 9]),
     ("wordgoodgoodgoodbestword", ["word","good","best","word"], []),
     ("barfoofoobarthefoobarman", ['bar', 'foo', 'the'], [6, 9, 12]),
+    # test case #168
+    ('a', ["a","a"], []),
     # test case #170
     ("aaaaaaaaaaaaaa", ["aa","aa"], list(range(11))),
+    # test case #177
+    ("abbaccaaabcabbbccbabbccabbacabcacbbaabbbbbaaabaccaacbccabcbababbbabccabacbbcabbaacaccccbaabcabaabaaaabcaabcacabaa", ["cac","aaa","aba","aab","abc"]
+, [97]),
     # test case #179
-    ("bcabbcaabbccacacbabccacaababcbb", ["c","b","a","c","a","a","a","b","c"], [6,16,17,18,19,20])
+    ("bcabbcaabbccacacbabccacaababcbb", ["c","b","a","c","a","a","a","b","c"], [6,16,17,18,19,20]),
+    # test case #181
+    ("acccaccaa", ["aa","cc","ca"], [3])
 ]
 
 
@@ -154,4 +166,4 @@ def test_with_whitespace(t):
 def test_permuted_tokens(t):
     s, tokens = t
     actual = find_concatenations(s, tokens)
-    assert actual == 1
+    assert len(actual) == 1
