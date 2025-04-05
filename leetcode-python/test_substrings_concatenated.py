@@ -57,53 +57,33 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
     # So there's not much point in looking for the best token.
     anchor = random.choice(tokens)
     anchor_positions = list(find_all_overlapping(anchor))
-    # Group them by starting position % the token length.
+
     all_results = []
-    # Read: https://docs.python.org/3/library/itertools.html#itertools.groupby
-    anchor_positions.sort(key=lambda p: p % token_length)
-    for remainder, positions in itertools.groupby(anchor_positions, lambda i: i % token_length):
-        blah = list(positions)
+
+    for remainder in set(p % token_length for p in anchor_positions):
+
         results = []
         # Slicing up the input is easier than lots of finicky substring matching. Get rid
         # of terminal tokens that are too short to match anyway.
         sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
 
-        for middle in (p // token_length for p in blah):
-            counts = ZeroingCount(tokens)
-            # By definition, we've matched this token, so decrement the count.
-            counts[anchor] -= 1
-            last_match = -1 if not results else results[-1]
-            # This will happen in the event of two equal tokens.
-            if middle <= last_match:
+        r = 0
+
+        counts = ZeroingCount(tokens)
+
+        for l, sl in enumerate(sliced):
+            if sl not in token_set:
+                r = l + 1
+                counts = ZeroingCount(tokens)
                 continue
-            # Don't go any farther back than the highest solution so far.
-            lower_limit = max(last_match, middle - len(tokens))
-            i = middle
-            for j in range(middle - 1, lower_limit, -1):
-                if sliced[j] not in counts:
-                    break
-                i = j
-                counts[sliced[j]] -= 1
-            # This will only happen if we match every token.
-            if len(counts) == 0:
-                results.append(i)
-                last_match = i
-            # Now extend the window forward.
-            upper_limit = min(len(sliced), middle + len(tokens))
-            for k in range(middle + 1, upper_limit, 1):
-                if sliced[k] not in token_set:
-                    break
-                # Move the lower edge of the window.
-                if k - i == len(tokens):
-                    counts[sliced[i]] += 1
-                    i += 1
-                # This is wrong, but it's part of the way there.
-                if sliced[k] not in counts:
-                    break
-                counts[sliced[k]] -= 1
-                if len(counts) == 0:
-                    results.append(i)
-                    last_match = i
+
+            counts[sl] -= 1
+            if l - r == len(tokens):
+                counts[sliced[r]] += 1
+                r += 1
+            if not counts:
+                results.append(r)
+
         # Translate these again.
         all_results += [remainder + r * token_length for r in results]
 
