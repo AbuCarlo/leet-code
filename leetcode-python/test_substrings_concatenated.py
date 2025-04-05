@@ -78,11 +78,11 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                 continue
 
             counts[sl] -= 1
-            if l - r + 1 == len(tokens):
-                counts[sliced[r]] -= 1
+            if l - r == len(tokens):
+                counts[sliced[r]] += 1
+                r += 1
             if not counts:
                 results.append(r)
-            r += 1
 
         # Translate these again.
         all_results += [remainder + r * token_length for r in results]
