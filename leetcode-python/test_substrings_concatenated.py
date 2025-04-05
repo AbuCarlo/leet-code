@@ -11,6 +11,22 @@ import pytest
 import hypothesis
 from hypothesis import strategies
 
+class ZeroingCount(collections.Counter):
+    '''
+    This class encapsulates the logic of a sliding count. If any count
+    becomes 0, the key is deleted. An empty counter means that the current
+    window contains a permutation of the input tokens.
+    '''
+
+    # We don't need to override the constructor, since the initial
+    # values will not include 0s.
+
+    def __setitem__(self, key, value):
+        if value == 0:
+            self.pop(key)
+        else:
+            super().__setitem__(key, value)
+
 
 def find_concatenations(s: str, tokens: list[str]) -> int:
     '''
@@ -53,11 +69,9 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
         sliced = [s[i:i + token_length] for i in range(remainder, len(s), token_length) if len(s) - i >= token_length]
 
         for middle in (p // token_length for p in blah):
-            counts = collections.Counter(tokens)
+            counts = ZeroingCount(tokens)
             # By definition, we've matched this token, so decrement the count.
             counts[anchor] -= 1
-            if counts[anchor] == 0:
-                counts.pop(anchor)
             last_match = -1 if not results else results[-1]
             # This will happen in the event of two equal tokens.
             if middle <= last_match:
@@ -70,8 +84,6 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                     break
                 i = j
                 counts[sliced[j]] -= 1
-                if counts[sliced[j]] == 0:
-                    counts.pop(sliced[j])
             # This will only happen if we match every token.
             if len(counts) == 0:
                 results.append(i)
@@ -84,15 +96,11 @@ def find_concatenations(s: str, tokens: list[str]) -> int:
                 # Move the lower edge of the window.
                 if k - i == len(tokens):
                     counts[sliced[i]] += 1
-                    if counts[sliced[i]] == 0:
-                        counts.pop(sliced[i])
                     i += 1
                 # This is wrong, but it's part of the way there.
                 if sliced[k] not in counts:
                     break
                 counts[sliced[k]] -= 1
-                if counts[sliced[k]] == 0:
-                    counts.pop(sliced[k])
                 if len(counts) == 0:
                     results.append(i)
                     last_match = i
