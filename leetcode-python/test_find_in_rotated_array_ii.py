@@ -2,12 +2,11 @@
 https://leetcode.com/problems/search-in-rotated-sorted-array-ii
 '''
 
+import bisect
 from typing import List
 
-import bisect
-
 import hypothesis
-import hypothesis.strategies
+from hypothesis import strategies
 import pytest
 
 
@@ -71,7 +70,7 @@ def test_test_cases(l, n, expected):
     assert actual == expected
 
 
-@hypothesis.strategies.composite
+@strategies.composite
 def rotated_arrays(draw):
     '''
     The implementation should work for any two sorted arrays of integers.
@@ -79,11 +78,11 @@ def rotated_arrays(draw):
     '''
     # The range of integers is irrelevant to the problem. A smaller range is better,
     # because we want to make sure that we can handle consecutive equal integers.
-    a = draw(hypothesis.strategies.lists(hypothesis.strategies.integers(min_value=0, max_value=20), min_size=1, max_size=5000))
+    a = draw(strategies.lists(strategies.integers(min_value=0, max_value=20), min_size=1, max_size=5000))
     a.sort()
     # Select an array index for rotation. The description is wrong: the pivot index might have been 0.
-    rotation = draw(hypothesis.strategies.integers(min_value=0, max_value=max(1, len(a) - 2)))
-    target = draw(hypothesis.strategies.integers(min_value=-1, max_value=25))
+    rotation = draw(strategies.integers(min_value=0, max_value=max(1, len(a) - 2)))
+    target = draw(strategies.integers(min_value=-1, max_value=25))
     expected = target in a
     a = a[rotation:] + a[0:rotation]
 
