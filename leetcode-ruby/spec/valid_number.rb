@@ -11,8 +11,11 @@
 # A dot '.' followed by digits.
 
 def is_number(s)
-  if s =~ /^[eE]\d+$/
-    s =
+  exponent = s =~ /e\d+\z/i
+  if exponent
+    s = s[0...exponent]
   end
+
+  is_integer(s) || is_decimal(s)
 
 end
