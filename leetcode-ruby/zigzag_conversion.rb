@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 def convert(s, num_rows)
-  if num_rows == 1
-    return s
-  end
+  return s if num_rows == 1
+
   modulus = 2 * num_rows - 2
   result = [''] * num_rows
   s.each_char.with_index do |c, i|
