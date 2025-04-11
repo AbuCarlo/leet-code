@@ -1,4 +1,6 @@
 '''
+https://leetcode.com/problems/3sum-closest/
+
 "Given an integer array nums of length n and an integer target, 
 find three integers in nums such that the sum is closest to target.
 
@@ -13,7 +15,8 @@ import bisect
 import pytest
 
 def three_sum_closest(a: list[int], target: int) -> int:
-    delta = target - sum(a[-2:])
+    a.sort()
+    delta = target - sum(a[-3:])
     l, r = 0, len(a) - 1
     rightward = True
     while r - l >= 2:
@@ -23,10 +26,10 @@ def three_sum_closest(a: list[int], target: int) -> int:
             return target
         if i > l:
             if abs(delta) > abs(t - a[i]):
-                delta = target - a[l] - a[r] - a[i]
+                delta = t - a[i]
         if i < r:
             if abs(delta) > abs(t - a[i]):
-                delta = target - a[l] - a[r] - a[i]
+                delta = t - a[i]
         # Which index do we increment / decrement?
         if rightward:
             l += 1
@@ -38,7 +41,11 @@ def three_sum_closest(a: list[int], target: int) -> int:
 
 _SAMPLES = [
     ([-1, 2, 1, -4], 1, 2),
-    ([0, 0, 0], 1, 0)
+    ([0, 0, 0], 1, 0),
+    # test case 29
+    ([1, 1, -1], 2, 1),
+    # test case 63
+    ([10,20,30,40,50,60,70,80,90], 1, 60)
 ]
 
 @pytest.mark.parametrize("a,target,expected", _SAMPLES)
