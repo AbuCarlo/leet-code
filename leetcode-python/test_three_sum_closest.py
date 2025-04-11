@@ -13,19 +13,28 @@ import bisect
 import pytest
 
 def three_sum_closest(a: list[int], target: int) -> int:
-    result = sum(a[-2:])
+    delta = target - sum(a[-2:])
     l, r = 0, len(a) - 1
+    rightward = True
     while r - l >= 2:
         t = target - a[l] - a[r]
         i = bisect.bisect_left(a, t, l + 1, r - 1)
         if a[i] == t:
             return target
         if i > l:
-            result = min(result, target - (t - a[i]))
+            if abs(delta) > abs(t - a[i]):
+                delta = target - a[l] - a[r] - a[i]
         if i < r:
-            result = min(result, target - (t - a[i]))
+            if abs(delta) > abs(t - a[i]):
+                delta = target - a[l] - a[r] - a[i]
         # Which index do we increment / decrement?
-    return result
+        if rightward:
+            l += 1
+        else:
+            r -= 1
+        rightward = not rightward
+            
+    return target - delta
 
 _SAMPLES = [
     ([-1, 2, 1, -4], 1, 2),
