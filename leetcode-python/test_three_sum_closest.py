@@ -26,8 +26,8 @@ def three_sum_closest(a: list[int], target: int) -> int:
         if abs(t - target) < abs(result - target):
             result = t
 
-    forward = True
     l, r = 0, len(a) - 1
+    forward = True
     while r - l > 1:
         t = target - a[l] - a[r]
         m = bisect.bisect_left(a, t, l + 1, r - 1)
