@@ -16,28 +16,26 @@ import pytest
 
 def three_sum_closest(a: list[int], target: int) -> int:
     a.sort()
-    delta = target - sum(a[-3:])
-    l, r = 0, len(a) - 1
-    rightward = True
-    while r - l >= 2:
-        t = target - a[l] - a[r]
-        i = bisect.bisect_left(a, t, l + 1, r - 1)
-        if a[i] == t:
-            return target
-        if i > l:
-            if abs(delta) > abs(t - a[i]):
-                delta = t - a[i]
-        if i < r:
-            if abs(delta) > abs(t - a[i]):
-                delta = t - a[i]
-        # Which index do we increment / decrement?
-        if rightward:
-            l += 1
-        else:
-            r -= 1
-        rightward = not rightward
-            
-    return target - delta
+    # Just pick a value to beat.
+    result = sum(a[:3])
+
+    def test_m(l, m, r):
+        nonlocal result
+        t = a[l] + a[m] + a[r]
+        if abs(t - target) < abs(result - target):
+            result = t
+
+    for l in range(len(a) - 2):
+        for r in range(l + 2, len(a)):
+            t = target - a[l] - a[r]
+            m = bisect.bisect_left(a, t, l + 1, r)
+            # See the documention for bisect.
+            if m > l:
+                test_m(l, m, r)
+            if m < r:
+                test_m(l, m, r)
+
+    return result
 
 _SAMPLES = [
     ([-1, 2, 1, -4], 1, 2),
