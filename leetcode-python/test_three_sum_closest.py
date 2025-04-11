@@ -26,19 +26,17 @@ def three_sum_closest(a: list[int], target: int) -> int:
         if abs(t - target) < abs(result - target):
             result = t
 
-    l, r = 0, len(a) - 1
-    while r - l > 1:
-        t = target - a[l] - a[r]
-        m = bisect.bisect_left(a, t, l + 1, r - 1)
-        if m - 1 > l:
-            test_m(l, m - 1, r)
-        test_m(l, m, r)
-        if result == target:
-            return target
-        if result < target:
-            l += 1
-        else:
-            r -= 1
+    for l in range(len(a) - 2):
+        for m in range(l + 1, len(a) - 1):
+            t = target - a[l] - a[m]
+            r = bisect.bisect_left(a, t, m + 1)
+            if r - 1 > m:
+                test_m(l, m, r - 1)
+            if r < len(a):
+                test_m(l, m, r)
+            if result == target:
+                return target
+
 
     return result
 
