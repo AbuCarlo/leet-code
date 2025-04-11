@@ -45,7 +45,7 @@ _SAMPLES = [
     # test case 29
     ([1, 1, -1], 2, 1),
     # test case 63
-    ([10,20,30,40,50,60,70,80,90], 1, 60)
+    ([10, 20, 30, 40, 50, 60, 70, 80, 90], 1, 60)
 ]
 
 @pytest.mark.parametrize("a,target,expected", _SAMPLES)
