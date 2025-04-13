@@ -26,10 +26,11 @@ def three_sum_closest(a: list[int], target: int) -> int:
         if abs(t - target) < abs(result - target):
             result = t
 
+    r = len(a)
     for l in range(len(a) - 2):
         for m in range(l + 1, len(a) - 1):
             t = target - a[l] - a[m]
-            r = bisect.bisect_left(a, t, m + 1)
+            r = bisect.bisect_left(a, t, m + 1, r)
             if r - 1 > m:
                 test_m(l, m, r - 1)
             if r < len(a):
@@ -51,10 +52,12 @@ _SAMPLES = [
     ([2, 5, 6, 7], 16, 15),
     # test case 70
     ([1, 1, 1, 0], 100, 3),
-    # test case 103
+    # test case 103?
     ([0, 3, 97, 102, 200], 300, 300),
     # test case 63
-    ([4, 0, 5, -5, 3, 3, 0, -4, -5], -2, -2)
+    ([4, 0, 5, -5, 3, 3, 0, -4, -5], -2, -2),
+    # test case 103
+    ([-1000,-5,-5,-5,-5,-5,-5,-1,-1,-1], -8, -7)
 ]
 
 @pytest.mark.parametrize("a,target,expected", _SAMPLES)
