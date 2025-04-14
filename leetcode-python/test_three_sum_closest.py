@@ -15,6 +15,11 @@ import bisect
 import pytest
 
 def three_sum_closest(a: list[int], target: int) -> int:
+    '''
+    This implementation uses two indices, the binary
+    search to find the best third value in the tail of the 
+    array. Its performance is, inevitably, O(n^2 * log n).
+    '''
     a.sort()
     # Just pick a value to beat.
     result = sum(a[:3])
@@ -45,6 +50,31 @@ def three_sum_closest(a: list[int], target: int) -> int:
 
     return result
 
+def three_sum_closest_alt(nums: list[int], target: int) -> int:
+    """
+    :type nums: List[int]
+    :type target: int
+    :rtype: int
+    """
+    nums.sort()
+    closest_sum = float('inf')
+    
+    for i in range(len(nums) - 2):
+        left, right = i + 1, len(nums) - 1
+        while left < right:
+            current_sum = nums[i] + nums[left] + nums[right]
+            if abs(current_sum - target) < abs(closest_sum - target):
+                closest_sum = current_sum
+            if current_sum < target:
+                left += 1
+            elif current_sum > target:
+                right -= 1
+            else:
+                return current_sum
+    
+    return closest_sum
+
+
 _SAMPLES = [
     ([-1, 2, 1, -4], 1, 2),
     ([0, 0, 0], 1, 0),
@@ -71,3 +101,17 @@ def test_samples(a, target, expected):
     '''
     actual = three_sum_closest(a, target)
     assert actual == expected
+
+@pytest.mark.parametrize("a,target,expected", _SAMPLES)
+def test_samples_benchmark(benchmark, a, target, expected):
+    '''
+    Apply samples from LeetCode
+    '''
+    benchmark(three_sum_closest, a, target)
+
+@pytest.mark.parametrize("a,target,expected", _SAMPLES)
+def test_samples_benchmark_alt(benchmark, a, target, expected):
+    '''
+    Apply samples from LeetCode
+    '''
+    benchmark(three_sum_closest_alt, a, target)
