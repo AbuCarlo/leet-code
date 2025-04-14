@@ -26,10 +26,14 @@ def three_sum_closest(a: list[int], target: int) -> int:
         if abs(t - target) < abs(result - target):
             result = t
 
-    r = len(a)
+    # l, m, and r stand for left, middle, right.
     for l in range(len(a) - 2):
+        r = len(a)
         for m in range(l + 1, len(a) - 1):
             t = target - a[l] - a[m]
+            # As the other two indexes increase, r must 
+            # decrease. So we make the previous value of
+            # r the upper bound for the next binary search.
             r = bisect.bisect_left(a, t, m + 1, r)
             if r - 1 > m:
                 test_m(l, m, r - 1)
