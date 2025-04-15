@@ -26,7 +26,7 @@ def three_sum_closest(a: list[int], target: int) -> int:
 
     def test_m(l, m, r):
         nonlocal result
-        assert m > l and m < r
+        assert l < m < r
         t = a[l] + a[m] + a[r]
         if abs(t - target) < abs(result - target):
             result = t
@@ -36,7 +36,7 @@ def three_sum_closest(a: list[int], target: int) -> int:
         r = len(a)
         for m in range(l + 1, len(a) - 1):
             t = target - a[l] - a[m]
-            # As the other two indexes increase, r must 
+            # As the other two indexes increase, r must
             # decrease. So we make the previous value of
             # r the upper bound for the next binary search.
             r = bisect.bisect_left(a, t, m + 1, r)
