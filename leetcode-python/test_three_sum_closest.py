@@ -52,14 +52,16 @@ def three_sum_closest(a: list[int], target: int) -> int:
 
 def three_sum_closest_alt(nums: list[int], target: int) -> int:
     """
-    :type nums: List[int]
-    :type target: int
-    :rtype: int
+    I plagiarized this implementation from another contributor.
+    Its performance is O(n^2), significantly better.
     """
     nums.sort()
-    closest_sum = float('inf')
-    
+    closest_sum = sum(nums[:3])
+
+    # One iterator:
     for i in range(len(nums) - 2):
+        # Two more iterators, but one is incremented or
+        # decremented on every iteration, until they meet.
         left, right = i + 1, len(nums) - 1
         while left < right:
             current_sum = nums[i] + nums[left] + nums[right]
@@ -71,7 +73,7 @@ def three_sum_closest_alt(nums: list[int], target: int) -> int:
                 right -= 1
             else:
                 return current_sum
-    
+
     return closest_sum
 
 
@@ -103,14 +105,22 @@ def test_samples(a, target, expected):
     assert actual == expected
 
 @pytest.mark.parametrize("a,target,expected", _SAMPLES)
-def test_samples_benchmark(benchmark, a, target, expected):
+def test_samples_alt(a, target, expected):
+    '''
+    Apply samples from LeetCode
+    '''
+    actual = three_sum_closest_alt(a, target)
+    assert actual == expected
+
+@pytest.mark.parametrize("a,target", [t[:2] for t in _SAMPLES])
+def test_samples_benchmark(benchmark, a, target):
     '''
     Apply samples from LeetCode
     '''
     benchmark(three_sum_closest, a, target)
 
-@pytest.mark.parametrize("a,target,expected", _SAMPLES)
-def test_samples_benchmark_alt(benchmark, a, target, expected):
+@pytest.mark.parametrize("a,target", [t[:2] for t in _SAMPLES])
+def test_samples_benchmark_alt(benchmark, a, target):
     '''
     Apply samples from LeetCode
     '''
