@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# https://leetcode.com/problems/zigzag-conversion/description/
 def convert(s, num_rows)
   return s if num_rows == 1
 
