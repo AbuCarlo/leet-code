@@ -13,6 +13,13 @@ def good_triplets(l: List[int], r: List[int]) -> int:
     count by iterating over the array, and adding each
     value to a min-heap. Whenever a new value a[i] becomes
     the new min (i.e. there are no preceding smaller values),
-    a[i] can only be the _first_ value of a good triplet.
-
+    a[i] can only be the first value of a good triplet.
+    a[1] is an edge case: it clearly cannot be the last
+    value in a good triplet. By similar reasoning, whenever
+    a value a[i] becomes the new maximum in a max-heap,
+    it can be only the last value in a good triplet.
     '''
+    assert len(l) == len(r)
+    if len(l) < 3:
+        return 0
+    
