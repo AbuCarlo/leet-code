@@ -20,7 +20,10 @@
 # Digits followed by a dot '.' followed by digits.
 # A dot '.' followed by digits.
 
+# rubocop:disable Naming/PredicateName
+# I'm disabling this rule because Leetcode has already chosen the method name.
 def is_number(s)
+  # rubocop:enable Naming/PredicateName
   # Can an exponent have leading 0s?
   exponent = s =~ /e[+-]?\d+\z/i
   s = s[0...exponent] if exponent
