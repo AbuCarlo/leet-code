@@ -22,4 +22,3 @@ def good_triplets(l: List[int], r: List[int]) -> int:
     assert len(l) == len(r)
     if len(l) < 3:
         return 0
-    
