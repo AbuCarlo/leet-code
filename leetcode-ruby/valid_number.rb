@@ -1,5 +1,6 @@
 # https://leetcode.com/problems/valid-number
-# "Given a string s, return whether s is a valid number.
+#
+# Given a string s, return whether s is a valid number.
 #
 # For example, all the following are valid numbers: "2", "0089", "-0.1", "+3.14",
 # "4.", "-.9", "2e10", "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789",
@@ -20,9 +21,7 @@
 def is_number(s)
   # Can an exponent have leading 0s?
   exponent = s =~ /e[+-]?\d+\z/i
-  if exponent
-    s = s[0...exponent]
-  end
+  s = s[0...exponent] if exponent
   # It turns out that nothing is faster than just using a regex.
   !(s =~ /^[+-]?((\d+)(\.\d*)?|(\.\d+))$/).nil?
 
