@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # https://leetcode.com/problems/valid-number
 #
 # Given a string s, return whether s is a valid number.
@@ -24,5 +26,4 @@ def is_number(s)
   s = s[0...exponent] if exponent
   # It turns out that nothing is faster than just using a regex.
   !(s =~ /^[+-]?((\d+)(\.\d*)?|(\.\d+))$/).nil?
-
 end
