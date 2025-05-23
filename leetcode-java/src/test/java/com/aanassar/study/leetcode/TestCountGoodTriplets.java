@@ -30,44 +30,38 @@ public class TestCountGoodTriplets {
         private final int root;
 
         CustomTree(int size) {
+            // The index to these arrays is the actual value.
+            // We are not implementing a binary tree, but only
+            // simulating the descent in order to update these
+            // values.
+            this.lessers = new int[size];
+            this.greaters = new int[size];
             int powerOfTwo = 1;
             do {
                 powerOfTwo <<= 1;
             } while (powerOfTwo - 1 < size);
-            this.lessers = new int[powerOfTwo - 1];
-            this.greaters = new int[powerOfTwo - 1];
             this.root = (powerOfTwo >> 1) - 1;
         }
         
         void add(int n) {
             assert n < lessers.length;
+            int r = this.root;
             int width = (this.root + 1) / 2;
-            int i = this.root;
-            while (i != n) {
-                if (n < i) {
-                    ++this.lessers[i];
-                    i -= width;
+            while (n != r) {
+                if (n < r) {
+                    ++this.lessers[r];
+                    r -= width;
                 } else {
-                    ++this.greaters[i];
-                    i += width;
+                    ++this.greaters[r];
+                    r += width;
                 }
-                width >>= 1;
+                width /= 2;
             }
         }
 
         LesserGreater find(int n) {
             assert n < lessers.length;
-            int width = (this.root + 1) / 2;
-            int i = this.root;
-            while (i != n) {
-                if (n < i) {
-                    i -= width;
-                } else {
-                    i += width;
-                }
-                width >>= 1;
-            }
-            return new LesserGreater(this.lessers[i], this.greaters[i]);
+            return new LesserGreater(this.lessers[n], this.greaters[n]);
         }
     }
     
