@@ -34,13 +34,13 @@ public class TestCountGoodTriplets {
             // We are not implementing a binary tree, but only
             // simulating the descent in order to update these
             // values.
-            this.lessers = new int[size];
-            this.greaters = new int[size];
             int powerOfTwo = 1;
             do {
                 powerOfTwo <<= 1;
             } while (powerOfTwo - 1 < size);
             this.root = (powerOfTwo >> 1) - 1;
+            this.lessers = new int[powerOfTwo - 1];
+            this.greaters = new int[powerOfTwo - 1];
         }
         
         void add(int n) {
