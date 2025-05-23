@@ -26,6 +26,7 @@ public class TestCountGoodTriplets {
         // To give credit where credit is due: https://stackoverflow.com/a/18552071/476942
         var withIndices = IntStream.range(0, l.length)
                 .mapToObj(i -> new int[] { l[i], i })
+                // Sort by the values.
                 .sorted(Comparator.comparingInt(t -> t[0]))
                 // Now extract the index of the value t[0].
                 .mapToInt(t -> t[1])
@@ -42,7 +43,7 @@ public class TestCountGoodTriplets {
             // How many larger indices are already in the tree? These cannot
             // be the third element of a good triplet if j is the second element.
             int larger = tree.tailSet(j).size();
-            int tripletsWithThisValue = larger * (r.length - i + 1 - larger);
+            int tripletsWithThisValue = smaller * (r.length - i - 1 - larger);
             result += tripletsWithThisValue;
             tree.add(i);
         }
