@@ -5,16 +5,48 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * See <a href="https://leetcode.com/problems/count-good-triplets-in-an-array/description/">...</a>
+ * <p>
+ * The inputs are two arrays of the same length, containing the same values in different order.
+ * Each array is just a permutation of the values [1, |a|]. A "good" triplet is a triple of
+ * which the values are present in increasing order by position in both arrays. If the arrays
+ * were identical, the number of good triplets would be (n - 2) * (n - 1) * (n - 2).
+ * <p>
+ * The problem becomes easy in a language that provides a binary search tree.
  */
 @RunWith(Parameterized.class)
 public class TestCountGoodTriplets {
     public int countGoodTriplets(int[] l, int[] r) {
-        return 0;
+        // There is no neat way to do this without Guava 21.
+        // To give credit where credit is due: https://stackoverflow.com/a/18552071/476942
+        var withIndices = IntStream.range(0, l.length)
+                .mapToObj(i -> new int[] { l[i], i })
+                .sorted(Comparator.comparingInt(t -> t[0]))
+                // Now extract the index of the value t[0].
+                .mapToInt(t -> t[1])
+                .toArray();
+        // We know have an array mapping the values in l to their positions.
+        var tree = new TreeSet<Integer>();
+        int result = 0;
+        // Now for each value in r, determine how many values preceding it *also*
+        // preceded it in l.
+        for (int i = 0; i < r.length; i++) {
+            int j = withIndices[r[i]];
+            // How many smaller indices are already in the tree?
+            int smaller = tree.headSet(j).size();
+            // How many larger indices are already in the tree? These cannot
+            // be the third element of a good triplet if j is the second element.
+            int larger = tree.tailSet(j).size();
+            int tripletsWithThisValue = larger * (r.length - i + 1 - larger);
+            result += tripletsWithThisValue;
+            tree.add(i);
+        }
+        return result;
     }
 
     @Parameterized.Parameters
