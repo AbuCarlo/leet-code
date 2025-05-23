@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -21,7 +20,7 @@ import java.util.stream.IntStream;
  */
 @RunWith(Parameterized.class)
 public class TestCountGoodTriplets {
-    public int countGoodTriplets(int[] l, int[] r) {
+    public long goodTriplets(int[] l, int[] r) {
         // There is no neat way to do this without Guava 21.
         // To give credit where credit is due: https://stackoverflow.com/a/18552071/476942
         var withIndices = IntStream.range(0, l.length)
@@ -33,19 +32,21 @@ public class TestCountGoodTriplets {
                 .toArray();
         // We know have an array mapping the values in l to their positions.
         var tree = new TreeSet<Integer>();
-        int result = 0;
+        long result = 0L;
         // Now for each value in r, determine how many values preceding it *also*
         // preceded it in l.
-        for (int i = 0; i < r.length; i++) {
-            int j = withIndices[r[i]];
-            // How many smaller indices are already in the tree?
-            int smaller = tree.headSet(j).size();
+        for (int j : r) {
+            // Where was this value in l?
+            int indexInLeft = withIndices[j];
+            // How many smaller indices into l are already in the tree?
+            long smaller = tree.headSet(indexInLeft).size();
             // How many larger indices are already in the tree? These cannot
-            // be the third element of a good triplet if j is the second element.
-            int larger = tree.tailSet(j).size();
-            int tripletsWithThisValue = smaller * (r.length - i - 1 - larger);
+            // be the third element of a good triplet. How many larger indices
+            // are left over?
+            long larger = tree.tailSet(indexInLeft).size();
+            long tripletsWithThisValue = smaller * (r.length - indexInLeft - 1 - larger);
             result += tripletsWithThisValue;
-            tree.add(i);
+            tree.add(indexInLeft);
         }
         return result;
     }
@@ -53,8 +54,8 @@ public class TestCountGoodTriplets {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return List.of(
-                new Object[]{new int[]{2, 0, 1, 3}, new int[]{0, 1, 2, 3}, 1},
-                new Object[]{new int[]{4, 0, 1, 3, 2}, new int[]{4, 1, 0, 2, 3}, 4}
+                new Object[]{new int[]{2, 0, 1, 3}, new int[]{0, 1, 2, 3}, 1L},
+                new Object[]{new int[]{4, 0, 1, 3, 2}, new int[]{4, 1, 0, 2, 3}, 4L}
         );
     }
 
@@ -62,9 +63,9 @@ public class TestCountGoodTriplets {
 
     private final int[] r;
 
-    private final int expected;
+    private final long expected;
 
-    public TestCountGoodTriplets(int[] l, int[] r, int expected) {
+    public TestCountGoodTriplets(int[] l, int[] r, long expected) {
         this.l = l;
         this.r = r;
         this.expected = expected;
@@ -72,7 +73,7 @@ public class TestCountGoodTriplets {
 
     @Test
     public void testCountGoodTriplets() {
-        int actual = countGoodTriplets(l, r);
+        long actual = goodTriplets(l, r);
         Assert.assertEquals(expected, actual);
     }
 }
