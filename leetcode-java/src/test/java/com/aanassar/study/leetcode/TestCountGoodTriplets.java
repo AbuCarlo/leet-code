@@ -28,39 +28,50 @@ public class TestCountGoodTriplets {
         private final int[] lessers;
         private final int[] greaters;
         private final int root;
+        private final int size;
+        private final BitSet values;
 
         CustomTree(int size) {
             // The index to these arrays is the actual value.
             // We are not implementing a binary tree, but only
             // simulating the descent in order to update these
             // values.
+            this.size = size;
+            this.values = new BitSet(size);
             int powerOfTwo = 1;
             do {
                 powerOfTwo <<= 1;
             } while (powerOfTwo - 1 < size);
             this.root = (powerOfTwo >> 1) - 1;
+            // We need space for missing values.
             this.lessers = new int[powerOfTwo - 1];
             this.greaters = new int[powerOfTwo - 1];
         }
         
         void add(int n) {
             assert n < lessers.length;
-            int r = this.root;
-            int width = (this.root + 1) / 2;
-            while (n != r) {
-                if (n < r) {
-                    ++this.lessers[r];
-                    r -= width;
+            int value = this.root;
+            int i = 0;
+            // Infinite loop!
+            while (n != value) {
+                if (n < value) {
+                    if (this.values.get(n)) {
+                        ++this.lessers[value];
+                    }
+                    i = i * 2 + 1;
                 } else {
-                    ++this.greaters[r];
-                    r += width;
+                    if (this.values.get(n)) {
+                        ++this.greaters[value];
+                    }
+                    i = i * 2 + 2;
                 }
-                width /= 2;
             }
+            this.values.set(n);
         }
 
         LesserGreater find(int n) {
-            assert n < lessers.length;
+            assert n < this.size;
+            assert n >= 0;
             return new LesserGreater(this.lessers[n], this.greaters[n]);
         }
     }
