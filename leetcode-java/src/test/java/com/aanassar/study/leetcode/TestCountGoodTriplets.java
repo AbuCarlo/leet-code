@@ -20,6 +20,42 @@ import java.util.stream.IntStream;
  */
 @RunWith(Parameterized.class)
 public class TestCountGoodTriplets {
+
+    /**
+     * The only purpose of this tree is to count the values less than,
+     * and the values greater than, a given value. This is a trivial
+     * case of a "range sum": a value can only occur once, so is added
+     * to the tree only once. The sum of the values for nodes [0, n)
+     * is simply the number of values < n that have been added to the
+     * tree so far.
+     */
+    static class FenwickTree {
+        private final byte[] tree;
+        private int size;
+
+        FenwickTree(int n) {
+            this.tree = new byte[n + 1];
+            this.size = 0;
+        }
+
+        void add(int i) {
+            for (; i < this.tree.length; i = i | (i + 1))
+                ++this.tree[i];
+            ++this.size;
+        }
+
+        int getSize() {
+            return this.size;
+        }
+
+        int countLesser(int i) {
+            int result = 0;
+            for (; i >= 0; i = (i & (i + 1)) - 1)
+                result += this.tree[i];
+            return result;
+        }
+
+    }
     public long goodTriplets(int[] l, int[] r) {
         // There is no neat way to do this without Guava 21.
         // To give credit where credit is due: https://stackoverflow.com/a/18552071/476942
@@ -31,7 +67,7 @@ public class TestCountGoodTriplets {
                 .mapToInt(t -> t[1])
                 .toArray();
         // We know have an array mapping the values in l to their positions.
-        var tree = new TreeSet<Integer>();
+        var tree = new FenwickTree(l.length);
         long result = 0L;
         // Now for each value in r, determine how many values preceding it *also*
         // preceded it in l.
@@ -39,11 +75,11 @@ public class TestCountGoodTriplets {
             // Where was this value in l?
             int indexInLeft = withIndices[j];
             // How many smaller indices into l are already in the tree?
-            long smaller = tree.headSet(indexInLeft).size();
+            long smaller = tree.countLesser(indexInLeft);
             // How many larger indices are already in the tree? These cannot
             // be the third element of a good triplet. How many larger indices
             // are left over?
-            long larger = tree.tailSet(indexInLeft).size();
+            long larger = tree.getSize() - tree.countLesser(indexInLeft + 1);
             long tripletsWithThisValue = smaller * (r.length - indexInLeft - 1 - larger);
             result += tripletsWithThisValue;
             tree.add(indexInLeft);
