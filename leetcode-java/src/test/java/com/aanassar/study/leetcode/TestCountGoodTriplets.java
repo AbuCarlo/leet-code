@@ -79,7 +79,7 @@ public class TestCountGoodTriplets {
             // How many larger indices are already in the tree? These cannot
             // be the third element of a good triplet. How many larger indices
             // are left over?
-            long larger = tree.getSize() - tree.countLesser(indexInLeft + 1);
+            long larger = tree.getSize() - tree.countLesser(indexInLeft );
             long tripletsWithThisValue = smaller * (r.length - indexInLeft - 1 - larger);
             result += tripletsWithThisValue;
             tree.add(indexInLeft);
