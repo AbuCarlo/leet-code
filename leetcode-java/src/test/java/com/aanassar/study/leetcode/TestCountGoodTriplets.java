@@ -30,11 +30,11 @@ public class TestCountGoodTriplets {
      * tree so far.
      */
     static class FenwickTree {
-        private final byte[] tree;
+        private final int[] tree;
         private int size;
 
         FenwickTree(int n) {
-            this.tree = new byte[n + 1];
+            this.tree = new int[n + 1];
             this.size = 0;
         }
 
