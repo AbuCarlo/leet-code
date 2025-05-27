@@ -5,15 +5,30 @@ import java.util.stream.IntStream;
 
 public class CountGoodTriplets {
 
+    /**
+     * This is an extremely simplified Fenwick tree. It can compute
+     * the number of known values <= some value in O(log n) time.
+     * No value should be added twice, but the implementation does
+     * not bother checking.
+     */
     static class FenwickTree {
         private final int[] tree;
         private int size;
 
+        /**
+         *
+         * @param n the tree can accept values [0, n)
+         */
         public FenwickTree(int n) {
-            this.tree = new int[n + 1];
+            this.tree = new int[n];
             this.size = 0;
         }
 
+        /**
+         *
+         * @param i this value is added to the tree, i.e. the value at the leaf node for this value
+         *          is changed from 0 to 1.
+         */
         public void add(int i) {
             for (; i < this.tree.length; i = i | (i + 1))
                 ++this.tree[i];
@@ -24,7 +39,12 @@ public class CountGoodTriplets {
             return this.size;
         }
 
-        public int countLesser(int i) {
+        /**
+         *
+         * @param i a value in the input array
+         * @return the number of values <= i
+         */
+        public int getPrefixSum(int i) {
             int result = 0;
             for (; i >= 0; i = (i & (i + 1)) - 1)
                 result += this.tree[i];
@@ -52,12 +72,15 @@ public class CountGoodTriplets {
         for (int j : r) {
             // Where was this value in l?
             int indexInLeft = withIndices[j];
-            // How many smaller indices into l are already in the tree?
-            long smaller = tree.countLesser(indexInLeft);
+            // How many smaller indices into l are already in the tree? The
+            // prefix sum is inclusive, but since "indexInLeft" is making its
+            // first appearance here, we don't have to subtract 1 from its prefix sum.
+            long smaller = tree.getPrefixSum(indexInLeft);
             // How many larger indices are already in the tree? These cannot
             // be the third element of a good triplet. How many larger indices
-            // are left over? "indexInLeft" has not yet been added to the tree.
-            long larger = tree.getSize() - tree.countLesser(indexInLeft);
+            // are left over? "indexInLeft" has not yet been added to the tree,
+            // so we don't need to add 1 for getPrefixSum().
+            long larger = tree.getSize() - tree.getPrefixSum(indexInLeft);
             long tripletsWithThisValue = smaller * (r.length - indexInLeft - 1 - larger);
             result += tripletsWithThisValue;
             tree.add(indexInLeft);
