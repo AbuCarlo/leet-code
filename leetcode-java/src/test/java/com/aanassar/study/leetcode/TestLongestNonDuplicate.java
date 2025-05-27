@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class TestLongestNonDuplicate {
 
-	class Solution {
+	static class Solution {
 		public int lengthOfLongestSubstring(String s) {
 			if (s.isEmpty())
 				return 0;

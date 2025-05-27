@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# https://leetcode.com/problems/zigzag-conversion/description/
 def convert(s, num_rows)
   return s if num_rows == 1
 
@@ -11,7 +12,6 @@ def convert(s, num_rows)
     else
       result[num_rows - 1 - (i % modulus) - 1] += c
     end
-
   end
   result.join('')
 end

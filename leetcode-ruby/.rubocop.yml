@@ -1,0 +1,11 @@
+#
+
+# The Leetcode skeletons often use single-letter parameter names.
+
+Naming/MethodParameterName:
+  Enabled: False
+
+# Irrelevant to this problem space.
+
+Metrics/MethodLength:
+  Enabled: False

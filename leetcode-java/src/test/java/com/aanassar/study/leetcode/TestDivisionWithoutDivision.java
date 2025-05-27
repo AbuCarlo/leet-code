@@ -15,7 +15,9 @@ public class TestDivisionWithoutDivision {
 		int result = 0;
 		while (dividend >= divisor) {
 			int shift = 0;
-			while (dividend << shift < dividend) {
+			// This condition is always false!
+			// TODO: Use a form of binary search.
+			while ((dividend << shift) < dividend) {
 				++shift;
 			}
 			dividend -= (divisor << shift);
