@@ -6,6 +6,15 @@ repositories {
 	mavenCentral()
 }
 
+test {
+	useJUnitPlatform {
+		// See https://jqwik.net/docs/current/user-guide.html
+		includeEngines 'jqwik', 'junit-vintage'
+	}
+
+	include '**/Test*.class'
+}
+
 dependencies {
 
 	testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
@@ -16,4 +25,5 @@ dependencies {
 
 	testImplementation group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
 	testImplementation group: 'com.carrotsearch', name: 'junit-benchmarks', version: '0.7.2'
+	testImplementation group: "net.jqwik", name: "jqwik", version: '1.9.2'
 }
