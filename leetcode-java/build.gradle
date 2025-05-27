@@ -16,4 +16,5 @@ dependencies {
 
 	testImplementation group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
 	testImplementation group: 'com.carrotsearch', name: 'junit-benchmarks', version: '0.7.2'
+	testImplementation group: "net.jqwik", name: "jqwik", version: '1.9.2'
 }

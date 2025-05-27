@@ -9,22 +9,22 @@ public class CountGoodTriplets {
         private final int[] tree;
         private int size;
 
-        FenwickTree(int n) {
+        public FenwickTree(int n) {
             this.tree = new int[n + 1];
             this.size = 0;
         }
 
-        void add(int i) {
+        public void add(int i) {
             for (; i < this.tree.length; i = i | (i + 1))
                 ++this.tree[i];
             ++this.size;
         }
 
-        int getSize() {
+        public int getSize() {
             return this.size;
         }
 
-        int countLesser(int i) {
+        public int countLesser(int i) {
             int result = 0;
             for (; i >= 0; i = (i & (i + 1)) - 1)
                 result += this.tree[i];
@@ -45,8 +45,10 @@ public class CountGoodTriplets {
         // We know have an array mapping the values in l to their positions.
         var tree = new FenwickTree(l.length);
         long result = 0L;
-        // Now for each value in r, determine how many values preceding it *also*
-        // preceded it in l.
+        // Now for each value in r, find out its index in l. Any smaller indices
+        // in the Fenwick tree represent smaller values that preceded j in both
+        // arrays. Larger indices represent larger values that preceded it, and
+        // can therefore not be part of a "good triplet" with j as the middle value.
         for (int j : r) {
             // Where was this value in l?
             int indexInLeft = withIndices[j];
@@ -54,8 +56,8 @@ public class CountGoodTriplets {
             long smaller = tree.countLesser(indexInLeft);
             // How many larger indices are already in the tree? These cannot
             // be the third element of a good triplet. How many larger indices
-            // are left over?
-            long larger = tree.getSize() - tree.countLesser(indexInLeft );
+            // are left over? "indexInLeft" has not yet been added to the tree.
+            long larger = tree.getSize() - tree.countLesser(indexInLeft);
             long tripletsWithThisValue = smaller * (r.length - indexInLeft - 1 - larger);
             result += tripletsWithThisValue;
             tree.add(indexInLeft);
