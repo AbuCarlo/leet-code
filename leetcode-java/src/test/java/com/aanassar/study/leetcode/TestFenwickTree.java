@@ -16,7 +16,8 @@ public class TestFenwickTree
         }
 
         for (int v: values) {
-            if (tree.countLesser(v) != v) {
+            int prefix = tree.countLesser(v) - 1;
+            if (prefix != v) {
                 return false;
             }
         }

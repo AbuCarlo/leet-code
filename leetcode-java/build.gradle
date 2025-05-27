@@ -6,6 +6,15 @@ repositories {
 	mavenCentral()
 }
 
+test {
+	useJUnitPlatform {
+		// See https://jqwik.net/docs/current/user-guide.html
+		includeEngines 'jqwik', 'junit-vintage'
+	}
+
+	include '**/Test*.class'
+}
+
 dependencies {
 
 	testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
