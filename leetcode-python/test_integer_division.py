@@ -14,7 +14,7 @@ def internal_integer_division(dividend, divisor):
     # These two conditions stop recursion.
     if dividend < divisor:
         return (0, dividend)
-    if dividend < divisor << 1:
+    if dividend < (divisor << 1):
         return (1, dividend - divisor)
     quotient, remainder = internal_integer_division(dividend, divisor << 1)
     assert quotient >= 1
