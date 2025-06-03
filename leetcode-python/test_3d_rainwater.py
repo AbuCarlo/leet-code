@@ -13,10 +13,10 @@ def get_standing_water(heights: List[List[int]]) -> int:
     height = len(heights)
     width = len(heights[0])
 
-    ne = [[0 for _ in heights[0]] for _ in heights]
-    sw = [[0 for _ in heights[0]] for _ in heights]
+    ne = [[None for _ in heights[0]] for _ in heights]
+    sw = [[None for _ in heights[0]] for _ in heights]
 
-    def get_northeast_max(column, row) -> int:
+    def get_northeast_max(row, column) -> int:
         if column < 0 or column == width:
             return 0
         if row < 0 or row == height:
@@ -25,15 +25,13 @@ def get_standing_water(heights: List[List[int]]) -> int:
             return ne[row][column]
         result = max(
             heights[row][column],
-            min(
-                get_northeast_max(row + 1, column),
-                get_northeast_max(row, column + 1)
-            )
+            get_northeast_max(row + 1, column),
+            get_northeast_max(row, column + 1)
         )
         ne[row][column] = result
         return result
 
-    def get_southwest_max(column, row) -> int:
+    def get_southwest_max(row, column) -> int:
         if column < 0 or column == width:
             return 0
         if row < 0 or row == height:
