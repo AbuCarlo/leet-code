@@ -25,8 +25,10 @@ def get_standing_water(heights: List[List[int]]) -> int:
             return ne[row][column]
         result = max(
             heights[row][column],
-            get_northeast_max(row + 1, column),
-            get_northeast_max(row, column + 1)
+            min(
+                get_northeast_max(row + 1, column),
+                get_northeast_max(row, column + 1)
+            )
         )
         ne[row][column] = result
         return result
@@ -54,7 +56,7 @@ def get_standing_water(heights: List[List[int]]) -> int:
     return result
 
 _SAMPLES = [
-    # Any 1 x 1 of 2 x 2 problem will produce an answer of 0.
+    # Any 1 x 1 or 2 x 2 problem will produce an answer of 0.
     ([[0]], 0),
     ([[1, 1], [1, 1]], 0),
     ([[1, 1, 1], [1, 0, 1], [1, 1, 1]], 1),
