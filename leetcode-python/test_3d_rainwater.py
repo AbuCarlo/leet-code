@@ -43,15 +43,16 @@ def get_standing_water(heights: List[List[int]]) -> int:
             get_southwest_max(row - 1, column),
             get_southwest_max(row, column - 1)
         )
-        ne[row][column] = result
+        sw[row][column] = result
         return result
 
     get_northeast_max(0, 0)
     get_southwest_max(height - 1, width - 1)
 
-    result = sum(min(ne[c][r], sw[c][r]) for c in range(height) for r in range(width))
+    # This is really just for debugging purposes.
+    standing_water = [[min(ne[r][c], sw[r][c]) - heights[r][c] for c in range(width)] for r in range(height)]
 
-    return result
+    return sum(standing_water[r][c] for c in range(width) for r in range(height))
 
 _SAMPLES = [
     # Any 1 x 1 or 2 x 2 problem will produce an answer of 0.
