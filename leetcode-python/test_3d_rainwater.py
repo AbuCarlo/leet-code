@@ -6,28 +6,52 @@ from typing import List
 
 import pytest
 
-def get_standing_water(blah: List[List[int]]) -> int:
+def get_standing_water(heights: List[List[int]]) -> int:
     ''' 
     How much water would be left standing here?
     '''
-    height = len(blah)
-    width = len(blah[0])
+    height = len(heights)
+    width = len(heights[0])
 
-    ne = [[0 for _ in blah[0]] for _ in blah]
-    sw = [[0 for _ in blah[0]] for _ in blah]
+    ne = [[0 for _ in heights[0]] for _ in heights]
+    sw = [[0 for _ in heights[0]] for _ in heights]
 
-    def get_northeast_max(x, y) -> int:
-        if x < 0 or x == width:
+    def get_northeast_max(column, row) -> int:
+        if column < 0 or column == width:
             return 0
-        if y < 0 or y == height:
+        if row < 0 or row == height:
             return 0
-        if ne[y][x] is not None:
-            return ne[y][x]
-        result = max(blah[y][x], get_northeast_max(y + 1, x), get_northeast_max(y, x + 1))
-        ne[y][x] = result
+        if ne[row][column] is not None:
+            return ne[row][column]
+        result = max(
+            heights[row][column],
+            get_northeast_max(row + 1, column),
+            get_northeast_max(row, column + 1)
+        )
+        ne[row][column] = result
         return result
 
-    return 0
+    def get_southwest_max(column, row) -> int:
+        if column < 0 or column == width:
+            return 0
+        if row < 0 or row == height:
+            return 0
+        if sw[row][column] is not None:
+            return sw[row][column]
+        result = max(
+            heights[row][column],
+            get_southwest_max(row - 1, column),
+            get_southwest_max(row, column - 1)
+        )
+        ne[row][column] = result
+        return result
+
+    get_northeast_max(0, 0)
+    get_southwest_max(height - 1, width - 1)
+
+    result = sum(min(ne[c][r], sw[c][r]) for c in range(height) for r in range(width))
+
+    return result
 
 _SAMPLES = [
     # Any 1 x 1 of 2 x 2 problem will produce an answer of 0.
