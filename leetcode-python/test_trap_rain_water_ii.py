@@ -23,14 +23,17 @@ def trapRainWater(heights: List[List[int]]) -> int:
     # easiest way to handle these defaults is simply to copy
     # the input.
     block_nw = [list(n for n in row) for row in heights]
-    block_nw[0][0] = heights[0][0]
     # Move diagonally, in a SE direction.
-    for d in range(1, limit):
+    for d in range(2, limit):
         # Fill in remaining rows.
         for r in range(min(d, h - 1), 0, -1):
-            # Fill in the values moving in a NE direction.
-            for c in range(1, min(d + 1, w)):
-                block_nw[r][c] = max(heights[r][c], min(block_nw[r][c - 1], block_nw[r - 1][c]))
+            c = d - r
+            block_nw[r][c] = max(heights[r][c], min(block_nw[r][c - 1], block_nw[r - 1][c]))
+    block_ne = [list(n for n in row) for row in heights]
+    for d in range(2, limit):
+        for r in range(min(d, h - 1), 0, -1):
+            c = d - r
+            block_ne[r][c] = max(heights[r][c], min(block_ne[r][c + 1], block_ne[r - 1][c]))
 
     return 0
 
@@ -51,6 +54,9 @@ def test_2d_samples_as_3d(l):
     assert actual == 0
 
 _SAMPLES_3D = [
+    # obvious test cases
+    ([[3, 3, 3]] * 3, 0),
+    ([[3, 3, 3], [3, 1, 3], [3, 3, 3]], 2),
     ([[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]], 4),
     ([[3,3,3,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]], 10),
     # Knock a block out of the side to let the water run out.
