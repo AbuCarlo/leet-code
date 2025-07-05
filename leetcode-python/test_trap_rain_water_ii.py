@@ -37,13 +37,14 @@ def trapRainWater(heights: List[List[int]]) -> int:
 
 
 _SAMPLES_2D = [
-    ([3,3,3,3,3], 0),
-    ([3,2,2,2,3], 3)
+    ([3,3,3,3,3]),
+    ([3,2,2,2,3]),
+    ([[3]] * 3)
 ]
 
 # pylint: disable=C0116
-@pytest.mark.parametrize("l, _", _SAMPLES_2D)
-def test_2d_samples_as_3d(l, _):
+@pytest.mark.parametrize("l", _SAMPLES_2D)
+def test_2d_samples_as_3d(l):
     '''
     Any single row will trap no water, since no basin has a side.
     '''
