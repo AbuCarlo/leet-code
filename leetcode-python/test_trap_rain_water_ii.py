@@ -18,17 +18,16 @@ def trapRainWater(heights: List[List[int]]) -> int:
     w = len(heights[0])
     limit = max(h, w)
 
-    block_nw = [[0 for _ in range(w)] for _ in range(h)]
+    # The first row (with nothing above it) will have the same
+    # values as heights, and m.m. for the first column. The
+    # easiest way to handle these defaults is simply to copy
+    # the input.
+    block_nw = [list(n for n in row) for row in heights]
     block_nw[0][0] = heights[0][0]
     # Move diagonally, in a SE direction.
     for d in range(1, limit):
-        # Fill in the first row.
-        for c in range(w):
-            block_nw[0][c] = heights[0][c]
         # Fill in remaining rows.
         for r in range(min(d, h - 1), 0, -1):
-            # Fill in column 0.
-            block_nw[r][0] = heights[r][0]
             # Fill in the values moving in a NE direction.
             for c in range(1, min(d + 1, w)):
                 block_nw[r][c] = max(heights[r][c], min(block_nw[r][c - 1], block_nw[r - 1][c]))
