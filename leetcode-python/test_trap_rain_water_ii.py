@@ -13,27 +13,18 @@ def trapRainWater(heights: List[List[int]]) -> int:
     '''
     Try it.
     '''
-    assert all(len(l) == len(heights[0]) for l in heights)
+    assert all(len(l) == len(heights[0]) for l in heights[1:])
     h = len(heights)
     w = len(heights[0])
-    limit = max(h, w)
+    
+    nw_cache = {}
+    ne_cache = {}
+    sw_cache = {}
+    se_cache = {}
 
-    # The first row (with nothing above it) will have the same
-    # values as heights, and m.m. for the first column. The
-    # easiest way to handle these defaults is simply to copy
-    # the input.
-    block_nw = [list(n for n in row) for row in heights]
-    # Move diagonally, in a SE direction.
-    for d in range(2, limit):
-        # Fill in remaining rows.
-        for r in range(min(d, h - 1), 0, -1):
-            c = d - r
-            block_nw[r][c] = max(heights[r][c], min(block_nw[r][c - 1], block_nw[r - 1][c]))
-    block_ne = [list(n for n in row) for row in heights]
-    for d in range(2, limit):
-        for r in range(min(d, h - 1), 0, -1):
-            c = d - r
-            block_ne[r][c] = max(heights[r][c], min(block_ne[r][c + 1], block_ne[r - 1][c]))
+    
+
+
 
     return 0
 
