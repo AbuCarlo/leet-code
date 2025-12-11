@@ -2,9 +2,32 @@
 Extend the infamous interview question to 3D.
 
 https://leetcode.com/problems/trapping-rain-water-ii
+
+This is what ChatGPT told me: 
+"
+Algorithm Overview (2D)
+
+Use a Min-Heap (priority queue) approach:
+
+Treat the boundary cells as walls.
+
+Push all boundary cells into a min-heap.
+
+Pop the smallest-height cell from the heap, check its neighbors:
+
+If the neighbor is lower, it can trap water: water += max(0, height_boundary - height_neighbor)
+
+Push neighbor into heap with height = max(neighbor height, boundary height)
+
+Repeat until all cells are processed.
+
+Time Complexity: O(m × n × log(m × n))
+Space Complexity: O(m × n)
+"
 '''
 
 from dataclasses import dataclass
+
 from typing import List
 
 import pytest
