@@ -38,7 +38,7 @@ _SAMPLES_2D = [
 @pytest.mark.parametrize("l, expected", _SAMPLES_2D)
 def test_2d_samples(l, expected):
     '''
-    Confirm that this implementation works in 2D, like the "classic."
+    The classic 1D implementation.
     '''
     actual = trap_rainwater(l)
     assert actual == expected
