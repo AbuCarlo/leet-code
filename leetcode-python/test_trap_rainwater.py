@@ -135,10 +135,15 @@ def test_faster_heap(height):
 
 # pylint: disable=C0116,W0613
 @pytest.mark.parametrize("height, expected", _SAMPLES_2D)
-def test_rainwater_benchmarks(benchmark, height, expected):
+def test_rainwater_benchmark(benchmark, height, expected):
     benchmark(trap_rainwater, height)
 
 # pylint: disable=C0116,W0613
 @pytest.mark.parametrize("height, expected", _SAMPLES_2D)
-def test_rainwater_simplified(benchmark, height, expected):
+def test_rainwater_simplified_benchmark(benchmark, height, expected):
     benchmark(trap_rainwater_faster, height)
+
+# pylint: disable=C0116,W0613
+@pytest.mark.parametrize("height, expected", _SAMPLES_2D)
+def test_rainwater_heap_benchmark(benchmark, height, expected):
+    benchmark(trap_rainwater_with_heap, height)
