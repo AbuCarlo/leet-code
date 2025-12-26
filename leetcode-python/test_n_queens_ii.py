@@ -4,6 +4,7 @@ https://leetcode.com/problems/n-queens-ii/
 
 import pytest
 
+# pylint: disable=C0103
 def totalNQueensBitmasks(n: int) -> int:
     '''
     Recursive implementation using bitsets to represent 
@@ -66,7 +67,7 @@ def totalNQueensMemoized(n: int) -> int:
             result += internal_queens(row + 1, columns | 1 << column, lefts | 1 << left, rights | 1 << right)
         memos[key] = result
         return result
-    
+
     return internal_queens(0, 0, 0, 0)
 
 
@@ -101,10 +102,12 @@ def test_known_solutions(n: int, solutions: int):
     actual = totalNQueensBitmasks(n)
     assert actual == solutions
 
+# pylint: disable=C0116,W0613
 @pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS[-3:])
 def test_known_solutions_recursive(benchmark, n: int, solutions: int):
     benchmark(totalNQueensBitmasks, n)
 
+# pylint: disable=C0116,W0613
 @pytest.mark.parametrize("n,solutions", _KNOWN_SOLUTIONS[-3:])
 def test_known_solutions_memoized(benchmark, n: int, solutions: int):
     benchmark(totalNQueensMemoized, n)
