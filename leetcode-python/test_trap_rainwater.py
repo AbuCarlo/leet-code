@@ -72,33 +72,33 @@ def trap_rainwater_with_heap(height: List[int]) -> int:
     '''
     # pylint: disable=import-outside-toplevel
     import heapq
-    
+
     if len(height) < 3:
         return 0
-    
+
     result = 0
     heap = []
     visited = set()
-    
+
     # Add boundary positions to heap
     heapq.heappush(heap, (height[0], 0))
     heapq.heappush(heap, (height[-1], len(height) - 1))
     visited.add(0)
     visited.add(len(height) - 1)
-    
+
     # Track the current boundary height (water level)
     max_boundary = 0
-    
+
     while heap:
         h, idx = heapq.heappop(heap)
         max_boundary = max(max_boundary, h)
-        
+
         # Check neighbors
         for neighbor_idx in [idx - 1, idx + 1]:
             if 0 <= neighbor_idx < len(height) and neighbor_idx not in visited:
                 visited.add(neighbor_idx)
                 neighbor_height = height[neighbor_idx]
-                
+
                 if neighbor_height < max_boundary:
                     # Water can be trapped here
                     result += max_boundary - neighbor_height
@@ -107,7 +107,7 @@ def trap_rainwater_with_heap(height: List[int]) -> int:
                 else:
                     # This becomes a new boundary
                     heapq.heappush(heap, (neighbor_height, neighbor_idx))
-    
+
     return result
 
 
